@@ -1,0 +1,8 @@
+User-Agent: *
+Allow: /
+
+# Admin panel crawler'lara kapatıldı
+Disallow: /admin
+Disallow: /api/admin/
+
+Sitemap: https://evinindegeri.com/sitemap.xml

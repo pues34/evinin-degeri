@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model ValuationRequest {
+  id              String   @id @default(cuid())
+  createdAt       DateTime @default(now())
+  
+  // Konum Bilgileri
+  city            String
+  district        String
+  neighborhood    String
+  
+  // Bina & Kat Bilgileri
+  buildingAge     Int
+  totalFloors     Int
+  floor           String
+  
+  // İç Mekan Özellikleri
+  rooms           String   // Örn: "1+1", "2+1", "3+1" vb.
+  netSqm          Int
+  grossSqm        Int
+  kitchenType     String   // "Açık", "Kapalı"
+  bathrooms       Int
+  hasBalcony      Boolean
+  
+  // Ekstralar
+  parking         String   // "Açık", "Kapalı", "Yok"
+  facade          String   // "Güney", "Kuzey", "Doğu", "Batı" vb.
+  hasElevator     Boolean
+  isWithinSite    Boolean  @default(false)
+  buildingCondition String @default("Standart") // "Masraflı", "Standart", "Yenilenmiş"
+
+  // Algoritma / Yapay Zeka Sonuçları
+  estimatedValue  Float
+  aiComment       String?
+  demographics    Json?
+
+  // Admin CRM (V4)
+  adminNote       String?  @db.Text
+  overridenValue  Float?
+
+  // İsteğe Bağlı Ödeme / Onay Altyapısı (V6)
+  paymentStatus   Boolean  @default(true) // Şimdilik ücretsiz 
+
+  // Kurumsal B2B Emlakçı (V11)
+  realtorId       String?
+  realtor         Realtor? @relation(fields: [realtorId], references: [id], onDelete: SetNull)
+
+  // İlişkili İletişim Bilgileri (Lead)
+  contactInfo     ContactInfo?
+}
+
+model ContactInfo {
+  id                   String   @id @default(cuid())
+  createdAt            DateTime @default(now())
+  
+  fullName             String
+  phone                String
+  email                String
+  
+  // Hukuki Onaylar
+  kvkkApproved         Boolean  @default(false)
+  aiDisclaimerApproved Boolean  @default(false)
+
+  // İlişki Kurulumu
+  valuationRequestId   String   @unique
+  valuationRequest     ValuationRequest @relation(fields: [valuationRequestId], references: [id], onDelete: Cascade)
+}
+
+model City {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  districts District[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model District {
+  id            String         @id @default(cuid())
+  name          String
+  cityId        String
+  city          City           @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  neighborhoods Neighborhood[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@unique([name, cityId])
+}
+
+model Neighborhood {
+  id         String   @id @default(cuid())
+  name       String
+  multiplier Float    @default(1.0)
+  districtId String
+  district   District @relation(fields: [districtId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([name, districtId])
+}
+
+model AlgorithmSettings {
+  id              String   @id @default(cuid())
+  key             String   @unique
+  value           String   @db.Text
+  description     String?
+  updatedAt       DateTime @updatedAt
+}
+
+model Admin {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  password      String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Page {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BlogPost {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  summary   String?  @db.Text
+  content   String   @db.Text
+  imageUrl  String?  @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Realtor {
+  id              String   @id @default(cuid())
+  companyName     String
+  email           String   @unique
+  password        String
+  phone           String?
+  isPro           Boolean  @default(false)
+  subscriptionEnd DateTime?
+  
+  valuations      ValuationRequest[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String   @db.Text
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+

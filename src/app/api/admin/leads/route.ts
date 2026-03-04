@@ -1,0 +1,42 @@
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+
+import prisma from "@/lib/prisma";
+
+export async function GET() {
+    try {
+        const session = await getServerSession();
+        if (!session) {
+            return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+        }
+
+        const reqs = await prisma.valuationRequest.findMany({
+            include: {
+                contactInfo: true
+            },
+            orderBy: {
+                createdAt: "desc"
+            }
+        });
+
+        // Format for admin panel display
+        const payload = reqs.map((r: any) => ({
+            id: r.id,
+            name: r.contactInfo?.fullName || "Belirtilmemiş",
+            phone: r.contactInfo?.phone || "Belirtilmemiş",
+            email: r.contactInfo?.email || "Belirtilmemiş",
+            date: new Date(r.createdAt).toLocaleDateString('tr-TR'),
+            value: new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(r.estimatedValue),
+            rawEstimatedValue: r.estimatedValue,
+            overridenValue: r.overridenValue ? new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(r.overridenValue) : null,
+            rawOverridenValue: r.overridenValue,
+            adminNote: r.adminNote || "",
+            propertyDetails: `${r.city}, ${r.district}, ${r.neighborhood} - ${r.rooms} (${r.netSqm} m²)`
+        }));
+
+        return NextResponse.json({ success: true, data: payload });
+    } catch (error) {
+        console.error("Admin leads fetch error:", error);
+        return NextResponse.json({ success: false, error: "Sunucu hatası" }, { status: 500 });
+    }
+}
