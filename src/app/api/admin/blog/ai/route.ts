@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import OpenAI from "openai";
 
 import prisma from "@/lib/prisma";
 
@@ -11,6 +10,7 @@ function generateSlug(title: string) {
 
 export async function POST(req: Request) {
     try {
+        const OpenAI = (await import("openai")).default;
         const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || '' });
 
         const body = await req.json();
