@@ -7,6 +7,8 @@ import FastSupportForm from "@/components/FastSupportForm";
 
 import prisma from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
+
 export default async function B2BDashboard() {
     const session = await getServerSession(authOptions) as any;
 
