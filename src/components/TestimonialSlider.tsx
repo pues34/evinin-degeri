@@ -69,7 +69,7 @@ export default function TestimonialSlider() {
                         >
                             <div className={`bg-gradient-to-br p-6 rounded-2xl border shadow-sm relative h-full flex flex-col justify-between ${testimonial.gradient}`}>
                                 <div className="text-blue-200 absolute top-4 right-4 opacity-50"><Quote size={32} /></div>
-                                <p className="text-gray-600 italic mb-6 leading-relaxed relative z-10 text-lg">"{testimonial.text}"</p>
+                                <p className="text-gray-600 italic mb-6 leading-relaxed relative z-10 text-lg">&quot;{testimonial.text}&quot;</p>
                                 <div className="flex items-center gap-4 mt-auto">
                                     <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold ${testimonial.color}`}>
                                         {testimonial.initials}

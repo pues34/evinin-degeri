@@ -224,7 +224,7 @@ export default function ValuationForm() {
                             <select name="buildingCondition" value={formData.buildingCondition} onChange={handleChange} className="w-full p-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-appleBlue">
                                 <option value="Masraflı">Masraflı (Tadilat Gerektirir)</option>
                                 <option value="Standart">Standart (Oturulabilir İlk Hali)</option>
-                                <option value="Yenilenmiş">Lüks Yenilenmiş (A'dan Z'ye)</option>
+                                <option value="Yenilenmiş">Lüks Yenilenmiş (A&apos;dan Z&apos;ye)</option>
                             </select>
                         </div>
                     </div>
