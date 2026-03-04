@@ -2,6 +2,8 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 export default function TermsOfUse() {
     return (
         <div className="min-h-screen flex flex-col bg-white">
