@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
 import prisma from "@/lib/prisma";
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 function generateSlug(title: string) {
     return title.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
@@ -10,6 +9,8 @@ function generateSlug(title: string) {
 
 export async function POST(req: Request) {
     try {
+        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || '' });
+
         const body = await req.json();
         const { topic } = body; // Örn: "İstanbul konut piyasasında son durum 2026"
 
