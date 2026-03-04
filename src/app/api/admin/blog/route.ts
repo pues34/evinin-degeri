@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 import prisma from "@/lib/prisma";
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(req: Request) {
-    const { searchParams } = new URL(req.url);
+export async function GET(req: NextRequest) {
+    const searchParams = req.nextUrl.searchParams;
     const id = searchParams.get("id");
 
     try {
@@ -43,8 +43,8 @@ export async function POST(req: Request) {
     }
 }
 
-export async function DELETE(req: Request) {
-    const { searchParams } = new URL(req.url);
+export async function DELETE(req: NextRequest) {
+    const searchParams = req.nextUrl.searchParams;
     const id = searchParams.get("id");
 
     if (!id) return NextResponse.json({ success: false, error: "ID gerekli" }, { status: 400 });
