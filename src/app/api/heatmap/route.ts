@@ -1,7 +1,8 @@
-export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
 
 import prisma from "@/lib/prisma";
+
+export const dynamic = 'force-dynamic';
 
 // Rough manual mapping of coordinates for Istanbul districts to draw heat circles
 const districtCoords: Record<string, [number, number]> = {

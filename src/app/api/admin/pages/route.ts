@@ -1,9 +1,10 @@
-export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 
 import prisma from "@/lib/prisma";
+
+export const dynamic = 'force-dynamic';
 
 // Slugify function to generate URL slug from Title
 const slugify = (text: string) => text.toString().toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w\-]+/g, '').replace(/\-\-+/g, '-');

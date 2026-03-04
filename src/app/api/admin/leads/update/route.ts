@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { Resend } from "resend";
@@ -6,6 +5,8 @@ import { render } from "@react-email/render";
 import ReportEmail from "@/emails/ReportEmail";
 
 import prisma from "@/lib/prisma";
+
+export const dynamic = 'force-dynamic';
 const resend = new Resend(process.env.RESEND_API_KEY || "dummy_key_for_build");
 
 export async function POST(req: Request) {

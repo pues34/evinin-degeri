@@ -1,8 +1,9 @@
-export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 
 import prisma from "@/lib/prisma";
+
+export const dynamic = 'force-dynamic';
 
 // POST: Add new City, District, or Neighborhood
 export async function POST(req: Request) {
