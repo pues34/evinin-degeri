@@ -140,7 +140,7 @@ export default function AdminDashboard() {
         if (!blogTopic) return alert("Hangi konuda yazmak istediğinizi belirtin.");
         setAiGenerating(true);
         try {
-            const res = await fetch("/api/admin/blog/ai", {
+            const res = await fetch("/api/admin/generate-blog", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ topic: blogTopic })
