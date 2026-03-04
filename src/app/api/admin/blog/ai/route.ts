@@ -3,6 +3,8 @@ import OpenAI from "openai";
 
 import prisma from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
+
 function generateSlug(title: string) {
     return title.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, '');
 }
