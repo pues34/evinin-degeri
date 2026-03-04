@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Building2 } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 export default function B2BRegister() {
     const router = useRouter();
     const [form, setForm] = useState({ companyName: "", email: "", phone: "", password: "" });
@@ -79,3 +81,5 @@ export default function B2BRegister() {
         </div>
     );
 }
+
+

@@ -3,6 +3,8 @@ import Footer from "@/components/Footer";
 import { Sparkles, LineChart, ShieldCheck, MapPin } from "lucide-react";
 import TestimonialSlider from "@/components/TestimonialSlider";
 
+export const dynamic = 'force-dynamic';
+
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-appleGray overflow-hidden">
@@ -153,3 +155,5 @@ export default function Home() {
     </div>
   );
 }
+
+

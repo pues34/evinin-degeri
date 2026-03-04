@@ -1,5 +1,6 @@
 import ResultDashboard from "@/components/ResultDashboard";
 
+export const dynamic = 'force-dynamic';
 export default function ResultPage({ params }: { params: { id: string } }) {
     return (
         <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8">

@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CheckCircle2, ShieldCheck, Zap } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 export default function PricingPage() {
     const { data: session, status, update } = useSession();
     const router = useRouter();
@@ -104,3 +106,5 @@ export default function PricingPage() {
         </div>
     );
 }
+
+

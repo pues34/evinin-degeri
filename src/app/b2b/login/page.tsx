@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Building2 } from "lucide-react";
 
+export const dynamic = 'force-dynamic';
+
 export default function B2BLogin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -88,3 +90,5 @@ export default function B2BLogin() {
         </div>
     );
 }
+
+

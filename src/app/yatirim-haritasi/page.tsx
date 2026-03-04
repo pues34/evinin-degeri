@@ -1,9 +1,11 @@
-import dynamic from 'next/dynamic';
+import nextDynamic from 'next/dynamic';
 import { Map, Home, TrendingUp, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
-const HeatmapDisplay = dynamic(() => import('@/components/HeatmapDisplay'), {
+export const dynamic = 'force-dynamic';
+
+const HeatmapDisplay = nextDynamic(() => import('@/components/HeatmapDisplay'), {
     ssr: false,
     loading: () => (
         <div className="w-full h-full flex flex-col items-center justify-center bg-gray-50 min-h-[500px] rounded-3xl border border-gray-100">
@@ -69,3 +71,5 @@ export default function HeatmapPage() {
         </div>
     );
 }
+
+

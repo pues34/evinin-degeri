@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { Users, Settings, LogOut, LayoutDashboard, Search, Map, BarChart2, MessageSquare, Building2, Crown } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 
+export const dynamic = 'force-dynamic';
+
 const COLORS = ['#0071E3', '#34C759', '#FF9500', '#FF3B30', '#5856D6'];
 
 export default function AdminDashboard() {
@@ -988,3 +990,5 @@ export default function AdminDashboard() {
         </div>
     );
 }
+
+
