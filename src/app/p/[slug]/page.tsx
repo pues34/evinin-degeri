@@ -5,6 +5,8 @@ import { ArrowLeft } from "lucide-react";
 
 import prisma from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
+
 export default async function DynamicCMSPage({ params }: { params: { slug: string } }) {
     const page = await (prisma as any).page.findUnique({
         where: { slug: params.slug }
