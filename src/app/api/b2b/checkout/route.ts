@@ -41,7 +41,8 @@ export async function POST(req: Request) {
         if (selectedTier === "PRO") {
             finalPrice = b2bDiscount > 0 ? b2bPrice * (1 - b2bDiscount / 100) : b2bPrice;
         } else if (selectedTier === "PRO_PLUS") {
-            finalPrice = 750;
+            const proPlusPrice = Number(settingsMap["b2bProPlusPrice"] || 750);
+            finalPrice = proPlusPrice;
             basketDescription = "PRO PLUS Paket (White-Label & Lead Market)";
         } else if (selectedTier === "UPGRADE") {
             finalPrice = 250;

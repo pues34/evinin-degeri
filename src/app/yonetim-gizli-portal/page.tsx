@@ -82,6 +82,7 @@ export default function AdminDashboard() {
         mMasrafli: "",
         b2bMonthlyPrice: "",
         b2bDiscountPercentage: "",
+        b2bProPlusPrice: "",
 
         // V22: New Multipliers
         mHeatingDogalgaz: "",
@@ -692,13 +693,17 @@ export default function AdminDashboard() {
                                                             <div className="text-gray-400 text-xs">{r.email}</div>
                                                         </td>
                                                         <td className="px-6 py-4 text-center">
-                                                            {isActive ? (
+                                                            {r.subscriptionTier === 'PRO_PLUS' && isActive ? (
+                                                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                                                    <Crown size={12} /> PRO PLUS
+                                                                </span>
+                                                            ) : isActive ? (
                                                                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                                                     <Crown size={12} /> PRO
                                                                 </span>
                                                             ) : (
                                                                 <span className="inline-flex px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
-                                                                    Ücretsiz
+                                                                    Ucretsiz
                                                                 </span>
                                                             )}
                                                         </td>
@@ -706,12 +711,27 @@ export default function AdminDashboard() {
                                                             {r._count.valuations}
                                                         </td>
                                                         <td className="px-6 py-4 text-center">
-                                                            <button
-                                                                onClick={() => handleToggleB2bPro(r.id, isActive)}
-                                                                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${isActive ? 'bg-red-50 text-red-500 hover:bg-red-100' : 'bg-green-50 text-green-600 hover:bg-green-100'}`}
+                                                            <select
+                                                                value={r.subscriptionTier === 'PRO_PLUS' && isActive ? 'PRO_PLUS' : isActive ? 'PRO' : 'FREE'}
+                                                                onChange={async (e) => {
+                                                                    const tier = e.target.value;
+                                                                    if (tier === 'FREE') {
+                                                                        await handleToggleB2bPro(r.id, true);
+                                                                    } else {
+                                                                        const res = await fetch('/api/admin/realtors/manage', {
+                                                                            method: 'POST',
+                                                                            headers: { 'Content-Type': 'application/json' },
+                                                                            body: JSON.stringify({ realtorId: r.id, isPro: true, action: 'changeTier', tier })
+                                                                        });
+                                                                        if (res.ok) loadRealtors();
+                                                                    }
+                                                                }}
+                                                                className="px-3 py-1.5 rounded-lg text-xs font-medium border border-gray-200 bg-white focus:ring-2 focus:ring-appleBlue outline-none"
                                                             >
-                                                                {isActive ? 'PRO Iptal' : 'PRO Yap'}
-                                                            </button>
+                                                                <option value="FREE">Ucretsiz</option>
+                                                                <option value="PRO">PRO</option>
+                                                                <option value="PRO_PLUS">PRO PLUS</option>
+                                                            </select>
                                                         </td>
                                                     </tr>
                                                 );
@@ -755,7 +775,15 @@ export default function AdminDashboard() {
                                                     <span>B2B İndirim Oranı (%)</span>
                                                     <span className="text-xs text-green-500 font-medium bg-green-50 px-2 py-0.5 rounded">Opsiyonel</span>
                                                 </label>
-                                                <input type="number" placeholder="Örn: 20 (Boş bırakılırsa indirimsiz)" value={settings.b2bDiscountPercentage || ""} onChange={e => setSettings({ ...settings, b2bDiscountPercentage: e.target.value })} className="w-full p-2 rounded-xl border border-green-200 focus:ring-2 focus:ring-green-500 outline-none bg-green-50/30 text-sm font-medium" />
+                                                <input type="number" placeholder="Orn: 20 (Bos birakilirsa indirimsiz)" value={settings.b2bDiscountPercentage || ""} onChange={e => setSettings({ ...settings, b2bDiscountPercentage: e.target.value })} className="w-full p-2 rounded-xl border border-green-200 focus:ring-2 focus:ring-green-500 outline-none bg-green-50/30 text-sm font-medium" />
+                                            </div>
+                                            <div className="col-span-2">
+                                                <label className="block text-sm text-gray-600 mb-1 flex justify-between">
+                                                    <span>B2B PRO PLUS Aylik Fiyati (TL)</span>
+                                                    <span className="text-xs text-purple-500 font-medium bg-purple-50 px-2 py-0.5 rounded">Yeni</span>
+                                                </label>
+                                                <input type="number" value={settings.b2bProPlusPrice || ""} onChange={e => setSettings({ ...settings, b2bProPlusPrice: e.target.value })} className="w-full p-2 rounded-xl border border-purple-200 focus:ring-2 focus:ring-purple-500 outline-none bg-purple-50/30 text-sm font-medium" placeholder="750" />
+                                                <p className="text-xs text-gray-400 mt-1">PRO PLUS paketi icin aylik ucret. Bos birakilirsa 750 TL kullanilir.</p>
                                             </div>
                                         </div>
                                     </div>
