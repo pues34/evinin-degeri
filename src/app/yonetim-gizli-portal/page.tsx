@@ -2,7 +2,7 @@
 
 import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { Users, Settings, LogOut, LayoutDashboard, Search, Map, BarChart2, MessageSquare, Building2, Crown } from "lucide-react";
+import { Users, Settings, LogOut, LayoutDashboard, Search, Map, BarChart2, MessageSquare, Building2, Crown, Bell, Filter, CheckSquare, Edit, Trash2 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 
 export const dynamic = 'force-dynamic';
@@ -33,6 +33,23 @@ export default function AdminDashboard() {
     const [blogs, setBlogs] = useState<any[]>([]);
     const [blogTopic, setBlogTopic] = useState("");
     const [aiGenerating, setAiGenerating] = useState(false);
+
+    // V24: Lead filtering & bulk
+    const [leadSearch, setLeadSearch] = useState("");
+    const [leadDateFilter, setLeadDateFilter] = useState("");
+    const [selectedLeads, setSelectedLeads] = useState<string[]>([]);
+
+    // V24: Blog editing
+    const [editingBlog, setEditingBlog] = useState<any>(null);
+    const [editBlogTitle, setEditBlogTitle] = useState("");
+    const [editBlogContent, setEditBlogContent] = useState("");
+
+    // V24: Contact info settings
+    const [contactEmail, setContactEmail] = useState("evindestek@gmail.com");
+    const [contactPhone, setContactPhone] = useState("");
+    const [contactAddress, setContactAddress] = useState("Istanbul, Turkiye");
+    const [workingHours, setWorkingHours] = useState("Hafta ici: 09:00 - 18:00, Hafta sonu: 10:00 - 15:00");
+    const [emailTemplate, setEmailTemplate] = useState("Sayin {name},\n\nEvinizin tahmini degeri: {value}\n\nDetayli raporunuz icin asagidaki linke tiklayabilirsiniz.\n\nSaygilarimizla,\nEvinin Degeri Ekibi");
 
     // Settings States
     const [settings, setSettings] = useState({
@@ -241,10 +258,88 @@ export default function AdminDashboard() {
     };
 
     const handleDeleteContact = async (id: string) => {
-        if (!confirm("Bu mesajı silmek istiyor musunuz?")) return;
+        if (!confirm("Bu mesaji silmek istiyor musunuz?")) return;
         await fetch(`/api/admin/contact?id=${id}`, { method: "DELETE" });
         loadContacts();
     };
+
+    // V24: B2B Subscription Management
+    const handleToggleB2bPro = async (realtorId: string, currentStatus: boolean) => {
+        const action = currentStatus ? "iptal" : "aktif";
+        if (!confirm(`Bu kullanicinin PRO aboneligini ${action} etmek istiyor musunuz?`)) return;
+        try {
+            const res = await fetch("/api/admin/realtors/manage", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ realtorId, isPro: !currentStatus, action: "togglePro" })
+            });
+            if (res.ok) loadRealtors();
+        } catch (e) { console.error(e); }
+    };
+
+    // V24: Blog Edit
+    const handleEditBlog = (blog: any) => {
+        setEditingBlog(blog);
+        setEditBlogTitle(blog.title);
+        setEditBlogContent(blog.content || "");
+    };
+
+    const handleSaveEditBlog = async () => {
+        if (!editingBlog) return;
+        try {
+            const res = await fetch(`/api/admin/blog`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: editingBlog.id, title: editBlogTitle, content: editBlogContent })
+            });
+            if (res.ok) {
+                setEditingBlog(null);
+                loadBlogs();
+            }
+        } catch (e) { console.error(e); }
+    };
+
+    // V24: Bulk Lead Operations
+    const handleBulkDeleteLeads = async () => {
+        if (selectedLeads.length === 0) return;
+        if (!confirm(`${selectedLeads.length} talebi silmek istiyor musunuz?`)) return;
+        try {
+            for (const id of selectedLeads) {
+                await fetch(`/api/admin/leads?id=${id}`, { method: "DELETE" });
+            }
+            setSelectedLeads([]);
+            fetch("/api/admin/leads").then(r => r.json()).then(data => { if (data.success) setDbLeads(data.data); });
+        } catch (e) { console.error(e); }
+    };
+
+    const toggleLeadSelection = (id: string) => {
+        setSelectedLeads(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+    };
+
+    const toggleAllLeads = () => {
+        if (selectedLeads.length === filteredLeads.length) {
+            setSelectedLeads([]);
+        } else {
+            setSelectedLeads(filteredLeads.map((l: any) => l.id));
+        }
+    };
+
+    // V24: Filtered leads
+    const filteredLeads = dbLeads.filter((lead: any) => {
+        const searchMatch = !leadSearch ||
+            (lead.name || "").toLowerCase().includes(leadSearch.toLowerCase()) ||
+            (lead.phone || "").includes(leadSearch) ||
+            (lead.email || "").toLowerCase().includes(leadSearch.toLowerCase());
+        const dateMatch = !leadDateFilter || (lead.date || "").includes(leadDateFilter);
+        return searchMatch && dateMatch;
+    });
+
+    // V24: Request notification permission
+    useEffect(() => {
+        if (typeof window !== "undefined" && "Notification" in window && Notification.permission === "default") {
+            Notification.requestPermission();
+        }
+    }, []);
 
     useEffect(() => {
         if (session && activeTab === "leads") {
@@ -462,13 +557,19 @@ export default function AdminDashboard() {
                             <div className="p-0">
                                 <div className="p-6 border-b border-gray-100 flex justify-between items-center flex-wrap gap-4">
                                     <h3 className="font-semibold text-lg text-appleDark">Son Talepler</h3>
-                                    <div className="flex gap-4 items-center">
+                                    <div className="flex gap-3 items-center flex-wrap">
                                         <div className="relative">
                                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                                            <input type="text" placeholder="İsim veya telefon ara..." className="pl-9 pr-4 py-2 bg-gray-50 border-none rounded-lg text-sm focus:ring-2 focus:ring-appleBlue outline-none" />
+                                            <input type="text" placeholder="Isim, telefon veya e-posta..." value={leadSearch} onChange={e => setLeadSearch(e.target.value)} className="pl-9 pr-4 py-2 bg-gray-50 border-none rounded-lg text-sm focus:ring-2 focus:ring-appleBlue outline-none w-56" />
                                         </div>
+                                        <input type="date" value={leadDateFilter} onChange={e => setLeadDateFilter(e.target.value)} className="px-3 py-2 bg-gray-50 border-none rounded-lg text-sm focus:ring-2 focus:ring-appleBlue outline-none" />
+                                        {selectedLeads.length > 0 && (
+                                            <button onClick={handleBulkDeleteLeads} className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors flex items-center gap-1">
+                                                <Trash2 size={14} /> {selectedLeads.length} Secili Sil
+                                            </button>
+                                        )}
                                         <button onClick={handleDownloadCSV} className="px-4 py-2 bg-appleBlue text-white rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors flex items-center shadow-sm">
-                                            📥 CSV İndir
+                                            CSV Indir
                                         </button>
                                     </div>
                                 </div>
@@ -476,22 +577,28 @@ export default function AdminDashboard() {
                                     <table className="w-full text-left text-sm">
                                         <thead className="bg-gray-50/50 text-gray-500">
                                             <tr>
+                                                <th className="px-6 py-4 font-medium">
+                                                    <input type="checkbox" checked={selectedLeads.length === filteredLeads.length && filteredLeads.length > 0} onChange={toggleAllLeads} className="rounded" />
+                                                </th>
                                                 <th className="px-6 py-4 font-medium">Talep No</th>
                                                 <th className="px-6 py-4 font-medium">Tarih</th>
                                                 <th className="px-6 py-4 font-medium">Ad Soyad</th>
-                                                <th className="px-6 py-4 font-medium">İletişim</th>
-                                                <th className="px-6 py-4 font-medium">Değerleme Sonucu</th>
-                                                <th className="px-6 py-4 font-medium">İşlem</th>
+                                                <th className="px-6 py-4 font-medium">Iletisim</th>
+                                                <th className="px-6 py-4 font-medium">Degerleme Sonucu</th>
+                                                <th className="px-6 py-4 font-medium">Islem</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-gray-50">
-                                            {dbLeads.length === 0 && (
+                                            {filteredLeads.length === 0 && (
                                                 <tr>
-                                                    <td colSpan={5} className="text-center py-8 text-gray-400">Henüz talep bulunmuyor.</td>
+                                                    <td colSpan={7} className="text-center py-8 text-gray-400">Henuz talep bulunmuyor.</td>
                                                 </tr>
                                             )}
-                                            {dbLeads.map((lead: any) => (
-                                                <tr key={lead.id} className="hover:bg-gray-50/50 transition-colors">
+                                            {filteredLeads.map((lead: any) => (
+                                                <tr key={lead.id} className={`hover:bg-gray-50/50 transition-colors ${selectedLeads.includes(lead.id) ? 'bg-blue-50/50' : ''}`}>
+                                                    <td className="px-6 py-4">
+                                                        <input type="checkbox" checked={selectedLeads.includes(lead.id)} onChange={() => toggleLeadSelection(lead.id)} className="rounded" />
+                                                    </td>
                                                     <td className="px-6 py-4 font-medium text-appleDark">#{lead.requestNumber || lead.id.substring(0, 6)}</td>
                                                     <td className="px-6 py-4 text-gray-500">{lead.date}</td>
                                                     <td className="px-6 py-4 font-medium text-appleDark">{lead.name}</td>
@@ -565,6 +672,7 @@ export default function AdminDashboard() {
                                                 <th className="px-6 py-4 font-medium">İletişim</th>
                                                 <th className="px-6 py-4 font-medium text-center">Durum</th>
                                                 <th className="px-6 py-4 font-medium text-center">Toplam Sorgu</th>
+                                                <th className="px-6 py-4 font-medium text-center">Islem</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-gray-50">
@@ -596,6 +704,14 @@ export default function AdminDashboard() {
                                                         </td>
                                                         <td className="px-6 py-4 text-center font-bold text-appleBlue">
                                                             {r._count.valuations}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-center">
+                                                            <button
+                                                                onClick={() => handleToggleB2bPro(r.id, isActive)}
+                                                                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${isActive ? 'bg-red-50 text-red-500 hover:bg-red-100' : 'bg-green-50 text-green-600 hover:bg-green-100'}`}
+                                                            >
+                                                                {isActive ? 'PRO Iptal' : 'PRO Yap'}
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 );
@@ -1072,10 +1188,32 @@ export default function AdminDashboard() {
                                                         <p className="text-xs text-appleLightGray mt-1 line-clamp-1">{b.summary}</p>
                                                     </div>
                                                     <button onClick={() => handleDeleteBlog(b.id)} className="px-3 py-1.5 bg-red-50 text-red-500 hover:bg-red-100 rounded-lg text-xs font-medium transition-colors ml-2 shrink-0">Sil</button>
+                                                    <button onClick={() => handleEditBlog(b)} className="px-3 py-1.5 bg-blue-50 text-appleBlue hover:bg-blue-100 rounded-lg text-xs font-medium transition-colors ml-1 shrink-0">Duzenle</button>
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
+
+                                    {/* V24: Blog Edit Panel */}
+                                    {editingBlog && (
+                                        <div className="glass-card p-6 shadow-sm border border-blue-200 bg-blue-50/30 lg:col-span-2">
+                                            <h4 className="font-bold text-appleDark mb-4">Blog Duzenle: {editingBlog.title}</h4>
+                                            <div className="space-y-4">
+                                                <div>
+                                                    <label className="block text-sm font-medium text-appleDark mb-1">Baslik</label>
+                                                    <input value={editBlogTitle} onChange={e => setEditBlogTitle(e.target.value)} className="w-full p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-appleBlue" />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-appleDark mb-1">Icerik (HTML)</label>
+                                                    <textarea value={editBlogContent} onChange={e => setEditBlogContent(e.target.value)} rows={8} className="w-full p-3 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-appleBlue resize-none font-mono text-sm" />
+                                                </div>
+                                                <div className="flex gap-3">
+                                                    <button onClick={handleSaveEditBlog} className="px-6 py-2 bg-appleBlue text-white rounded-xl font-medium hover:bg-blue-600 transition-colors">Kaydet</button>
+                                                    <button onClick={() => setEditingBlog(null)} className="px-6 py-2 bg-gray-100 text-gray-600 rounded-xl font-medium hover:bg-gray-200 transition-colors">Iptal</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                     <div className="glass-card p-6 shadow-sm border border-gray-200 bg-gradient-to-br from-blue-50 to-white h-[500px] flex flex-col">
                                         <div className="flex items-center gap-2 mb-6">
                                             <span className="text-2xl">🤖</span>

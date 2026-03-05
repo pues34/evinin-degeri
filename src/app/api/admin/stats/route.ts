@@ -54,13 +54,46 @@ export async function GET() {
             count
         }));
 
+        // V24: Today's requests
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+        const todayRequests = allRequests.filter((r: any) => new Date(r.createdAt) >= todayStart).length;
+
+        // V24: This week's requests
+        const weekStart = new Date();
+        weekStart.setDate(weekStart.getDate() - 7);
+        weekStart.setHours(0, 0, 0, 0);
+        const weekRequests = allRequests.filter((r: any) => new Date(r.createdAt) >= weekStart).length;
+
+        // V24: Unread contacts
+        let unreadContacts = 0;
+        try {
+            unreadContacts = await prisma.contactMessage.count({ where: { isRead: false } });
+        } catch (e) { /* contacts table may not exist */ }
+
+        // V24: PRO realtors count & revenue
+        let totalProRealtors = 0;
+        let estimatedRevenue = 0;
+        try {
+            totalProRealtors = await prisma.realtor.count({ where: { isPro: true } });
+            // Simple estimate: each PRO pays monthly
+            const settings = await prisma.algorithmSettings.findFirst({ where: { key: "b2bMonthlyPrice" } });
+            const monthlyPrice = settings ? parseFloat(settings.value) : 499;
+            estimatedRevenue = totalProRealtors * monthlyPrice;
+        } catch (e) { /* realtors table may not exist */ }
+
         return NextResponse.json({
             success: true,
             data: {
                 totalRequests,
                 avgValue,
                 topDistricts,
-                trend: trendParams
+                trend: trendParams,
+                todayRequests,
+                weekRequests,
+                unreadContacts,
+                totalProRealtors,
+                estimatedRevenue,
             }
         });
 
