@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CheckCircle2, ShieldCheck, Zap } from "lucide-react";
 
 export const dynamic = 'force-dynamic';
@@ -11,6 +11,22 @@ export default function PricingPage() {
     const { data: session, status, update } = useSession();
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [pricing, setPricing] = useState({ b2bMonthlyPrice: 500, b2bDiscountPercentage: 0 });
+    const [paytrToken, setPaytrToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetch("/api/admin/settings")
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.data) {
+                    setPricing({
+                        b2bMonthlyPrice: Number(data.data.b2bMonthlyPrice) || 500,
+                        b2bDiscountPercentage: Number(data.data.b2bDiscountPercentage) || 0
+                    });
+                }
+            })
+            .catch(err => console.error(err));
+    }, []);
 
     const handleSubscribe = async () => {
         if (status === "unauthenticated") {
@@ -19,25 +35,42 @@ export default function PricingPage() {
         }
 
         setLoading(true);
-        // Simulated PayTR checkout process
         try {
             const res = await fetch("/api/b2b/checkout", { method: "POST" });
             const data = await res.json();
 
-            if (data.success) {
-                alert("Ödeme başarılı! Hesabınız Limitsiz (PRO) statüsüne yükseltildi.");
-                await update({ isPro: true, subscriptionEnd: data.subscriptionEnd });
-                router.push("/b2b/dashboard");
-                router.refresh();
+            if (data.success && data.token) {
+                setPaytrToken(data.token);
             } else {
-                alert("Hata: " + data.error);
-                setLoading(false);
+                alert("Ödeme başlatılamadı: " + (data.error || "Bilinmeyen hata"));
             }
         } catch (e) {
-            alert("Sistem hatası. Lütfen daha sonra tekrar deneyin.");
+            alert("Ödeme bağlantısında bir teknik sorun oluştu.");
+        } finally {
             setLoading(false);
         }
     };
+
+    if (paytrToken) {
+        return (
+            <div className="min-h-screen bg-appleGray pt-24 pb-12 px-4 flex justify-center items-center">
+                <div className="bg-white p-4 rounded-xl shadow-2xl w-full max-w-2xl min-h-[600px]">
+                    <h2 className="text-xl font-bold text-center text-appleDark mb-4">Güvenli Ödeme Ekranı</h2>
+                    <p className="text-center text-sm text-gray-500 mb-4">Kredi kartı bilgileriniz PayTR güvencesiyle işlenmektedir.</p>
+                    <iframe
+                        src={`https://www.paytr.com/odeme/guvenli/${paytrToken}`}
+                        id="paytriframe"
+                        frameBorder="0"
+                        scrolling="yes"
+                        style={{ width: "100%", height: "600px" }}
+                    />
+                    <button onClick={() => setPaytrToken(null)} className="mt-4 w-full py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200">
+                        İptal ve Geri Dön
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-appleGray pt-24 pb-12 px-4">
@@ -84,8 +117,23 @@ export default function PricingPage() {
                         <div className="w-full md:w-1/3 bg-gray-50 rounded-3xl p-8 text-center border border-gray-100 flex flex-col justify-center">
                             <h3 className="text-gray-500 font-medium mb-2 uppercase tracking-widest text-sm">Aylık Ödeme</h3>
                             <div className="flex justify-center items-start gap-1 mb-6">
-                                <span className="text-4xl font-extrabold text-appleDark">₺500</span>
-                                <span className="text-gray-500 font-medium mt-1">/ay</span>
+                                {pricing.b2bDiscountPercentage > 0 ? (
+                                    <div className="flex flex-col items-center">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <span className="text-xl text-gray-400 line-through">₺{pricing.b2bMonthlyPrice}</span>
+                                            <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded-full">%{pricing.b2bDiscountPercentage} İndirim</span>
+                                        </div>
+                                        <div className="flex items-start">
+                                            <span className="text-4xl font-extrabold text-appleDark">₺{Math.round(pricing.b2bMonthlyPrice * (1 - pricing.b2bDiscountPercentage / 100))}</span>
+                                            <span className="text-gray-500 font-medium mt-1">/ay</span>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <span className="text-4xl font-extrabold text-appleDark">₺{pricing.b2bMonthlyPrice}</span>
+                                        <span className="text-gray-500 font-medium mt-1">/ay</span>
+                                    </>
+                                )}
                             </div>
 
                             <button

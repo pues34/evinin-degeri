@@ -41,7 +41,9 @@ export async function GET() {
             mFacadeKuzey: "0.95",
             mSiteIci: "1.15",
             mYenilenmis: "1.15",
-            mMasrafli: "0.85"
+            mMasrafli: "0.85",
+            b2bMonthlyPrice: "500",
+            b2bDiscountPercentage: "0"
         };
 
         for (const ObjectEntry of Object.entries(defaults)) {

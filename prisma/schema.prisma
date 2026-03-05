@@ -173,3 +173,13 @@ model ContactMessage {
   createdAt DateTime @default(now())
 }
 
+model ValidationCode {
+  id        String   @id @default(cuid())
+  identifier String
+  code      String
+  expiresAt DateTime
+  isVerified Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([identifier])
+}

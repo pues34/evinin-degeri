@@ -62,7 +62,9 @@ export default function AdminDashboard() {
         mFacadeKuzey: "",
         mSiteIci: "",
         mYenilenmis: "",
-        mMasrafli: ""
+        mMasrafli: "",
+        b2bMonthlyPrice: "",
+        b2bDiscountPercentage: ""
     });
     const [savingSettings, setSavingSettings] = useState(false);
 
@@ -367,19 +369,29 @@ export default function AdminDashboard() {
                             <div className="p-8 space-y-8">
                                 <h3 className="font-semibold text-lg text-appleDark mb-6">Genel Sistem Özeti</h3>
 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                                     <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex flex-col justify-center items-center">
-                                        <p className="text-gray-500 text-sm mb-2">Toplam Sorgu Sayısı</p>
-                                        <h4 className="text-4xl font-bold text-appleDark">{stats.totalRequests}</h4>
+                                        <p className="text-gray-500 text-sm mb-2 text-center w-full truncate">Toplam Sorgu Sayısı</p>
+                                        <h4 className="text-3xl font-bold text-appleDark">{stats.totalRequests}</h4>
+                                    </div>
+                                    <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex flex-col justify-center items-center">
+                                        <p className="text-gray-500 text-sm mb-2 text-center w-full truncate">Aktif PRO Emlakçı</p>
+                                        <h4 className="text-3xl font-bold text-blue-500">{stats.totalProRealtors || 0}</h4>
+                                    </div>
+                                    <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-2xl border border-green-200 flex flex-col justify-center items-center">
+                                        <p className="text-green-700/80 text-sm mb-2 text-center w-full truncate">Aylık Tahmini B2B Ciro</p>
+                                        <h4 className="text-3xl font-bold text-green-600">
+                                            {new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(stats.estimatedRevenue || 0)}
+                                        </h4>
                                     </div>
                                     <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100 flex flex-col justify-center items-center">
-                                        <p className="text-blue-600/80 text-sm mb-2">Ortalama Değerleme(AI)</p>
-                                        <h4 className="text-3xl font-bold text-appleBlue">
+                                        <p className="text-blue-600/80 text-sm mb-2 text-center w-full truncate">Ortalama Değerleme(AI)</p>
+                                        <h4 className="text-2xl font-bold text-appleBlue">
                                             {new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(stats.avgValue)}
                                         </h4>
                                     </div>
                                     <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex flex-col justify-center items-center">
-                                        <p className="text-gray-500 text-sm mb-2">Popüler Bölge</p>
+                                        <p className="text-gray-500 text-sm mb-2 text-center w-full truncate">Popüler Bölge</p>
                                         <h4 className="text-2xl font-bold text-appleDark text-center line-clamp-2">
                                             {stats.topDistricts[0]?.name || "-"}
                                         </h4>
@@ -597,6 +609,20 @@ export default function AdminDashboard() {
                                             <div className="col-span-2">
                                                 <label className="block text-sm text-gray-600 mb-1">Bina Yaşı Düşüşü (Yıl Başı)</label>
                                                 <input type="number" step="0.01" value={settings.buildingAgeDepreciation} onChange={e => setSettings({ ...settings, buildingAgeDepreciation: e.target.value })} className="w-full p-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-appleBlue outline-none bg-white text-sm" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1 flex justify-between">
+                                                    <span>B2B PRO Aylık Fiyatı (₺)</span>
+                                                    <span className="text-xs text-blue-500 font-medium bg-blue-50 px-2 py-0.5 rounded">Yeni</span>
+                                                </label>
+                                                <input type="number" value={settings.b2bMonthlyPrice || ""} onChange={e => setSettings({ ...settings, b2bMonthlyPrice: e.target.value })} className="w-full p-2 rounded-xl border border-blue-200 focus:ring-2 focus:ring-appleBlue outline-none bg-blue-50/30 text-sm font-medium" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1 flex justify-between">
+                                                    <span>B2B İndirim Oranı (%)</span>
+                                                    <span className="text-xs text-green-500 font-medium bg-green-50 px-2 py-0.5 rounded">Opsiyonel</span>
+                                                </label>
+                                                <input type="number" placeholder="Örn: 20 (Boş bırakılırsa indirimsiz)" value={settings.b2bDiscountPercentage || ""} onChange={e => setSettings({ ...settings, b2bDiscountPercentage: e.target.value })} className="w-full p-2 rounded-xl border border-green-200 focus:ring-2 focus:ring-green-500 outline-none bg-green-50/30 text-sm font-medium" />
                                             </div>
                                         </div>
                                     </div>
@@ -989,7 +1015,7 @@ export default function AdminDashboard() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 
