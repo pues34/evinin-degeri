@@ -1,7 +1,8 @@
 "use client";
 
-import { Crown, Activity, ExternalLink, History, TrendingUp, Download, CheckCircle, BarChart3, Users, Clock, UserPlus } from "lucide-react";
+import { Crown, Activity, ExternalLink, History, TrendingUp, Download, CheckCircle, BarChart3, Users, Clock, UserPlus, LogOut } from "lucide-react";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import FastSupportForm from "@/components/FastSupportForm";
 import { useState } from "react";
@@ -72,7 +73,10 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
                     <div>
                         <div className="flex items-center gap-3 mb-4">
                             <span className="p-2.5 bg-white/10 text-blue-300 rounded-2xl backdrop-blur-md border border-white/5"><Crown size={28} /></span>
-                            <span className="text-sm font-semibold tracking-wider uppercase text-blue-200">Kurumsal Partner Paneli</span>
+                            <span className="text-sm font-semibold tracking-wider uppercase text-blue-200 mr-4">Kurumsal Partner Paneli</span>
+                            <button onClick={() => signOut({ callbackUrl: '/' })} className="text-red-300 hover:text-white transition-colors px-3 py-1.5 flex items-center gap-2 text-xs font-bold bg-white/5 hover:bg-red-500/20 rounded-xl border border-white/10 backdrop-blur-md">
+                                <LogOut size={14} /> Çıkış Yap
+                            </button>
                         </div>
                         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Hoş Geldiniz, <span className="text-white">{user.name.split(' ')[0]}</span>.</h1>
                         <p className="text-blue-100/80 max-w-xl text-lg mt-4 leading-relaxed">Gayrimenkul portföyünüzün tüm analizlerini yönetin, B2B limitsiz değerleme motoruyla sahada her zaman rakiplerinizin bir adım önünde olun.</p>
@@ -81,11 +85,20 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
                     <div className="w-full md:w-auto">
                         {isActivePro ? (
                             <div className="flex flex-col items-center sm:items-end gap-3 p-6 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl">
-                                <span className="flex items-center text-sm font-bold text-green-400 uppercase tracking-widest"><CheckCircle size={16} className="mr-2" /> PRO Aktif</span>
+                                <span className="flex items-center text-sm font-bold text-green-400 uppercase tracking-widest">
+                                    <CheckCircle size={16} className="mr-2" /> {user.subscriptionTier === "PRO_PLUS" ? "PRO PLUS Aktif" : "PRO Aktif"}
+                                </span>
                                 <span className="text-white/60 text-xs">Abonelik Bitiş: {new Date(user.subscriptionEnd).toLocaleDateString('tr-TR')}</span>
-                                <Link href="/" className="mt-2 w-full sm:w-auto px-6 py-3 bg-white text-appleDark hover:bg-gray-100 font-bold rounded-xl transition-all shadow-lg flex justify-center items-center">
-                                    <Activity size={18} className="mr-2" /> Anında Değerleme Yap
-                                </Link>
+                                <div className="flex flex-col sm:flex-row gap-2 mt-2 w-full justify-end">
+                                    <Link href="/" className="w-full sm:w-auto px-6 py-3 bg-white text-appleDark hover:bg-gray-100 font-bold rounded-xl transition-all shadow-lg flex justify-center items-center">
+                                        <Activity size={18} className="mr-2" /> Anında Değerleme
+                                    </Link>
+                                    {user.subscriptionTier === "PRO" && (
+                                        <Link href="/b2b/pricing" className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-amber-400 to-amber-600 text-white hover:from-amber-500 hover:to-amber-700 font-bold rounded-xl transition-all shadow-lg flex justify-center items-center text-sm">
+                                            <Crown size={16} className="mr-2 fill-white" /> PRO PLUS&apos;a Yükselt
+                                        </Link>
+                                    )}
+                                </div>
                             </div>
                         ) : (
                             <div className="flex flex-col gap-4 p-6 bg-amber-500/10 backdrop-blur-xl border border-amber-500/20 rounded-3xl items-center sm:items-end w-full md:w-[320px]">

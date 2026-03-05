@@ -38,8 +38,8 @@ export default function Header() {
                                 <User size={16} /> B2B Panel
                             </Link>
                         ) : (
-                            <Link href="/b2b/login" className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all flex items-center gap-1.5">
-                                <Building2 size={16} /> B2B Giriş
+                            <Link href="/b2b" className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all flex items-center gap-1.5">
+                                <Building2 size={16} /> Kurumsal (B2B)
                             </Link>
                         )}
                     </nav>
@@ -49,7 +49,7 @@ export default function Header() {
                         {session ? (
                             <Link href="/b2b/dashboard" className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold border border-emerald-100">Panel</Link>
                         ) : (
-                            <Link href="/b2b/login" className="px-3 py-1.5 bg-blue-50 text-appleBlue rounded-lg text-xs font-bold border border-blue-100">B2B</Link>
+                            <Link href="/b2b" className="px-3 py-1.5 bg-blue-50 text-appleBlue rounded-lg text-xs font-bold border border-blue-100">Kurumsal</Link>
                         )}
                     </div>
                 </div>
