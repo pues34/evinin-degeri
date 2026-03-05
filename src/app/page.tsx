@@ -141,9 +141,7 @@ export default function Home() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-tr from-appleBlue/20 to-purple-500/20 transform rotate-3 rounded-3xl blur-md" />
               <div className="bg-white p-2 rounded-2xl shadow-2xl relative z-10 border border-white/50 backdrop-blur-sm">
-                <img src="/b2b-dashboard-preview.png" alt="B2B Emlakçı Paneli" className="w-full h-auto rounded-xl object-cover" onError={(e) => {
-                  (e.target as any).src = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
-                }} />
+                <img src="/b2b-dashboard-preview.png" alt="B2B Emlakçı Paneli" className="w-full h-auto rounded-xl object-cover" />
               </div>
             </div>
           </div>
