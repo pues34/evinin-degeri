@@ -33,23 +33,35 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: "Legal approval required" }, { status: 400 });
     }
 
-    // Telefon bazlı güçlü kısıtlama (DB üzerinden IP Resetten Kalıcı Koruma)
-    if (!isProRealtor && contactInfo?.phone) {
+    // Güçlü kısıtlama: Telefon VEYA IP bazında (Günde 3 Hak)
+    if (!isProRealtor) {
       const midnight = new Date();
       midnight.setHours(0, 0, 0, 0);
 
-      const dailyCount = await prisma.valuationRequest.count({
-        where: {
-          contactInfo: { phone: contactInfo.phone },
-          createdAt: { gte: midnight }
-        }
-      });
+      let orConditions: any[] = [];
+      if (contactInfo?.phone) {
+        orConditions.push({ contactInfo: { phone: contactInfo.phone } });
+      }
 
-      if (dailyCount >= 3) {
-        return NextResponse.json({
-          success: false,
-          error: `Bu telefon numarası (${contactInfo.phone}) ile günlük güvenli ücretsiz değerleme limitinizi (3/3) doldurdunuz. Lütfen yarın tekrar deneyin veya Kurumsal/B2B Girişi yapın.`
-        }, { status: 429 });
+      // Localhost veya unknown dışındaki gerçek IP'leri filtrele
+      if (ip && ip !== "unknown" && ip !== "127.0.0.1" && ip !== "::1") {
+        orConditions.push({ ipAddress: ip });
+      }
+
+      if (orConditions.length > 0) {
+        const dailyCount = await prisma.valuationRequest.count({
+          where: {
+            OR: orConditions,
+            createdAt: { gte: midnight }
+          }
+        });
+
+        if (dailyCount >= 3) {
+          return NextResponse.json({
+            success: false,
+            error: `Bu cihaz veya telefon numarası ile günlük güvenli ücretsiz değerleme limitinizi (3/3) doldurdunuz. Lütfen limitler sıfırlanınca (yarın) tekrar deneyin veya Kurumsal/B2B Üye olun.`
+          }, { status: 429 });
+        }
       }
     }
 
@@ -232,6 +244,7 @@ export async function POST(req: NextRequest) {
         buildingCondition: propertyData.buildingCondition || "Standart",
         estimatedValue: estimatedValue,
         aiComment: aiComment,
+        ipAddress: ip !== "unknown" ? ip : null,
         demographics: demographicsData ? demographicsData : undefined,
         realtorId: session?.user?.role === "realtor" ? session.user.id : null,
         contactInfo: {

@@ -50,6 +50,9 @@ model ValuationRequest {
   // İsteğe Bağlı Ödeme / Onay Altyapısı (V6)
   paymentStatus   Boolean  @default(true) // Şimdilik ücretsiz 
 
+  // Güvenlik & Anti-Spam (V16)
+  ipAddress       String?
+
   // Kurumsal B2B Emlakçı (V11)
   realtorId       String?
   realtor         Realtor? @relation(fields: [realtorId], references: [id], onDelete: SetNull)
