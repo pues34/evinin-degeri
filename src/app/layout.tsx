@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   }
 };
 
-import ContactWidget from "@/components/ContactWidget";
+import SmartChatbot from "@/components/SmartChatbot";
 import Header from "@/components/Header";
 import CookieConsent from "@/components/CookieConsent";
 
@@ -69,7 +69,7 @@ export default function RootLayout({
           <main className="min-h-screen flex flex-col">
             {children}
           </main>
-          <ContactWidget />
+          <SmartChatbot />
           <CookieConsent />
         </Providers>
       </body>

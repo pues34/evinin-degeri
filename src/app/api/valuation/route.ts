@@ -89,6 +89,15 @@ export async function POST(req: NextRequest) {
     let mSiteIci = 1.15;
     let mYenilenmis = 1.15;
     let mMasrafli = 0.85;
+    // V22 New Multipliers
+    let mHeatingDogalgaz = 1.03;
+    let mHeatingYerden = 1.05;
+    let mHeatingSoba = 0.93;
+    let mViewDeniz = 1.12;
+    let mViewDoga = 1.06;
+    let mViewSehir = 1.03;
+    let mPropertyDubleks = 1.08;
+    let dampeningFactor = 0.65;
 
     try {
       const settings = await prisma.algorithmSettings.findMany();
@@ -114,56 +123,94 @@ export async function POST(req: NextRequest) {
         if (s.key === "mSiteIci") mSiteIci = Number(s.value);
         if (s.key === "mYenilenmis") mYenilenmis = Number(s.value);
         if (s.key === "mMasrafli") mMasrafli = Number(s.value);
+        // V22
+        if (s.key === "mHeatingDogalgaz") mHeatingDogalgaz = Number(s.value);
+        if (s.key === "mHeatingYerden") mHeatingYerden = Number(s.value);
+        if (s.key === "mHeatingSoba") mHeatingSoba = Number(s.value);
+        if (s.key === "mViewDeniz") mViewDeniz = Number(s.value);
+        if (s.key === "mViewDoga") mViewDoga = Number(s.value);
+        if (s.key === "mViewSehir") mViewSehir = Number(s.value);
+        if (s.key === "mPropertyDubleks") mPropertyDubleks = Number(s.value);
+        if (s.key === "dampeningFactor") dampeningFactor = Number(s.value);
       });
     } catch (err) {
       console.warn("Could not load dynamic settings:", err);
     }
 
     const monthsSinceAnchor = new Date().getMonth() - 0 + (12 * (new Date().getFullYear() - 2026));
-    // If we're evaluating something in early 2026, the inflation multiplier should be small or 0 for the base year. 
-    // We prevent negative months if someone evaluates in Jan 2026 but anchor was meant to be mid-2026.
     const effectiveMonths = Math.max(0, monthsSinceAnchor);
     let dynamicBaseSqmPrice = baseAnchorPrice * Math.pow((1 + monthlyInflationRate), effectiveMonths);
 
     const grossSqm = Number(propertyData.grossSqm) || 100;
     let estimatedValue = dynamicBaseSqmPrice * grossSqm;
 
+    // === STRUCTURAL MULTIPLIERS (applied directly, not dampened) ===
     const age = Number(propertyData.buildingAge) || 0;
     estimatedValue = estimatedValue * (1 - (age * bAgeDepreciation));
 
     const floorType = propertyData.floor || "Ara Kat";
-    const totalFloors = Number(propertyData.totalFloors) || 5;
 
-    // String-based Floor Multipliers (V7)
+    // Floor type is structural — applied directly
     if (floorType === "Bodrum Kat") estimatedValue *= mBodrum;
     else if (floorType === "Yarı Bodrum / Kot 1") estimatedValue *= mKot1;
     else if (floorType === "Zemin / Giriş Kat") estimatedValue *= mZemin;
     else if (floorType === "En Üst Kat") estimatedValue *= mUst;
     else if (floorType === "Çatı Katı / Dubleks") estimatedValue *= mCati;
     else if (floorType === "Müstakil / Villa") estimatedValue *= mMustakil;
-    else estimatedValue *= mAra; // Ara Kat (Default)
+    else estimatedValue *= mAra;
 
-    if (propertyData.kitchenType === "Kapalı") estimatedValue *= mMutfakKapali;
-    if (propertyData.hasBalcony === "Var") estimatedValue *= mBalkonVar;
-
-    const bathrooms = Number(propertyData.bathrooms) || 1;
-    if (bathrooms > 1) estimatedValue *= mCiftBanyo;
-
-    // Dynamic Extra Multipliers Applied Here
-    if (propertyData.parking === "Kapalı" || propertyData.parking === "Açık") {
-      estimatedValue *= mParking;
-    }
-    if (propertyData.hasElevator === "Var") {
-      estimatedValue *= mElevator;
-    }
-
-    if (propertyData.facade === "Güney") estimatedValue *= mFacadeGuney;
-    else if (propertyData.facade === "Kuzey") estimatedValue *= mFacadeKuzey;
-
-    if (propertyData.isWithinSite) estimatedValue *= mSiteIci;
-
+    // Building condition is structural — applied directly
     if (propertyData.buildingCondition === "Yenilenmiş") estimatedValue *= mYenilenmis;
     else if (propertyData.buildingCondition === "Masraflı") estimatedValue *= mMasrafli;
+
+    // === BONUS MULTIPLIERS (dampened to prevent price inflation) ===
+    const bonusMultipliers: number[] = [];
+
+    if (propertyData.kitchenType === "Kapalı") bonusMultipliers.push(mMutfakKapali);
+    if (propertyData.hasBalcony === "Var") bonusMultipliers.push(mBalkonVar);
+
+    const bathrooms = Number(propertyData.bathrooms) || 1;
+    if (bathrooms > 1) bonusMultipliers.push(mCiftBanyo);
+
+    if (propertyData.parking === "Kapalı" || propertyData.parking === "Açık") bonusMultipliers.push(mParking);
+    if (propertyData.hasElevator === "Var") bonusMultipliers.push(mElevator);
+
+    if (propertyData.facade === "Güney") bonusMultipliers.push(mFacadeGuney);
+    else if (propertyData.facade === "Kuzey") bonusMultipliers.push(mFacadeKuzey);
+
+    if (propertyData.isWithinSite) bonusMultipliers.push(mSiteIci);
+
+    // V22: Heating type
+    if (propertyData.heatingType === "Doğalgaz/Kombi") bonusMultipliers.push(mHeatingDogalgaz);
+    else if (propertyData.heatingType === "Yerden Isıtma") bonusMultipliers.push(mHeatingYerden);
+    else if (propertyData.heatingType === "Soba") bonusMultipliers.push(mHeatingSoba);
+
+    // V22: View / Scenery
+    if (propertyData.view === "Deniz") bonusMultipliers.push(mViewDeniz);
+    else if (propertyData.view === "Doğa") bonusMultipliers.push(mViewDoga);
+    else if (propertyData.view === "Şehir") bonusMultipliers.push(mViewSehir);
+
+    // V22: Property sub-type (dubleks bonus)
+    if (propertyData.propertySubType && propertyData.propertySubType !== "Daire") {
+      bonusMultipliers.push(mPropertyDubleks);
+    }
+
+    // === DAMPENING FORMULA ===
+    // Instead of multiplying all bonuses (1.05 * 1.08 * 1.15 * ... = inflated),
+    // we sum the bonus portions and apply a dampening factor to keep prices realistic.
+    let totalBonusDelta = 0;
+    let totalPenaltyDelta = 0;
+    bonusMultipliers.forEach(m => {
+      if (m >= 1) totalBonusDelta += (m - 1);
+      else totalPenaltyDelta += (1 - m);
+    });
+
+    // Bonuses are dampened, penalties are applied at 85% (slightly softer for fairness)
+    const dampenedBonus = totalBonusDelta * dampeningFactor;
+    const dampenedPenalty = totalPenaltyDelta * 0.85;
+    const finalBonusMultiplier = 1 + dampenedBonus - dampenedPenalty;
+
+    estimatedValue *= finalBonusMultiplier;
 
     // Apply Region Multiplier
     let regionMultiplier = 1.0;
@@ -229,7 +276,7 @@ export async function POST(req: NextRequest) {
         district: propertyData.district,
         neighborhood: propertyData.neighborhood,
         buildingAge: age,
-        totalFloors: totalFloors,
+        totalFloors: Number(propertyData.totalFloors) || 5,
         floor: floorType,
         rooms: propertyData.rooms,
         netSqm: Number(propertyData.netSqm) || 85,

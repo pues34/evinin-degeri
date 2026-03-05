@@ -56,7 +56,9 @@ export async function POST(req: NextRequest) {
             "multMutfakKapali", "multBalkonVar", "multCiftBanyo", "buildingAgeDepreciation",
             "adsenseHeader", "adsenseSidebar", "sponsorHeaderUrl", "sponsorHeaderLink",
             "sponsorSidebarUrl", "sponsorSidebarLink", "mFacadeGuney", "mFacadeKuzey", "mSiteIci",
-            "mYenilenmis", "mMasrafli", "b2bMonthlyPrice", "b2bDiscountPercentage"
+            "mYenilenmis", "mMasrafli", "b2bMonthlyPrice", "b2bDiscountPercentage",
+            "mHeatingDogalgaz", "mHeatingYerden", "mHeatingSoba",
+            "mViewDeniz", "mViewDoga", "mViewSehir", "mPropertyDubleks", "dampeningFactor"
         ];
 
         for (const key of algoKeys) {

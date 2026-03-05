@@ -66,6 +66,16 @@ export default function AdminDashboard() {
         b2bMonthlyPrice: "",
         b2bDiscountPercentage: "",
 
+        // V22: New Multipliers
+        mHeatingDogalgaz: "",
+        mHeatingYerden: "",
+        mHeatingSoba: "",
+        mViewDeniz: "",
+        mViewDoga: "",
+        mViewSehir: "",
+        mPropertyDubleks: "",
+        dampeningFactor: "",
+
         // V20: Socials & UI Controls
         instagramUrl: "",
         twitterUrl: "",
@@ -679,6 +689,43 @@ export default function AdminDashboard() {
                                             <div>
                                                 <label className="block text-sm text-gray-600 mb-1">Masraflı Daire</label>
                                                 <input type="number" step="0.01" value={settings.mMasrafli || "0.85"} onChange={e => setSettings({ ...settings, mMasrafli: e.target.value })} className="w-full p-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-appleBlue outline-none bg-white text-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-4 bg-blue-50 p-6 rounded-2xl border border-blue-100">
+                                        <h4 className="text-sm font-semibold text-appleBlue uppercase tracking-wider mb-4 border-b border-blue-200 pb-2">V22 Çarpanları (Isıtma / Manzara / Konut Tipi)</h4>
+                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">Doğalgaz/Kombi</label>
+                                                <input type="number" step="0.01" value={settings.mHeatingDogalgaz} onChange={e => setSettings({ ...settings, mHeatingDogalgaz: e.target.value })} className="w-full p-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-appleBlue outline-none bg-white text-sm" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">Yerden Isıtma</label>
+                                                <input type="number" step="0.01" value={settings.mHeatingYerden} onChange={e => setSettings({ ...settings, mHeatingYerden: e.target.value })} className="w-full p-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-appleBlue outline-none bg-white text-sm" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">Soba</label>
+                                                <input type="number" step="0.01" value={settings.mHeatingSoba} onChange={e => setSettings({ ...settings, mHeatingSoba: e.target.value })} className="w-full p-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-appleBlue outline-none bg-white text-sm" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">Deniz Manzarası</label>
+                                                <input type="number" step="0.01" value={settings.mViewDeniz} onChange={e => setSettings({ ...settings, mViewDeniz: e.target.value })} className="w-full p-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-appleBlue outline-none bg-white text-sm" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">Doğa Manzarası</label>
+                                                <input type="number" step="0.01" value={settings.mViewDoga} onChange={e => setSettings({ ...settings, mViewDoga: e.target.value })} className="w-full p-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-appleBlue outline-none bg-white text-sm" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">Şehir Manzarası</label>
+                                                <input type="number" step="0.01" value={settings.mViewSehir} onChange={e => setSettings({ ...settings, mViewSehir: e.target.value })} className="w-full p-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-appleBlue outline-none bg-white text-sm" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">Dubleks Bonus</label>
+                                                <input type="number" step="0.01" value={settings.mPropertyDubleks} onChange={e => setSettings({ ...settings, mPropertyDubleks: e.target.value })} className="w-full p-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-appleBlue outline-none bg-white text-sm" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">Sönümleme Faktörü</label>
+                                                <input type="number" step="0.01" value={settings.dampeningFactor} onChange={e => setSettings({ ...settings, dampeningFactor: e.target.value })} className="w-full p-2 rounded-xl border border-blue-200 focus:ring-2 focus:ring-blue-500 outline-none bg-blue-50/30 text-sm font-medium" />
                                             </div>
                                         </div>
                                     </div>

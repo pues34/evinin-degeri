@@ -26,8 +26,11 @@ export default function ValuationForm() {
     const [formData, setFormData] = useState({
         city: "", district: "", neighborhood: "",
         buildingAge: "", totalFloors: "", floor: "Ara Kat",
+        propertySubType: "Daire", usageStatus: "Mülk Sahibi",
         rooms: "2+1", netSqm: "", grossSqm: "", kitchenType: "Kapalı", bathrooms: "1", hasBalcony: "Var",
+        heatingType: "Doğalgaz/Kombi",
         parking: "Açık", facade: "Güney", hasElevator: "Var",
+        view: "Yok",
         isWithinSite: false, buildingCondition: "Standart"
     });
 
@@ -120,6 +123,25 @@ export default function ValuationForm() {
             case 2:
                 return (
                     <div className="space-y-4">
+                        <div className="flex gap-4">
+                            <div className="flex-1">
+                                <label className="block text-sm font-medium text-appleDark mb-1">Konut Tipi <span className="text-red-500">*</span></label>
+                                <select name="propertySubType" value={formData.propertySubType} onChange={handleChange} className="w-full p-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-appleBlue">
+                                    <option value="Daire">Daire</option>
+                                    <option value="Teras Dubleks">Teras Dubleks</option>
+                                    <option value="Ara Kat Dubleks">Ara Kat Dubleks</option>
+                                    <option value="Bahçe Dubleks">Bahçe Dubleks</option>
+                                </select>
+                            </div>
+                            <div className="flex-1">
+                                <label className="block text-sm font-medium text-appleDark mb-1">Kullanım <span className="text-red-500">*</span></label>
+                                <select name="usageStatus" value={formData.usageStatus} onChange={handleChange} className="w-full p-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-appleBlue">
+                                    <option value="Mülk Sahibi">Mülk Sahibi</option>
+                                    <option value="Kiracı">Kiracı</option>
+                                    <option value="Boş">Boş</option>
+                                </select>
+                            </div>
+                        </div>
                         <div>
                             <label className="block text-sm font-medium text-appleDark mb-1">Bina Yaşı <span className="text-red-500">*</span></label>
                             <input type="number" name="buildingAge" value={formData.buildingAge} onChange={handleChange} className="w-full p-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-appleBlue transition-all" placeholder="Örn: 5" />
@@ -147,11 +169,24 @@ export default function ValuationForm() {
             case 3:
                 return (
                     <div className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium text-appleDark mb-1">Oda Sayısı <span className="text-red-500">*</span></label>
-                            <select name="rooms" value={formData.rooms} onChange={handleChange} className="w-full p-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-appleBlue">
-                                {["1+0", "1+1", "2+1", "3+1", "4+1", "5+1"].map(v => <option key={v} value={v}>{v}</option>)}
-                            </select>
+                        <div className="flex gap-4">
+                            <div className="flex-1">
+                                <label className="block text-sm font-medium text-appleDark mb-1">Oda Sayısı <span className="text-red-500">*</span></label>
+                                <select name="rooms" value={formData.rooms} onChange={handleChange} className="w-full p-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-appleBlue">
+                                    {["1+0", "1+1", "2+1", "3+1", "4+1", "5+1"].map(v => <option key={v} value={v}>{v}</option>)}
+                                </select>
+                            </div>
+                            <div className="flex-1">
+                                <label className="block text-sm font-medium text-appleDark mb-1">Isıtma <span className="text-red-500">*</span></label>
+                                <select name="heatingType" value={formData.heatingType} onChange={handleChange} className="w-full p-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-appleBlue">
+                                    <option value="Doğalgaz/Kombi">Doğalgaz/Kombi</option>
+                                    <option value="Merkezi Sistem">Merkezi Sistem</option>
+                                    <option value="Yerden Isıtma">Yerden Isıtma</option>
+                                    <option value="Klima/Isı Pompası">Klima/Isı Pompası</option>
+                                    <option value="Soba">Soba</option>
+                                    <option value="Yok">Yok</option>
+                                </select>
+                            </div>
                         </div>
                         <div className="flex gap-4">
                             <div className="flex-1">
@@ -165,7 +200,7 @@ export default function ValuationForm() {
                         </div>
                         <div className="flex gap-4">
                             <div className="flex-1">
-                                <label className="block text-sm font-medium text-appleDark mb-1">Banyo Sayısı <span className="text-red-500">*</span></label>
+                                <label className="block text-sm font-medium text-appleDark mb-1">Banyo <span className="text-red-500">*</span></label>
                                 <input type="number" name="bathrooms" value={formData.bathrooms} onChange={handleChange} className="w-full p-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-appleBlue" />
                             </div>
                             <div className="flex-1">
@@ -196,14 +231,25 @@ export default function ValuationForm() {
                                 <option value="Kapalı">Kapalı</option>
                             </select>
                         </div>
-                        <div>
-                            <label className="block text-sm font-medium text-appleDark mb-1">Cephe <span className="text-red-500">*</span></label>
-                            <select name="facade" value={formData.facade} onChange={handleChange} className="w-full p-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-appleBlue">
-                                <option value="Güney">Güney</option>
-                                <option value="Kuzey">Kuzey</option>
-                                <option value="Doğu">Doğu</option>
-                                <option value="Batı">Batı</option>
-                            </select>
+                        <div className="flex gap-4">
+                            <div className="flex-1">
+                                <label className="block text-sm font-medium text-appleDark mb-1">Cephe <span className="text-red-500">*</span></label>
+                                <select name="facade" value={formData.facade} onChange={handleChange} className="w-full p-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-appleBlue">
+                                    <option value="Güney">Güney</option>
+                                    <option value="Kuzey">Kuzey</option>
+                                    <option value="Doğu">Doğu</option>
+                                    <option value="Batı">Batı</option>
+                                </select>
+                            </div>
+                            <div className="flex-1">
+                                <label className="block text-sm font-medium text-appleDark mb-1">Manzara</label>
+                                <select name="view" value={formData.view} onChange={handleChange} className="w-full p-3 rounded-xl border border-gray-200 bg-white/50 focus:outline-none focus:ring-2 focus:ring-appleBlue">
+                                    <option value="Yok">Yok / Belirsiz</option>
+                                    <option value="Deniz">Deniz</option>
+                                    <option value="Doğa">Doğa / Yeşil Alan</option>
+                                    <option value="Şehir">Şehir Manzarası</option>
+                                </select>
+                            </div>
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-appleDark mb-1">Asansör <span className="text-red-500">*</span></label>

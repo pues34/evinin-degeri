@@ -1,7 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const defaultSettings = {
+const newSettings = {
+    // Existing (ensure they have values)
     baseSqmPrice: "45000",
     inflationRate: "0.65",
     elevatorMultiplier: "1.05",
@@ -25,23 +26,31 @@ const defaultSettings = {
     mMasrafli: "0.85",
     b2bMonthlyPrice: "500",
     b2bDiscountPercentage: "0",
-    adsenseHeader: "",
-    adsenseSidebar: "",
-    sponsorHeaderUrl: "",
-    sponsorHeaderLink: "",
-    sponsorSidebarUrl: "",
-    sponsorSidebarLink: ""
+    // V22 NEW MULTIPLIERS
+    mHeatingDogalgaz: "1.03",
+    mHeatingYerden: "1.05",
+    mHeatingSoba: "0.93",
+    mViewDeniz: "1.12",
+    mViewDoga: "1.06",
+    mViewSehir: "1.03",
+    mPropertyDubleks: "1.08",
+    // Dampening factor — controls how much bonus multipliers are reduced
+    dampeningFactor: "0.65"
 };
 
 async function main() {
-    for (const [key, value] of Object.entries(defaultSettings)) {
+    for (const [key, value] of Object.entries(newSettings)) {
         await prisma.algorithmSettings.upsert({
             where: { key },
-            update: {}, // Only create if it doesn't exist, don't overwrite user's values if they managed to save any
+            update: {}, // Don't overwrite existing user-set values
             create: { key, value }
         });
     }
-    console.log("Database seeded with default algorithm values.");
+    console.log("V22: All algorithm settings seeded successfully.");
+
+    // Verify
+    const all = await prisma.algorithmSettings.findMany();
+    console.log(`Total settings in DB: ${all.length}`);
 }
 
 main().catch(console.error).finally(() => prisma.$disconnect());

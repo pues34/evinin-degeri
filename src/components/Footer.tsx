@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin, Hexagon, Instagram, Twitter, Linkedin } from "lucide-react";
+import { Mail, MapPin, Hexagon, Instagram, Twitter, Linkedin, Building2, BarChart2, Calculator, HelpCircle, FileText } from "lucide-react";
 
 import prisma from "@/lib/prisma";
 
@@ -16,76 +16,95 @@ export default async function Footer() {
 
     return (
         <footer className="bg-white border-t border-gray-100 py-16">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-                    {/* Brand */}
-                    <div className="col-span-1 md:col-span-2">
-                        <Link href="/" className="inline-flex items-center gap-2 text-xl font-bold text-appleDark tracking-tight mb-4">
-                            <span className="p-1.5 bg-appleDark text-white rounded-lg"><Hexagon size={20} className="fill-current" /></span>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-6">
+
+                    {/* Brand Column */}
+                    <div className="col-span-2 md:col-span-1">
+                        <Link href="/" className="inline-flex items-center gap-2 text-lg font-bold text-appleDark tracking-tight mb-4">
+                            <span className="p-1.5 bg-appleDark text-white rounded-lg"><Hexagon size={16} className="fill-current" /></span>
                             Evinin Değeri
                         </Link>
-                        <p className="text-gray-500 max-w-sm leading-relaxed mb-6">
-                            Yeni nesil yapay zeka ve kapsamlı piyasa verileri ile gayrimenkulünüzün gerçek değerini güvenle ve anında hesaplayın.
+                        <p className="text-gray-500 text-sm leading-relaxed mb-4">
+                            Yapay zeka ile gayrimenkulünüzün gerçek değerini anında hesaplayın.
                         </p>
-                        <div className="flex flex-col gap-3 text-gray-500 text-sm">
-                            <div className="flex items-center gap-3 group">
-                                <Mail size={16} className="text-appleBlue group-hover:scale-110 transition-transform" />
+                        <div className="space-y-2 text-gray-500 text-xs">
+                            <div className="flex items-center gap-2">
+                                <Mail size={12} className="text-appleBlue" />
                                 <a href="mailto:evindestek@gmail.com" className="hover:text-appleBlue transition-colors">evindestek@gmail.com</a>
                             </div>
-                            <div className="flex items-center gap-3 group">
-                                <MapPin size={16} className="text-appleBlue group-hover:scale-110 transition-transform" />
+                            <div className="flex items-center gap-2">
+                                <MapPin size={12} className="text-appleBlue" />
                                 <span>İstanbul, Türkiye</span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Links */}
+                    {/* Hakkımızda */}
                     <div>
-                        <h4 className="font-semibold text-appleDark mb-4">Kurumsal & Servisler</h4>
-                        <ul className="space-y-3">
-                            <li><Link href="/yatirim-haritasi" className="text-gray-500 hover:text-appleBlue transition-colors text-sm">📍 Canlı Isı Haritası</Link></li>
-                            <li><Link href="/blog" className="text-gray-500 hover:text-appleBlue transition-colors text-sm">📰 Emlak Güncesi</Link></li>
+                        <h4 className="font-semibold text-appleDark text-sm mb-4">Hakkımızda</h4>
+                        <ul className="space-y-2.5">
+                            <li><Link href="/hakkimizda" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Hakkımızda</Link></li>
+                            <li><Link href="/blog" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Emlak Güncesi</Link></li>
+                            <li><Link href="/nasil-hesapliyoruz" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Nasıl Hesaplıyoruz?</Link></li>
                             {pages.map((p: any) => (
-                                <li key={p.id}><Link href={`/p/${p.slug}`} className="text-gray-500 hover:text-appleBlue transition-colors text-sm">{p.title}</Link></li>
+                                <li key={p.id}><Link href={`/p/${p.slug}`} className="text-gray-500 hover:text-appleBlue transition-colors text-xs">{p.title}</Link></li>
                             ))}
-                            <li><Link href="/b2b/login" className="text-appleBlue hover:text-blue-700 transition-colors text-sm mt-4 inline-block font-bold">🏢 B2B Kurumsal Giriş</Link></li>
                         </ul>
                     </div>
 
-                    {/* Legal */}
+                    {/* Çözümler */}
                     <div>
-                        <h4 className="font-semibold text-appleDark mb-4">Yasal Sertifikalar</h4>
-                        <ul className="space-y-3">
-                            <li><Link href="/p/gizlilik-politikasi" className="text-gray-500 hover:text-appleBlue transition-colors text-sm">Gizlilik Politikası</Link></li>
-                            <li><Link href="/p/kullanim-kosullari" className="text-gray-500 hover:text-appleBlue transition-colors text-sm">Kullanım Koşulları</Link></li>
-                            <li><Link href="/mesafeli-satis-sozlesmesi" className="text-gray-500 hover:text-appleBlue transition-colors text-sm">Mesafeli Satış Sözleşmesi</Link></li>
-                            <li><Link href="/iptal-iade" className="text-gray-500 hover:text-appleBlue transition-colors text-sm">İptal ve İade Koşulları</Link></li>
+                        <h4 className="font-semibold text-appleDark text-sm mb-4">Çözümler</h4>
+                        <ul className="space-y-2.5">
+                            <li><Link href="/" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">🏠 Ev Değerleme</Link></li>
+                            <li><Link href="/yatirim-haritasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">📍 Yatırım Haritası</Link></li>
+                            <li><Link href="/b2b" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">🏢 Kurumsal (B2B)</Link></li>
+                            <li><Link href="/b2b/pricing" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">💎 PRO Paketler</Link></li>
                         </ul>
                     </div>
-                </div>
 
-                <div className="mt-16 pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
-                    <p>&copy; {new Date().getFullYear()} Evinin Değeri. Tüm hakları saklıdır.</p>
+                    {/* Yasal */}
+                    <div>
+                        <h4 className="font-semibold text-appleDark text-sm mb-4">Yasal</h4>
+                        <ul className="space-y-2.5">
+                            <li><Link href="/p/gizlilik-politikasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Gizlilik Politikası</Link></li>
+                            <li><Link href="/p/kullanim-kosullari" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Kullanım Koşulları</Link></li>
+                            <li><Link href="/mesafeli-satis-sozlesmesi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Mesafeli Satış Sözleşmesi</Link></li>
+                            <li><Link href="/iptal-iade" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">İptal ve İade Koşulları</Link></li>
+                        </ul>
+                    </div>
 
-                    {settings?.showSocialMedia && (
-                        <div className="flex gap-4 mt-4 md:mt-0">
-                            {settings.instagramUrl && (
-                                <a href={settings.instagramUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-50 rounded-full hover:bg-appleBlue hover:text-white transition-all text-gray-400">
-                                    <Instagram size={18} />
+                    {/* Bizi Takip Edin */}
+                    <div>
+                        <h4 className="font-semibold text-appleDark text-sm mb-4">Bizi Takip Edin</h4>
+                        <div className="flex flex-wrap gap-2">
+                            {settings?.instagramUrl && (
+                                <a href={settings.instagramUrl} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-50 rounded-full hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500 hover:text-white transition-all text-gray-400 flex items-center justify-center">
+                                    <Instagram size={16} />
                                 </a>
                             )}
-                            {settings.twitterUrl && (
-                                <a href={settings.twitterUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all text-gray-400">
-                                    <Twitter size={18} />
+                            {settings?.twitterUrl && (
+                                <a href={settings.twitterUrl} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all text-gray-400 flex items-center justify-center">
+                                    <Twitter size={16} />
                                 </a>
                             )}
-                            {settings.linkedinUrl && (
-                                <a href={settings.linkedinUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-50 rounded-full hover:bg-blue-700 hover:text-white transition-all text-gray-400">
-                                    <Linkedin size={18} />
+                            {settings?.linkedinUrl && (
+                                <a href={settings.linkedinUrl} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-50 rounded-full hover:bg-blue-700 hover:text-white transition-all text-gray-400 flex items-center justify-center">
+                                    <Linkedin size={16} />
                                 </a>
                             )}
                         </div>
-                    )}
+                        {(!settings?.instagramUrl && !settings?.twitterUrl && !settings?.linkedinUrl) && (
+                            <p className="text-xs text-gray-400 mt-2">Yakında!</p>
+                        )}
+                    </div>
+
+                </div>
+
+                <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between text-xs text-gray-400">
+                    <p>&copy; {new Date().getFullYear()} Evinin Değeri. Tüm hakları saklıdır.</p>
+                    <p className="mt-2 md:mt-0">Yapay Zeka Destekli Gayrimenkul Değerleme Platformu</p>
                 </div>
             </div>
         </footer>
