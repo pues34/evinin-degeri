@@ -17,7 +17,11 @@ export async function GET(req: NextRequest) {
             algoObj[s.key] = s.value;
         });
 
-        const mergedSettings = { ...algoObj, ...sysSettings };
+        // Only pick relevant fields from SystemSettings (exclude id, createdAt, updatedAt)
+        const { instagramUrl, twitterUrl, linkedinUrl, showSocialMedia, valuationCounter } = sysSettings;
+        const sysObj = { instagramUrl: instagramUrl || "", twitterUrl: twitterUrl || "", linkedinUrl: linkedinUrl || "", showSocialMedia, valuationCounter };
+
+        const mergedSettings = { ...algoObj, ...sysObj };
 
         return NextResponse.json({ success: true, data: mergedSettings });
     } catch (e: any) {
@@ -56,11 +60,12 @@ export async function POST(req: NextRequest) {
         ];
 
         for (const key of algoKeys) {
-            if (body[key] !== undefined) {
+            if (body[key] !== undefined && body[key] !== null) {
+                const val = String(body[key]);
                 await prisma.algorithmSettings.upsert({
                     where: { key },
-                    update: { value: body[key] },
-                    create: { key, value: body[key] }
+                    update: { value: val },
+                    create: { key, value: val }
                 });
             }
         }

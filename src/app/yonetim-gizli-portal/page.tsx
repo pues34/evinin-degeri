@@ -251,7 +251,7 @@ export default function AdminDashboard() {
         } else if (session && (activeTab === "algorithm-settings" || activeTab === "site-settings")) {
             fetch("/api/admin/settings")
                 .then(res => res.json())
-                .then(data => { if (data.success) setSettings(data.data); })
+                .then(data => { if (data.success) setSettings(prev => ({ ...prev, ...data.data })); })
                 .catch(err => console.error(err));
         } else if (session && activeTab === "blog") {
             loadBlogs();
