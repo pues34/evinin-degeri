@@ -1,12 +1,15 @@
 import Link from "next/link";
-import { Mail, Phone, MapPin, Hexagon } from "lucide-react";
+import { Mail, Phone, MapPin, Hexagon, Instagram, Twitter, Linkedin } from "lucide-react";
 
 import prisma from "@/lib/prisma";
 
 export default async function Footer() {
     let pages: any[] = [];
+    let settings: any = null;
+
     try {
         pages = await (prisma as any).page.findMany({ select: { id: true, title: true, slug: true } });
+        settings = await prisma.systemSettings.findFirst();
     } catch (e) {
         console.error("Failed to load pages for footer", e);
     }
@@ -63,6 +66,26 @@ export default async function Footer() {
 
                 <div className="mt-16 pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
                     <p>&copy; {new Date().getFullYear()} Evinin Değeri. Tüm hakları saklıdır.</p>
+
+                    {settings?.showSocialMedia && (
+                        <div className="flex gap-4 mt-4 md:mt-0">
+                            {settings.instagramUrl && (
+                                <a href={settings.instagramUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-50 rounded-full hover:bg-appleBlue hover:text-white transition-all text-gray-400">
+                                    <Instagram size={18} />
+                                </a>
+                            )}
+                            {settings.twitterUrl && (
+                                <a href={settings.twitterUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all text-gray-400">
+                                    <Twitter size={18} />
+                                </a>
+                            )}
+                            {settings.linkedinUrl && (
+                                <a href={settings.linkedinUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-50 rounded-full hover:bg-blue-700 hover:text-white transition-all text-gray-400">
+                                    <Linkedin size={18} />
+                                </a>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </footer>

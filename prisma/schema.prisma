@@ -198,3 +198,14 @@ model ValidationCode {
 
   @@index([identifier])
 }
+
+model SystemSettings {
+  id               String   @id @default(cuid()) // Daima tek nesne dönecek şekilde tasarlanır
+  instagramUrl     String?  
+  twitterUrl       String?
+  linkedinUrl      String?
+  showSocialMedia  Boolean  @default(true)
+  valuationCounter Int      @default(0)          // Sayaç Manipülasyonu
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}

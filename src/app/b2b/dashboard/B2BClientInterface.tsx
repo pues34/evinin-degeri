@@ -8,7 +8,29 @@ import { useState } from "react";
 
 export default function B2BClientInterface({ user, valuations, leads, isActivePro }: { user: any, valuations: any[], leads: any[], isActivePro: boolean }) {
     const [downloading, setDownloading] = useState(false);
-    const [activeTab, setActiveTab] = useState<'PORTFOLIO' | 'LEAD_MARKET'>('PORTFOLIO');
+    const [activeTab, setActiveTab] = useState<'PORTFOLIO' | 'LEAD_MARKET' | 'MY_BRAND'>('PORTFOLIO');
+    const [logoUrl, setLogoUrl] = useState(user?.customLogoUrl || "");
+    const [savingLogo, setSavingLogo] = useState(false);
+
+    const handleSaveLogo = async () => {
+        setSavingLogo(true);
+        try {
+            const res = await fetch("/api/b2b/settings", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ customLogoUrl: logoUrl })
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert("Logo başarıyla kaydedildi! Üreteceğiniz PDF'lerde Evinin Değeri logosu yerine kendi markanız görünecektir.");
+            } else {
+                alert("Hata: " + data.error);
+            }
+        } catch (e) {
+            alert("Bağlantı hatası.");
+        }
+        setSavingLogo(false);
+    };
 
     // Calculate Portfoio Stats
     const totalValuations = valuations.length;
@@ -174,6 +196,12 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
                         >
                             <UserPlus size={18} /> Müşteri Pazarı (Leads)
                         </button>
+                        <button
+                            onClick={() => setActiveTab('MY_BRAND')}
+                            className={`flex-1 sm:flex-none px-8 py-5 font-bold text-sm flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'MY_BRAND' ? 'border-purple-500 text-purple-600 bg-white' : 'border-transparent text-gray-500 hover:text-purple-600'}`}
+                        >
+                            <Crown size={18} /> Markam & Logonuz
+                        </button>
                     </div>
                     <div className="p-4 sm:p-0 sm:pr-8 w-full sm:w-auto">
                         {activeTab === 'PORTFOLIO' && (
@@ -310,6 +338,51 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
                                         ))}
                                     </div>
                                 )}
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* TAB CONTENT: MY BRAND (WHITE LABEL) */}
+                {activeTab === 'MY_BRAND' && (
+                    <div className="bg-white min-h-[400px]">
+                        {user.subscriptionTier !== "PRO_PLUS" ? (
+                            <div className="flex flex-col items-center justify-center p-16 text-center">
+                                <div className="w-20 h-20 bg-purple-50 rounded-full flex items-center justify-center mb-6">
+                                    <Crown size={40} className="text-purple-500 fill-purple-500" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-appleDark mb-3">White-Label Özelliği PRO PLUS Üyelere Özeldir</h3>
+                                <p className="text-gray-500 max-w-lg mb-8">
+                                    Evinin Değeri logolarını PDF raporlarınızdan kaldırın ve tamamen kendi emlak ofisi logonuz ile markanızın gücünü gösterin.
+                                </p>
+                                <Link href="/b2b/pricing" className="px-8 py-4 bg-gradient-to-r from-purple-500 to-purple-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2 transform hover:-translate-y-1">
+                                    <Crown size={20} className="fill-white" /> Paketinizi Yükseltin
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className="p-8 max-w-2xl mx-auto">
+                                <div className="bg-purple-50 border border-purple-100 rounded-2xl p-6 mb-8 flex items-start gap-4">
+                                    <Crown className="text-purple-600 shrink-0 mt-1" size={24} />
+                                    <div>
+                                        <h4 className="text-lg font-bold text-purple-800 mb-1">Marka Yönetimi (White-Label)</h4>
+                                        <p className="text-purple-700/80 text-sm">
+                                            Aşağıdaki alana kendi ofisinizin veya markanızın logo URL&apos;sini (bağlantısını) yapıştırın. Bundan sonra üreteceğiniz tüm değerleme raporlarında bu logo görünecektir.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white border text-left border-gray-100 rounded-2xl p-8 shadow-sm border-t-4 border-t-purple-500">
+                                    <label className="block text-sm font-bold text-appleDark mb-2">Logo URL (PNG/JPG)</label>
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                        <input type="text" value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="https://siteniz.com/logo.png" className="w-full flex-1 p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-500 outline-none transition-all text-sm font-mono bg-gray-50" />
+                                        <button disabled={savingLogo} onClick={handleSaveLogo} className="px-8 py-3 bg-appleDark text-white font-semibold rounded-xl hover:bg-black transition-colors whitespace-nowrap shadow-md hover:shadow-lg disabled:opacity-50">
+                                            {savingLogo ? "Kaydediliyor..." : "Görseli Kaydet"}
+                                        </button>
+                                    </div>
+                                    <p className="text-xs text-gray-400 mt-4 leading-relaxed">
+                                        <strong>İpucu:</strong> Logo linkini elde etmek için web sitenizdeki profil resminize veya ofis logonuza sağ tıklayıp &quot;Resim Adresini Kopyala&quot; (Copy Image Address) diyebilirsiniz.
+                                    </p>
+                                </div>
                             </div>
                         )}
                     </div>

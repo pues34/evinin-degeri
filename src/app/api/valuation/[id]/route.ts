@@ -14,7 +14,8 @@ async function fetchGeo(query: string) {
 export async function GET(req: Request, { params }: { params: { id: string } }) {
     try {
         const record = await prisma.valuationRequest.findUnique({
-            where: { id: params.id }
+            where: { id: params.id },
+            include: { realtor: { select: { customLogoUrl: true, subscriptionTier: true } } }
         });
 
         if (!record) {

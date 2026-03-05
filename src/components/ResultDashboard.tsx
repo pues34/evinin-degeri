@@ -89,8 +89,14 @@ export default function ResultDashboard({ id }: { id: string }) {
                 <div className="pdf-only-item flex-col items-center justify-center mb-10 text-center bg-appleDark text-white p-10 rounded-3xl w-full shadow-lg relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-appleBlue rounded-full blur-[80px] opacity-20 pointer-events-none" />
                     <div className="relative z-10 flex items-center justify-center gap-3 mb-4">
-                        <span className="p-2 bg-white/10 text-white rounded-xl backdrop-blur-sm"><Hexagon size={32} className="fill-current" /></span>
-                        <h2 className="text-4xl font-extrabold tracking-tight">Evinin Değeri</h2>
+                        {data.realtor?.subscriptionTier === 'PRO_PLUS' && data.realtor?.customLogoUrl ? (
+                            <img src={data.realtor.customLogoUrl} alt="Emlak Ofisi Logosu" className="h-16 object-contain bg-white/10 p-2 rounded-xl backdrop-blur-sm" crossOrigin="anonymous" />
+                        ) : (
+                            <>
+                                <span className="p-2 bg-white/10 text-white rounded-xl backdrop-blur-sm"><Hexagon size={32} className="fill-current" /></span>
+                                <h2 className="text-4xl font-extrabold tracking-tight">Evinin Değeri</h2>
+                            </>
+                        )}
                     </div>
                     <p className="text-lg opacity-90 mt-1 font-medium text-blue-100">Yapay Zeka Destekli Gayrimenkul Değerleme Raporu</p>
                     <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm opacity-80">

@@ -64,7 +64,14 @@ export default function AdminDashboard() {
         mYenilenmis: "",
         mMasrafli: "",
         b2bMonthlyPrice: "",
-        b2bDiscountPercentage: ""
+        b2bDiscountPercentage: "",
+
+        // V20: Socials & UI Controls
+        instagramUrl: "",
+        twitterUrl: "",
+        linkedinUrl: "",
+        showSocialMedia: true,
+        valuationCounter: 0,
     });
     const [savingSettings, setSavingSettings] = useState(false);
 
@@ -735,6 +742,40 @@ export default function AdminDashboard() {
                                                 <label className="block text-sm text-gray-600 mb-1">Blog Kenarı (Sidebar) AdSense ID</label>
                                                 <input type="text" value={settings.adsenseSidebar} onChange={e => setSettings({ ...settings, adsenseSidebar: e.target.value })} className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-appleBlue outline-none bg-white" placeholder="ca-pub-XXXXXXXXXXXXXXXX" />
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    {/* V20 Sosyal Medya & İstatistik Yönetimi */}
+                                    <div className="space-y-4 bg-amber-50/50 p-6 rounded-2xl border border-amber-100">
+                                        <h4 className="text-sm font-semibold text-amber-800 uppercase tracking-wider mb-4 border-b border-amber-200 pb-2 flex justify-between items-center">
+                                            Sosyal Ağlar & Veri Yönetimi
+                                            <label className="flex items-center cursor-pointer">
+                                                <div className="relative">
+                                                    <input type="checkbox" className="sr-only" checked={settings.showSocialMedia || false} onChange={e => setSettings({ ...settings, showSocialMedia: e.target.checked })} />
+                                                    <div className={`block w-10 h-6 rounded-full transition-colors ${settings.showSocialMedia ? 'bg-amber-500' : 'bg-gray-300'}`}></div>
+                                                    <div className={`dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${settings.showSocialMedia ? 'transform translate-x-4' : ''}`}></div>
+                                                </div>
+                                                <span className="ml-3 text-xs font-medium text-amber-900">Footer&apos;da Göster</span>
+                                            </label>
+                                        </h4>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">Instagram URL</label>
+                                                <input type="text" value={settings.instagramUrl || ""} onChange={e => setSettings({ ...settings, instagramUrl: e.target.value })} className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-amber-500 outline-none bg-white font-mono text-sm" placeholder="https://instagram.com/..." />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">X (Twitter) URL</label>
+                                                <input type="text" value={settings.twitterUrl || ""} onChange={e => setSettings({ ...settings, twitterUrl: e.target.value })} className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-amber-500 outline-none bg-white font-mono text-sm" placeholder="https://twitter.com/..." />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">LinkedIn URL</label>
+                                                <input type="text" value={settings.linkedinUrl || ""} onChange={e => setSettings({ ...settings, linkedinUrl: e.target.value })} className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-amber-500 outline-none bg-white font-mono text-sm" placeholder="https://linkedin.com/in/..." />
+                                            </div>
+                                        </div>
+                                        <div className="mt-4 pt-4 border-t border-amber-200/50">
+                                            <label className="block text-sm font-semibold text-amber-800 mb-1">Anasayfa &quot;Tamamlanan Değerleme&quot; Sayacı</label>
+                                            <input type="number" value={settings.valuationCounter || 0} onChange={e => setSettings({ ...settings, valuationCounter: parseInt(e.target.value) || 0 })} className="w-full md:w-1/3 p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-amber-500 outline-none bg-white font-bold text-lg text-appleDark" />
+                                            <p className="text-xs text-amber-700 mt-1">Bu rakam, B2C Anasayfasında sosyal kanıt olarak gösterilecektir.</p>
                                         </div>
                                     </div>
 

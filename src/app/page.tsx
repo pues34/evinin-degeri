@@ -2,10 +2,14 @@ import ValuationForm from "@/components/ValuationForm";
 import Footer from "@/components/Footer";
 import { Sparkles, LineChart, ShieldCheck, MapPin, Crown, TrendingUp } from "lucide-react";
 import TestimonialSlider from "@/components/TestimonialSlider";
+import prisma from "@/lib/prisma";
 
 export const dynamic = 'force-dynamic';
 
-export default function Home() {
+export default async function Home() {
+  const settings = await prisma.systemSettings.findFirst();
+  const counterValue = settings?.valuationCounter || 4231;
+
   return (
     <div className="min-h-screen flex flex-col bg-appleGray overflow-hidden">
       {/* Background Decor */}
@@ -25,15 +29,32 @@ export default function Home() {
             Türkiye&apos;nin dört bir yanındaki gayrimenkullerin güncel piyasa değerini, gelişmiş yapay zeka ve bölge çarpanları algoritmamızla anında hesaplayın.
           </p>
 
-          <div className="inline-block p-4 bg-blue-50/80 backdrop-blur-sm border border-blue-100 rounded-2xl text-appleBlue font-medium shadow-sm">
-            <MapPin size={18} className="inline mr-2 -mt-1" />
-            Şu an için veritabanımız <span className="font-bold">sadece İstanbul</span> iline özel olarak optimize edilmiştir. Yakında tüm Türkiye eklenecektir!
+          <div className="flex flex-col gap-3 items-center">
+            <div className="inline-block p-4 bg-blue-50/80 backdrop-blur-sm border border-blue-100 rounded-2xl text-appleBlue font-medium shadow-sm">
+              <MapPin size={18} className="inline mr-2 -mt-1" />
+              Şu an için veritabanımız <span className="font-bold">sadece İstanbul</span> iline özel olarak optimize edilmiştir.
+            </div>
+            <div className="flex flex-wrap gap-2 justify-center">
+              <span className="px-3 py-1 bg-white border border-gray-200 text-gray-500 rounded-full text-xs font-semibold shadow-sm">🎯 Ankara (Yakında)</span>
+              <span className="px-3 py-1 bg-white border border-gray-200 text-gray-500 rounded-full text-xs font-semibold shadow-sm">🎯 İzmir (Yakında)</span>
+              <span className="px-3 py-1 bg-white border border-gray-200 text-gray-500 rounded-full text-xs font-semibold shadow-sm">🎯 Bursa (Yakında)</span>
+            </div>
           </div>
         </div>
 
-        <div className="max-w-3xl w-full mx-auto mb-20 relative">
+        <div className="max-w-3xl w-full mx-auto mb-10 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 transform rotate-1 rounded-3xl blur-md" />
           <ValuationForm />
+        </div>
+
+        <div className="mb-14 flex flex-col items-center relative z-20">
+          <div className="flex items-center gap-3 px-6 py-3 bg-white shadow-xl shadow-green-500/5 border border-green-100 rounded-full transform hover:scale-105 transition-transform">
+            <div className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </div>
+            <span className="text-gray-600 font-medium text-sm sm:text-base">Bu ay tam <strong className="text-appleDark text-lg">{counterValue.toLocaleString('tr-TR')}</strong> adet evin değeri hesaplandı.</span>
+          </div>
         </div>
       </div>
 

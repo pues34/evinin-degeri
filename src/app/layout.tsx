@@ -40,8 +40,29 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const schemaMarkup = {
+    "@context": "https://schema.org",
+    "@type": "RealEstateAgent",
+    "name": "Evinin Değeri",
+    "image": "https://evinindegeri.com/logo.png",
+    "url": "https://evinindegeri.com",
+    "description": "Türkiye'nin en gelişmiş yapay zeka algoritması ile evinizin, arsanızın veya iş yerinizin gerçek piyasa değerini anında ve ücretsiz öğrenin.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Istanbul",
+      "addressCountry": "TR"
+    },
+    "priceRange": "$$"
+  };
+
   return (
     <html lang="tr" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
+        />
+      </head>
       <body className={inter.className} suppressHydrationWarning>
         <Providers>
           <Header />
