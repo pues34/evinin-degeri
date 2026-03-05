@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
       const settings = await prisma.algorithmSettings.findMany();
       settings.forEach((s: any) => {
         if (s.key === "baseSqmPrice") baseAnchorPrice = Number(s.value);
-        if (s.key === "inflationRate") monthlyInflationRate = Number(s.value);
+        if (s.key === "inflationRate") monthlyInflationRate = Number(s.value) / 12;
         if (s.key === "elevatorMultiplier") mElevator = Number(s.value);
         if (s.key === "parkingMultiplier") mParking = Number(s.value);
         if (s.key === "securityMultiplier") mSecurity = Number(s.value);
