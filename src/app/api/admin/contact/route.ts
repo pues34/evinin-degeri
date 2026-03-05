@@ -31,7 +31,8 @@ export async function DELETE(req: Request) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
 
-        const { searchParams } = new URL(req.url);
+        const url = new URL(req.url || 'http://localhost');
+        const searchParams = url.searchParams;
         const id = searchParams.get('id');
 
         if (!id) return NextResponse.json({ success: false, error: "Missing ID" }, { status: 400 });

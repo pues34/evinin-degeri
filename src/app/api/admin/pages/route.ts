@@ -46,7 +46,8 @@ export async function DELETE(req: Request) {
     if (!session) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
     try {
-        const { searchParams } = new URL(req.url);
+        const url = new URL(req.url || 'http://localhost');
+        const searchParams = url.searchParams;
         const id = searchParams.get('id');
 
         if (!id) return NextResponse.json({ success: false, error: "ID required" }, { status: 400 });

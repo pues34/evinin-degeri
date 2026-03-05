@@ -4,11 +4,11 @@ import prisma from "@/lib/prisma";
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(req: NextRequest) {
-    const searchParams = req.nextUrl.searchParams;
-    const id = searchParams.get("id");
-
+export async function GET(req: Request) {
     try {
+        const url = new URL(req.url || 'http://localhost');
+        const id = url.searchParams.get("id");
+
         if (id) {
             const blog = await prisma.blogPost.findUnique({ where: { id } });
             return NextResponse.json({ success: true, data: blog });
@@ -43,13 +43,13 @@ export async function POST(req: Request) {
     }
 }
 
-export async function DELETE(req: NextRequest) {
-    const searchParams = req.nextUrl.searchParams;
-    const id = searchParams.get("id");
-
-    if (!id) return NextResponse.json({ success: false, error: "ID gerekli" }, { status: 400 });
-
+export async function DELETE(req: Request) {
     try {
+        const url = new URL(req.url || 'http://localhost');
+        const id = url.searchParams.get("id");
+
+        if (!id) return NextResponse.json({ success: false, error: "ID gerekli" }, { status: 400 });
+
         await prisma.blogPost.delete({ where: { id } });
         return NextResponse.json({ success: true });
     } catch (error: any) {
