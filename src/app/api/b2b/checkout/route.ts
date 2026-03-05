@@ -23,6 +23,9 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: false, error: "Ödeme altyapısı (PayTR) henüz ayarlanmadı." }, { status: 500 });
         }
 
+        const body = await req.json().catch(() => ({}));
+        const selectedTier = body.tier || "PRO";
+
         // Fetch Current B2B Pricing from DB Settings
         const settingsRaw = await prisma.algorithmSettings.findMany();
         const settingsMap: Record<string, string> = {};
@@ -30,13 +33,26 @@ export async function POST(req: Request) {
 
         let b2bPrice = Number(settingsMap["b2bMonthlyPrice"] || 500);
         let b2bDiscount = Number(settingsMap["b2bDiscountPercentage"] || 0);
-        let finalPrice = b2bDiscount > 0 ? b2bPrice * (1 - b2bDiscount / 100) : b2bPrice;
+
+        // Tier Logical Calculation
+        let finalPrice = b2bPrice;
+        let basketDescription = "PRO Paket (Aylık Limitsiz Değerleme)";
+
+        if (selectedTier === "PRO") {
+            finalPrice = b2bDiscount > 0 ? b2bPrice * (1 - b2bDiscount / 100) : b2bPrice;
+        } else if (selectedTier === "PRO_PLUS") {
+            finalPrice = 750;
+            basketDescription = "PRO PLUS Paket (White-Label & Lead Market)";
+        } else if (selectedTier === "UPGRADE") {
+            finalPrice = 250;
+            basketDescription = "PRO'dan PRO PLUS Pakete Yükseltme Bedeli";
+        }
 
         // PayTR uses kurus (cents) for the payment amount. 500 TL = 50000 kurus.
         const payment_amount = Math.round(finalPrice * 100).toString();
 
         // Prepare User/Order Information
-        const merchant_oid = "B2B_" + session.user.id + "_" + Date.now();
+        const merchant_oid = `B2B_${selectedTier}_${session.user.id}_${Date.now()}`;
         const email = session.user.email;
         const user_name = session.user.name || "Kurumsal Emlakçı";
         const user_address = "Türkiye";
@@ -47,7 +63,7 @@ export async function POST(req: Request) {
 
         // Basket Array (Products) [["Product Name", "Price", "Quantity"]]
         const user_basket = [
-            ["B2B Sınırsız Değerleme (Aylık PRO Paket)", finalPrice.toString(), 1]
+            [basketDescription, finalPrice.toString(), 1]
         ];
         const user_basket_encoded = Buffer.from(JSON.stringify(user_basket)).toString("base64");
 

@@ -8,6 +8,12 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum SubscriptionTier {
+  FREE
+  PRO
+  PRO_PLUS
+}
+
 model ValuationRequest {
   id              String   @id @default(cuid())
   requestNumber   Int      @default(autoincrement())
@@ -49,6 +55,9 @@ model ValuationRequest {
 
   // İsteğe Bağlı Ödeme / Onay Altyapısı (V6)
   paymentStatus   Boolean  @default(true) // Şimdilik ücretsiz 
+
+  // Yeni V19 Özelliği (Lead Market): Evini satmak/kiralamak istiyor mu?
+  wantsToSell     Boolean  @default(false)
 
   // Güvenlik & Anti-Spam (V16)
   ipAddress       String?
@@ -153,8 +162,14 @@ model Realtor {
   email           String   @unique
   password        String
   phone           String?
-  isPro           Boolean  @default(false)
+  
+  // Abonelik Seviyesi (V19 PRO/PRO_PLUS)
+  isPro           Boolean  @default(false) // Geriye dönük uyumluluk için tutulur.
+  subscriptionTier SubscriptionTier @default(FREE)
   subscriptionEnd DateTime?
+  
+  // White-Label (Markalama) Özel Logosu
+  customLogoUrl   String?  @db.Text
   
   valuations      ValuationRequest[]
 

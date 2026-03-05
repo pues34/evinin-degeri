@@ -50,6 +50,8 @@ export const authOptions: AuthOptions = {
                         email: realtor.email,
                         role: "realtor",
                         isPro: realtor.isPro,
+                        subscriptionTier: realtor.subscriptionTier,
+                        customLogoUrl: realtor.customLogoUrl,
                         subscriptionEnd: realtor.subscriptionEnd
                     } as any;
                 }
@@ -65,10 +67,14 @@ export const authOptions: AuthOptions = {
             if (user) {
                 token.role = user.role;
                 token.isPro = user.isPro;
+                token.subscriptionTier = user.subscriptionTier;
+                token.customLogoUrl = user.customLogoUrl;
                 token.subscriptionEnd = user.subscriptionEnd;
             }
             if (trigger === "update" && session) {
                 if (session.isPro !== undefined) token.isPro = session.isPro;
+                if (session.subscriptionTier !== undefined) token.subscriptionTier = session.subscriptionTier;
+                if (session.customLogoUrl !== undefined) token.customLogoUrl = session.customLogoUrl;
                 if (session.subscriptionEnd !== undefined) token.subscriptionEnd = session.subscriptionEnd;
             }
             return token;
@@ -77,6 +83,8 @@ export const authOptions: AuthOptions = {
             if (session?.user) {
                 (session.user as any).role = token.role;
                 (session.user as any).isPro = token.isPro;
+                (session.user as any).subscriptionTier = token.subscriptionTier;
+                (session.user as any).customLogoUrl = token.customLogoUrl;
                 (session.user as any).subscriptionEnd = token.subscriptionEnd;
                 (session.user as any).id = token.sub;
             }

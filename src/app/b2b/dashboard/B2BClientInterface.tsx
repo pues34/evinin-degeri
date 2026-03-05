@@ -1,13 +1,14 @@
 "use client";
 
-import { Crown, Activity, ExternalLink, History, TrendingUp, Download, CheckCircle, BarChart3, Users, Clock } from "lucide-react";
+import { Crown, Activity, ExternalLink, History, TrendingUp, Download, CheckCircle, BarChart3, Users, Clock, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import FastSupportForm from "@/components/FastSupportForm";
 import { useState } from "react";
 
-export default function B2BClientInterface({ user, valuations, isActivePro }: { user: any, valuations: any[], isActivePro: boolean }) {
+export default function B2BClientInterface({ user, valuations, leads, isActivePro }: { user: any, valuations: any[], leads: any[], isActivePro: boolean }) {
     const [downloading, setDownloading] = useState(false);
+    const [activeTab, setActiveTab] = useState<'PORTFOLIO' | 'LEAD_MARKET'>('PORTFOLIO');
 
     // Calculate Portfoio Stats
     const totalValuations = valuations.length;
@@ -157,66 +158,160 @@ export default function B2BClientInterface({ user, valuations, isActivePro }: { 
                 </div>
             </div>
 
-            {/* Premium Table */}
+            {/* Premium Table & Lead Market Tabs */}
             <div className="glass-card border border-gray-100 overflow-hidden">
-                <div className="p-8 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <div>
-                        <h2 className="text-xl font-bold text-appleDark flex items-center gap-2">
-                            <History className="text-appleBlue" size={24} /> Geçmiş Değerlemelerim
-                        </h2>
-                        <p className="text-sm text-gray-500 mt-1">Yaptığınız son kurumsal sorgulamaların dökümü.</p>
+                <div className="border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50/50">
+                    <div className="flex w-full overflow-x-auto">
+                        <button
+                            onClick={() => setActiveTab('PORTFOLIO')}
+                            className={`flex-1 sm:flex-none px-8 py-5 font-bold text-sm flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'PORTFOLIO' ? 'border-appleBlue text-appleBlue bg-white' : 'border-transparent text-gray-500 hover:text-appleDark'}`}
+                        >
+                            <History size={18} /> Geçmiş Değerlemelerim
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('LEAD_MARKET')}
+                            className={`flex-1 sm:flex-none px-8 py-5 font-bold text-sm flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'LEAD_MARKET' ? 'border-amber-500 text-amber-600 bg-white' : 'border-transparent text-gray-500 hover:text-amber-600'}`}
+                        >
+                            <UserPlus size={18} /> Müşteri Pazarı (Leads)
+                        </button>
                     </div>
-                    <button onClick={downloadCSV} disabled={valuations.length === 0 || downloading} className="flex items-center px-4 py-2 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-appleDark rounded-xl font-medium transition-all shadow-sm disabled:opacity-50">
-                        <Download size={18} className="mr-2" /> {downloading ? "İndiriliyor..." : "CSV İndir"}
-                    </button>
+                    <div className="p-4 sm:p-0 sm:pr-8 w-full sm:w-auto">
+                        {activeTab === 'PORTFOLIO' && (
+                            <button onClick={downloadCSV} disabled={valuations.length === 0 || downloading} className="w-full sm:w-auto flex items-center justify-center px-4 py-2 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-appleDark rounded-xl font-medium transition-all shadow-sm disabled:opacity-50">
+                                <Download size={18} className="mr-2" /> {downloading ? "İndiriliyor..." : "CSV İndir"}
+                            </button>
+                        )}
+                    </div>
                 </div>
 
-                {valuations.length === 0 ? (
-                    <div className="p-12 text-center text-gray-500 bg-gray-50">
-                        Henüz rapor oluşturmadınız. B2B paneline özel limitsiz değerleme motoruna <Link href="/" className="text-appleBlue font-bold hover:underline">buradan</Link> erişebilirsiniz.
+                {/* TAB CONTENT: PORTFOLIO */}
+                {activeTab === 'PORTFOLIO' && (
+                    <div>
+                        {valuations.length === 0 ? (
+                            <div className="p-12 text-center text-gray-500 bg-gray-50">
+                                Henüz rapor oluşturmadınız. B2B paneline özel limitsiz değerleme motoruna <Link href="/" className="text-appleBlue font-bold hover:underline">buradan</Link> erişebilirsiniz.
+                            </div>
+                        ) : (
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr className="bg-white">
+                                            <th className="py-5 px-8 font-semibold text-gray-500 text-sm">Tarih</th>
+                                            <th className="py-5 px-8 font-semibold text-gray-500 text-sm">Gayrimenkul Konumu</th>
+                                            <th className="py-5 px-8 font-semibold text-gray-500 text-sm">Özellikler</th>
+                                            <th className="py-5 px-8 font-semibold text-gray-500 text-sm">Tahmini Özsermaye</th>
+                                            <th className="py-5 px-8 font-semibold text-gray-500 text-sm text-right">İşlem</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {valuations.map((val: any) => (
+                                            <tr key={val.id} className="border-t border-gray-100 hover:bg-gray-50 transition-colors group">
+                                                <td className="py-5 px-8 text-sm text-gray-500 whitespace-nowrap">
+                                                    {new Date(val.createdAt).toLocaleDateString("tr-TR", { day: 'numeric', month: 'short', year: 'numeric' })}
+                                                </td>
+                                                <td className="py-5 px-8">
+                                                    <p className="text-sm font-bold text-appleDark">{val.district}</p>
+                                                    <p className="text-xs text-gray-500">{val.city} / {val.neighborhood}</p>
+                                                </td>
+                                                <td className="py-5 px-8">
+                                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-800 mr-2">
+                                                        {val.netSqm} m²
+                                                    </span>
+                                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-50 text-blue-700">
+                                                        {val.rooms}
+                                                    </span>
+                                                </td>
+                                                <td className="py-5 px-8 text-base font-bold text-green-600">
+                                                    {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(val.estimatedValue)}
+                                                </td>
+                                                <td className="py-5 px-8 text-right">
+                                                    <Link href={`/result/${val.id}`} className="inline-flex items-center text-sm font-medium text-appleBlue hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        Görüntüle <ExternalLink size={14} className="ml-1" />
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
                     </div>
-                ) : (
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
-                            <thead>
-                                <tr className="bg-gray-50/50">
-                                    <th className="py-5 px-8 font-semibold text-gray-500 text-sm">Tarih</th>
-                                    <th className="py-5 px-8 font-semibold text-gray-500 text-sm">Gayrimenkul Konumu</th>
-                                    <th className="py-5 px-8 font-semibold text-gray-500 text-sm">Özellikler</th>
-                                    <th className="py-5 px-8 font-semibold text-gray-500 text-sm">Tahmini Özsermaye</th>
-                                    <th className="py-5 px-8 font-semibold text-gray-500 text-sm text-right">İşlem</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {valuations.map((val: any) => (
-                                    <tr key={val.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors group">
-                                        <td className="py-5 px-8 text-sm text-gray-500 whitespace-nowrap">
-                                            {new Date(val.createdAt).toLocaleDateString("tr-TR", { day: 'numeric', month: 'short', year: 'numeric' })}
-                                        </td>
-                                        <td className="py-5 px-8">
-                                            <p className="text-sm font-bold text-appleDark">{val.district}</p>
-                                            <p className="text-xs text-gray-500">{val.city} / {val.neighborhood}</p>
-                                        </td>
-                                        <td className="py-5 px-8">
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-800 mr-2">
-                                                {val.netSqm} m²
-                                            </span>
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-50 text-blue-700">
-                                                {val.rooms}
-                                            </span>
-                                        </td>
-                                        <td className="py-5 px-8 text-base font-bold text-green-600">
-                                            {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(val.estimatedValue)}
-                                        </td>
-                                        <td className="py-5 px-8 text-right">
-                                            <Link href={`/result/${val.id}`} className="inline-flex items-center text-sm font-medium text-appleBlue hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                Görüntüle <ExternalLink size={14} className="ml-1" />
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                )}
+
+                {/* TAB CONTENT: LEAD MARKET */}
+                {activeTab === 'LEAD_MARKET' && (
+                    <div className="bg-white min-h-[400px]">
+                        {user.subscriptionTier !== "PRO_PLUS" ? (
+                            <div className="flex flex-col items-center justify-center p-16 text-center">
+                                <div className="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center mb-6">
+                                    <Crown size={40} className="text-amber-500 fill-amber-500" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-appleDark mb-3">Bu Alan Sadece PRO PLUS Üyelere Özeldir</h3>
+                                <p className="text-gray-500 max-w-lg mb-8">
+                                    Evini satmak veya kiralamak isteyen gerçek ev sahiplerinin iletişim bilgilerine ve değerleme raporlarına &quot;Sıcak Müşteri Havuzu&quot;ndan (Lead Market) anında erişin.
+                                </p>
+                                <Link href="/b2b/pricing" className="px-8 py-4 bg-gradient-to-r from-amber-400 to-amber-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2 transform hover:-translate-y-1">
+                                    <Crown size={20} className="fill-white" /> Paketinizi Yükseltin
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className="p-8">
+                                <div className="bg-amber-50 border border-amber-100 rounded-2xl p-6 mb-8 flex items-start gap-4">
+                                    <Activity className="text-amber-600 shrink-0 mt-1" size={24} />
+                                    <div>
+                                        <h4 className="text-lg font-bold text-amber-800 mb-1">Müşteri Pazarına Hoş Geldiniz</h4>
+                                        <p className="text-amber-700/80 text-sm">
+                                            Burada &quot;Evimi Satmak İstiyorum&quot; butonuna tıklayan gerçek ev sahiplerini görmektesiniz. Raporlarına tıklayarak özellikleri inceleyin ve doğrudan iletişim kurarak portföyünüze katın.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {leads.length === 0 ? (
+                                    <div className="text-center p-12 text-gray-500 bg-gray-50 rounded-2xl border border-gray-100 dashed">
+                                        Şu an havuzda bekleyen yeni bir potansiyel müşteri bulunmuyor. Yeni kayıtlar düştüğünde burada listelenecektir.
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {leads.map((lead: any) => (
+                                            <div key={lead.id} className="bg-white border-2 border-gray-100 hover:border-amber-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <span className="bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full flex items-center">
+                                                        <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
+                                                        Sıcak Müşteri
+                                                    </span>
+                                                    <span className="text-xs text-gray-400 font-medium">#{lead.requestNumber}</span>
+                                                </div>
+
+                                                <h4 className="font-bold text-lg text-appleDark mb-1">{lead.district}, {lead.neighborhood}</h4>
+                                                <p className="text-sm text-gray-500 mb-4">{lead.rooms} | {lead.netSqm} m² | {lead.buildingAge} Yaşında</p>
+
+                                                <div className="bg-gray-50 rounded-xl p-4 mb-4 border border-gray-100 text-center">
+                                                    <span className="block text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">Ev Sahibinin Tahmini Değeri</span>
+                                                    <span className="text-xl font-extrabold text-appleDark">
+                                                        {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(lead.estimatedValue)}
+                                                    </span>
+                                                </div>
+
+                                                {lead.contactInfo ? (
+                                                    <div className="space-y-3">
+                                                        <a href={`tel:${lead.contactInfo.phone}`} className="w-full block text-center py-3 bg-appleDark hover:bg-black text-white font-medium rounded-xl transition-colors text-sm">
+                                                            📞 {lead.contactInfo.phone}
+                                                        </a>
+                                                        <Link href={`/result/${lead.id}`} className="w-full flex justify-center items-center py-3 bg-gray-100 hover:bg-gray-200 text-appleDark font-medium rounded-xl transition-colors text-sm">
+                                                            Raporu Görüntüle <ExternalLink size={16} className="ml-2" />
+                                                        </Link>
+                                                    </div>
+                                                ) : (
+                                                    <div className="w-full block text-center py-3 bg-gray-100 text-gray-400 font-medium rounded-xl text-sm border border-gray-200 border-dashed">
+                                                        İletişim Bilgisi Bekleniyor
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

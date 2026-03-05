@@ -247,6 +247,39 @@ export default function ResultDashboard({ id }: { id: string }) {
 
                 </div>
 
+                {/* V19 LEAD MARKET OPT-IN B2C */}
+                <div className="md:col-span-3 mt-12 mb-4 bg-gradient-to-br from-amber-400 to-orange-500 rounded-3xl p-1 shadow-2xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-[80px] pointer-events-none" />
+                    <div className="bg-white rounded-[22px] p-8 md:p-10 relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 h-full">
+                        <div className="flex-1">
+                            <h3 className="text-3xl font-extrabold text-appleDark mb-3">Evinizi hemen bu değere yakın bir fiyattan satmak ister misiniz?</h3>
+                            <p className="text-gray-500 text-lg">
+                                Onayladığınız an, bölgenizdeki en iyi <strong>Premium Emlak Danışmanlarımız</strong> (Sadece PRO PLUS) size özel tekliflerle ulaşsın. Ücretsizdir.
+                            </p>
+                        </div>
+                        <div className="w-full md:w-auto flex-shrink-0">
+                            <button
+                                onClick={async (e) => {
+                                    const btn = e.currentTarget;
+                                    btn.disabled = true;
+                                    btn.innerHTML = "İletiliyor...";
+                                    try {
+                                        const res = await fetch("/api/b2bc/lead-market", {
+                                            method: "POST", headers: { "Content-Type": "application/json" },
+                                            body: JSON.stringify({ valuationId: id })
+                                        });
+                                        if (res.ok) btn.innerHTML = "Talep Başarıyla İletildi! ✓";
+                                        else btn.innerHTML = "Hata Oluştu.";
+                                    } catch (e) { btn.innerHTML = "Hata Oluştu."; }
+                                }}
+                                className="w-full md:w-auto px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-bold text-lg rounded-xl shadow-lg transition-transform transform hover:scale-105 active:scale-95 whitespace-nowrap"
+                            >
+                                Evet, Evimi Satmak İstiyorum
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 {/* PDF Footer - Legal Disclaimer & Logo */}
                 <div className="pdf-only-item mt-12 pt-8 border-t border-gray-200 flex-col items-center justify-center text-center">
                     <div className="flex items-center gap-2 text-appleDark font-bold mb-4 opacity-70">

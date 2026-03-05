@@ -32,12 +32,26 @@ export default async function B2BDashboard() {
         take: 10
     });
 
+    // Fetch Global V19 Lead Market
+    const leadMarket = await prisma.valuationRequest.findMany({
+        where: { wantsToSell: true },
+        include: { contactInfo: true },
+        orderBy: { createdAt: 'desc' },
+        take: 50 // Sadece son 50 sıcak müşteriyi göster
+    });
+
     return (
         <div className="min-h-screen bg-appleGray pt-24 pb-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
                 <B2BClientInterface
-                    user={{ name: name, email: session.user.email || "", subscriptionEnd: subscriptionEnd }}
+                    user={{
+                        name: name,
+                        email: session.user.email || "",
+                        subscriptionEnd: subscriptionEnd,
+                        subscriptionTier: session.user.subscriptionTier || 'FREE'
+                    }}
                     valuations={recentValuations}
+                    leads={leadMarket}
                     isActivePro={isActivePro}
                 />
             </div>
