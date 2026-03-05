@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { Copy, CheckCircle, BrainCircuit, TrendingUp, MapPin, Users } from "lucide-react";
+import { Copy, CheckCircle, BrainCircuit, TrendingUp, MapPin, Users, Hexagon } from "lucide-react";
 import Link from "next/link";
 import PdfButton from "./PdfButton";
 import AdBanner from "./AdBanner";
@@ -86,10 +86,17 @@ export default function ResultDashboard({ id }: { id: string }) {
 
             <div id="pdf-content" className="p-4 sm:p-0">
                 {/* PDF Header - Visible mostly when printing or captured */}
-                <div className="hidden pdf-only-header mb-8 text-center bg-appleDark text-white p-6 rounded-2xl">
-                    <h2 className="text-3xl font-bold tracking-tight">Evinin Değeri</h2>
-                    <p className="text-sm opacity-80 mt-1">Profesyonel Gayrimenkul Değerleme Raporu</p>
-                    <p className="text-xs opacity-60 mt-2">ID: #{data.requestNumber || id.split("-")[1] || id} | Tarih: {new Date().toLocaleDateString('tr-TR')}</p>
+                <div className="pdf-only-item flex-col items-center justify-center mb-10 text-center bg-appleDark text-white p-10 rounded-3xl w-full shadow-lg relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-appleBlue rounded-full blur-[80px] opacity-20 pointer-events-none" />
+                    <div className="relative z-10 flex items-center justify-center gap-3 mb-4">
+                        <span className="p-2 bg-white/10 text-white rounded-xl backdrop-blur-sm"><Hexagon size={32} className="fill-current" /></span>
+                        <h2 className="text-4xl font-extrabold tracking-tight">Evinin Değeri</h2>
+                    </div>
+                    <p className="text-lg opacity-90 mt-1 font-medium text-blue-100">Yapay Zeka Destekli Gayrimenkul Değerleme Raporu</p>
+                    <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm opacity-80">
+                        <span className="bg-white/10 px-4 py-2 rounded-full border border-white/10">Rapor No: #{data.requestNumber || id.split("-")[1] || id}</span>
+                        <span className="bg-white/10 px-4 py-2 rounded-full border border-white/10">Tarih: {new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -238,6 +245,18 @@ export default function ResultDashboard({ id }: { id: string }) {
                         <MapComponent lat={data.location.lat} lng={data.location.lng} />
                     </div>
 
+                </div>
+
+                {/* PDF Footer - Legal Disclaimer & Logo */}
+                <div className="pdf-only-item mt-12 pt-8 border-t border-gray-200 flex-col items-center justify-center text-center">
+                    <div className="flex items-center gap-2 text-appleDark font-bold mb-4 opacity-70">
+                        <Hexagon size={24} className="fill-current" />
+                        <span className="text-xl">Evinin Değeri</span>
+                    </div>
+                    <p className="text-[11px] text-gray-500 leading-relaxed max-w-4xl text-justify">
+                        <strong className="text-gray-700">Yasal Uyarı:</strong> Bu raporda sunulan değerleme sonucu, TCMB verileri, bölgesel enflasyon oranları ve yapay zeka tarafından sağlanan geçmiş satış istatistiklerine dayalı matematiksel bir projeksiyondur. Kesinlikle bir gayrimenkul ekspertiz raporu veya herhangi bir ticari faaliyet için <strong>yatırım tavsiyesi niteliği taşımaz</strong>. Evinin Değeri, bu rapor sonucunda doğabilecek doğrudan veya dolaylı alım/satım, kiralama kaynaklı maddi zararlardan hukuken sorumlu tutulamaz. Detaylı piyasa kararları için lisanslı uzmanlara başvurmanız önerilir.
+                    </p>
+                    <p className="text-[10px] text-gray-400 mt-4">© {new Date().getFullYear()} evindegeri.com - Tüm Hakları Saklıdır.</p>
                 </div>
             </div>
 

@@ -19,3 +19,16 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.pdf-only-item {
+  display: none !important;
+}
+
+.pdf-mode .pdf-only-item {
+  display: flex !important;
+}
+
+.pdf-mode {
+  padding: 40px !important;
+  background-color: #F5F5F7 !important;
+}
