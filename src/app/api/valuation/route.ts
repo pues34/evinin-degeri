@@ -33,6 +33,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: "Legal approval required" }, { status: 400 });
     }
 
+    // Telefon bazlı güçlü kısıtlama (DB üzerinden IP Resetten Kalıcı Koruma)
+    if (!isProRealtor && contactInfo?.phone) {
+      const midnight = new Date();
+      midnight.setHours(0, 0, 0, 0);
+
+      const dailyCount = await prisma.valuationRequest.count({
+        where: {
+          contactInfo: { phone: contactInfo.phone },
+          createdAt: { gte: midnight }
+        }
+      });
+
+      if (dailyCount >= 3) {
+        return NextResponse.json({
+          success: false,
+          error: `Bu telefon numarası (${contactInfo.phone}) ile günlük güvenli ücretsiz değerleme limitinizi (3/3) doldurdunuz. Lütfen yarın tekrar deneyin veya Kurumsal/B2B Girişi yapın.`
+        }, { status: 429 });
+      }
+    }
+
     // 1. Dynamic Index For Base Price (Simulating TCMB / Endeksa)
     let baseAnchorPrice = 25000;
     let monthlyInflationRate = 0.035;
@@ -236,7 +256,7 @@ export async function POST(req: NextRequest) {
           html: `
             <h1>Merhaba ${contactInfo.fullName},</h1>
             <p>Evinizin değerleme hesaplaması tamamlandı.</p>
-            <p><strong>Talep Numarası:</strong> #${record.requestNumber}</p>
+            <p><strong>Talep Numarası:</strong> #${(record as any).requestNumber}</p>
             <h3>Tahmini Değer: ${new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(estimatedValue)}</h3>
             <p>Yapay Zeka Analizi: ${aiComment}</p>
             <br/>
@@ -248,7 +268,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ success: true, id: record.id, requestNumber: record.requestNumber, estimatedValue });
+    return NextResponse.json({ success: true, id: record.id, requestNumber: (record as any).requestNumber, estimatedValue });
   } catch (error: any) {
     console.error("Valuation Error:", error);
     return NextResponse.json({ success: false, error: "Sunucu hatası oluştu." }, { status: 500 });

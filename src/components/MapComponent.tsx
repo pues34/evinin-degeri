@@ -24,8 +24,8 @@ export default function MapComponent({ lat, lng }: { lat: number; lng: number })
 
         const fetchPOIs = async () => {
             try {
-                // Fetch nearest hospital or clinic (Devlet Hastanesi, Tıp Merkezi etc.)
-                const hospRes = await fetch(`https://overpass-api.de/api/interpreter?data=[out:json];(node["amenity"~"hospital|clinic"](around:5000,${lat},${lng});way["amenity"~"hospital|clinic"](around:5000,${lat},${lng});node["healthcare"~"hospital|clinic|centre"](around:5000,${lat},${lng});way["healthcare"~"hospital|clinic|centre"](around:5000,${lat},${lng}););out center 1;`);
+                // Fetch nearest hospital or clinic (Devlet Hastanesi, Tıp Merkezi, Sağlık Ocağı vb.)
+                const hospRes = await fetch(`https://overpass-api.de/api/interpreter?data=[out:json];(node["amenity"~"hospital|clinic|doctors"](around:10000,${lat},${lng});way["amenity"~"hospital|clinic|doctors"](around:10000,${lat},${lng});node["healthcare"~"hospital|clinic|centre|doctor"](around:10000,${lat},${lng});way["healthcare"~"hospital|clinic|centre|doctor"](around:10000,${lat},${lng}););out center 1;`);
                 const hospData = await hospRes.json();
                 if (hospData.elements && hospData.elements.length > 0) {
                     const e = hospData.elements[0];
@@ -37,7 +37,7 @@ export default function MapComponent({ lat, lng }: { lat: number; lng: number })
                 }
 
                 // Fetch nearest station/metro/tram/metrobus
-                const metroRes = await fetch(`https://overpass-api.de/api/interpreter?data=[out:json];(node["railway"="station"](around:5000,${lat},${lng});node["station"="subway"](around:5000,${lat},${lng});node["railway"="tram_stop"](around:5000,${lat},${lng});way["railway"="station"](around:5000,${lat},${lng});node["public_transport"="station"](around:5000,${lat},${lng}););out center 1;`);
+                const metroRes = await fetch(`https://overpass-api.de/api/interpreter?data=[out:json];(node["railway"="station"](around:10000,${lat},${lng});node["station"="subway"](around:10000,${lat},${lng});node["railway"="tram_stop"](around:10000,${lat},${lng});way["railway"="station"](around:10000,${lat},${lng});node["public_transport"="station"](around:10000,${lat},${lng}););out center 1;`);
                 const metroData = await metroRes.json();
                 if (metroData.elements && metroData.elements.length > 0) {
                     const e = metroData.elements[0];

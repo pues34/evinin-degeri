@@ -24,6 +24,7 @@ export async function GET() {
         // Format for admin panel display
         const payload = reqs.map((r: any) => ({
             id: r.id,
+            requestNumber: r.requestNumber || "Eski",
             name: r.contactInfo?.fullName || "Belirtilmemiş",
             phone: r.contactInfo?.phone || "Belirtilmemiş",
             email: r.contactInfo?.email || "Belirtilmemiş",

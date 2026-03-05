@@ -1,6 +1,6 @@
 import ValuationForm from "@/components/ValuationForm";
 import Footer from "@/components/Footer";
-import { Sparkles, LineChart, ShieldCheck, MapPin } from "lucide-react";
+import { Sparkles, LineChart, ShieldCheck, MapPin, Crown, TrendingUp } from "lucide-react";
 import TestimonialSlider from "@/components/TestimonialSlider";
 
 export const dynamic = 'force-dynamic';
@@ -96,6 +96,54 @@ export default function Home() {
                 <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6 backdrop-blur-md border border-white/20">3</div>
                 <h4 className="text-lg font-medium text-white mb-2">Raporu Alın</h4>
                 <p className="text-gray-400 text-sm">Gelişmiş AI size anında güncel piyasa değerini ve analizini PDF olarak sunar.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* B2B Promo Section / Kurumsal Çözümler */}
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 py-24 border-t border-gray-100 relative z-10 overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400 rounded-full blur-[100px] opacity-10 pointer-events-none" />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-full text-sm font-bold text-appleBlue mb-6">
+                <Crown size={16} /> B2B Kurumsal Çözümler
+              </div>
+              <h2 className="text-3xl md:text-4xl font-semibold text-appleDark mb-6 leading-tight">
+                Emlak Ofisleri ve Danışmanlar İçin Sınırsız Güç
+              </h2>
+              <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                Günlük değerleme limitlerine takılmadan yüzlerce portföyünüzü saniyeler içinde analiz edin. AI destekli detaylı raporları kendi müşterilerinize sunarak güven inşa edin.
+              </p>
+
+              <ul className="space-y-4 mb-8">
+                <li className="flex items-center text-gray-700">
+                  <div className="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center mr-4"><ShieldCheck size={18} /></div>
+                  <span className="font-medium">Sınırsız aylık değerleme hakkı</span>
+                </li>
+                <li className="flex items-center text-gray-700">
+                  <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mr-4"><TrendingUp size={18} /></div>
+                  <span className="font-medium">Gelişmiş kira ve amortisman analizleri</span>
+                </li>
+                <li className="flex items-center text-gray-700">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-4"><LineChart size={18} /></div>
+                  <span className="font-medium">B2B panelinden geçmiş sorgu takibi</span>
+                </li>
+              </ul>
+
+              <a href="/b2b/login" className="inline-flex items-center px-8 py-4 bg-appleBlue text-white rounded-xl shadow-apple hover:bg-blue-600 hover:-translate-y-1 transition-all font-medium">
+                Kurumsal Panel&apos;e Giriş Yap &rarr;
+              </a>
+            </div>
+
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-tr from-appleBlue/20 to-purple-500/20 transform rotate-3 rounded-3xl blur-md" />
+              <div className="bg-white p-2 rounded-2xl shadow-2xl relative z-10 border border-white/50 backdrop-blur-sm">
+                <img src="/b2b-dashboard-preview.png" alt="B2B Emlakçı Paneli" className="w-full h-auto rounded-xl object-cover" onError={(e) => {
+                  (e.target as any).src = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+                }} />
               </div>
             </div>
           </div>

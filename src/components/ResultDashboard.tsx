@@ -177,6 +177,36 @@ export default function ResultDashboard({ id }: { id: string }) {
                         <ValuationChart currentValue={displayValue} />
                     </div>
 
+                    {/* YENİ: Kira Getirisi ve Amortisman Kartı */}
+                    <div className="glass-card p-6 flex flex-col justify-center">
+                        <h3 className="font-semibold text-lg text-appleDark mb-4 flex items-center">
+                            <TrendingUp size={20} className="mr-2 text-green-500" />
+                            Kira Amortisman Analizi
+                        </h3>
+                        <p className="text-xs text-gray-500 mb-4">Türkiye ortalaması olan 200 ay üzerinden tahmini kira getirisi hesaplanmıştır.</p>
+
+                        <div className="space-y-4">
+                            <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 flex justify-between items-center">
+                                <span className="text-sm text-gray-500 font-medium">Aylık Tahmini Kira</span>
+                                <span className="text-appleDark font-bold">
+                                    {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(displayValue / 200)}
+                                </span>
+                            </div>
+                            <div className="bg-green-50 rounded-xl p-4 border border-green-100 flex justify-between items-center">
+                                <span className="text-sm text-green-700 font-medium">Yıllık Getiri</span>
+                                <span className="text-green-800 font-bold">
+                                    {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format((displayValue / 200) * 12)}
+                                </span>
+                            </div>
+                            <div className="bg-blue-50 rounded-xl p-4 border border-blue-100 flex justify-between items-center">
+                                <span className="text-sm text-blue-700 font-medium">Amortisman Süresi</span>
+                                <span className="text-blue-800 font-bold">
+                                    ~16.6 Yıl (200 Ay)
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
                     {data.demographics && (
                         <div className="md:col-span-3 glass-card p-6">
                             <h3 className="font-semibold text-lg text-appleDark mb-6 flex items-center">
