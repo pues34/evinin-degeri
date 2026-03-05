@@ -3,19 +3,23 @@ import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
     try {
-        let settings = await prisma.systemSettings.findFirst();
+        let sysSettings = await prisma.systemSettings.findFirst();
 
-        // Eğer veritabanında henüz bir ayar yoksa varsayılanı oluştur.
-        if (!settings) {
-            settings = await prisma.systemSettings.create({
-                data: {
-                    showSocialMedia: true,
-                    valuationCounter: 0
-                }
+        if (!sysSettings) {
+            sysSettings = await prisma.systemSettings.create({
+                data: { showSocialMedia: true, valuationCounter: 0 }
             });
         }
 
-        return NextResponse.json({ success: true, data: settings });
+        const algoSettingsArray = await prisma.algorithmSettings.findMany();
+        const algoObj: Record<string, string> = {};
+        algoSettingsArray.forEach((s: any) => {
+            algoObj[s.key] = s.value;
+        });
+
+        const mergedSettings = { ...algoObj, ...sysSettings };
+
+        return NextResponse.json({ success: true, data: mergedSettings });
     } catch (e: any) {
         return NextResponse.json({ success: false, error: e.message }, { status: 500 });
     }
@@ -25,26 +29,43 @@ export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
 
-        // Daima var olan tek kaydı güncelle
-        const settings = await prisma.systemSettings.findFirst();
-
-        if (!settings) {
-            const newSettings = await prisma.systemSettings.create({ data: body });
-            return NextResponse.json({ success: true, data: newSettings });
+        // System Settings
+        let sysSettings = await prisma.systemSettings.findFirst();
+        if (!sysSettings) {
+            sysSettings = await prisma.systemSettings.create({ data: { showSocialMedia: true, valuationCounter: 0 } });
         }
-
-        const updatedSettings = await prisma.systemSettings.update({
-            where: { id: settings.id },
+        await prisma.systemSettings.update({
+            where: { id: sysSettings.id },
             data: {
-                instagramUrl: body.instagramUrl,
-                twitterUrl: body.twitterUrl,
-                linkedinUrl: body.linkedinUrl,
-                showSocialMedia: body.showSocialMedia,
+                instagramUrl: body.instagramUrl || "",
+                twitterUrl: body.twitterUrl || "",
+                linkedinUrl: body.linkedinUrl || "",
+                showSocialMedia: body.showSocialMedia !== undefined ? body.showSocialMedia : true,
                 valuationCounter: body.valuationCounter ? parseInt(body.valuationCounter) : 0
             }
         });
 
-        return NextResponse.json({ success: true, data: updatedSettings });
+        // Algorithm Settings
+        const algoKeys = [
+            "baseSqmPrice", "inflationRate", "elevatorMultiplier", "parkingMultiplier", "securityMultiplier",
+            "multBodrum", "multKot1", "multZemin", "multUst", "multCati", "multMustakil", "multAra",
+            "multMutfakKapali", "multBalkonVar", "multCiftBanyo", "buildingAgeDepreciation",
+            "adsenseHeader", "adsenseSidebar", "sponsorHeaderUrl", "sponsorHeaderLink",
+            "sponsorSidebarUrl", "sponsorSidebarLink", "mFacadeGuney", "mFacadeKuzey", "mSiteIci",
+            "mYenilenmis", "mMasrafli", "b2bMonthlyPrice", "b2bDiscountPercentage"
+        ];
+
+        for (const key of algoKeys) {
+            if (body[key] !== undefined) {
+                await prisma.algorithmSettings.upsert({
+                    where: { key },
+                    update: { value: body[key] },
+                    create: { key, value: body[key] }
+                });
+            }
+        }
+
+        return NextResponse.json({ success: true, message: "Ayarlar başarıyla güncellendi." });
     } catch (e: any) {
         return NextResponse.json({ success: false, error: "Ayarlar güncellenirken bir hata oluştu." }, { status: 500 });
     }
