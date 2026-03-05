@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import { Sparkles, LineChart, ShieldCheck, MapPin, Crown, TrendingUp } from "lucide-react";
 import TestimonialSlider from "@/components/TestimonialSlider";
 import prisma from "@/lib/prisma";
+import HowItWorksSection from "@/components/HowItWorksSection";
 
 export const dynamic = 'force-dynamic';
 
@@ -92,36 +93,8 @@ export default async function Home() {
         </div>
       </div>
 
-      {/* How it Works */}
-      <div className="py-24 relative z-10 bg-appleGray">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-appleDark rounded-3xl p-12 overflow-hidden relative shadow-2xl">
-            {/* Decors inside dark card */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-appleBlue rounded-full blur-[100px] opacity-20 pointer-events-none" />
-            <div className="relative z-10 text-center mb-12">
-              <h2 className="text-3xl font-semibold text-white">Sadece 3 Adımda Sonuç</h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6 backdrop-blur-md border border-white/20">1</div>
-                <h4 className="text-lg font-medium text-white mb-2">Konum Girin</h4>
-                <p className="text-gray-400 text-sm">Türkiye&apos;nin herhangi bir noktasından mülkünüzün adresini seçin.</p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6 backdrop-blur-md border border-white/20">2</div>
-                <h4 className="text-lg font-medium text-white mb-2">Detayları Belirtin</h4>
-                <p className="text-gray-400 text-sm">Kat, yaş, metrekare ve asansör gibi fiziksel özellikleri işaretleyin.</p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6 backdrop-blur-md border border-white/20">3</div>
-                <h4 className="text-lg font-medium text-white mb-2">Raporu Alın</h4>
-                <p className="text-gray-400 text-sm">Gelişmiş AI size anında güncel piyasa değerini ve analizini PDF olarak sunar.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* How it Works - Animated Component */}
+      <HowItWorksSection />
 
       {/* B2B Promo Section / Kurumsal Çözümler */}
       <div className="bg-gradient-to-br from-blue-50 to-indigo-50 py-24 border-t border-gray-100 relative z-10 overflow-hidden">
@@ -154,7 +127,7 @@ export default async function Home() {
                 </li>
               </ul>
 
-              <a href="/b2b/login" className="inline-flex items-center px-8 py-4 bg-appleBlue text-white rounded-xl shadow-apple hover:bg-blue-600 hover:-translate-y-1 transition-all font-medium">
+              <a href="/b2b" className="inline-flex items-center px-8 py-4 bg-appleBlue text-white rounded-xl shadow-apple hover:bg-blue-600 hover:-translate-y-1 transition-all font-medium">
                 Kurumsal Panel&apos;e Giriş Yap &rarr;
               </a>
             </div>
