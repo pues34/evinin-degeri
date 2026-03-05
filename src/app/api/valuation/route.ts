@@ -254,14 +254,37 @@ export async function POST(req: NextRequest) {
           to: contactInfo.email,
           subject: "Evinizin Değerleme Raporu Hazır!",
           html: `
-            <h1>Merhaba ${contactInfo.fullName},</h1>
-            <p>Evinizin değerleme hesaplaması tamamlandı.</p>
-            <p><strong>Talep Numarası:</strong> #${(record as any).requestNumber}</p>
-            <h3>Tahmini Değer: ${new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(estimatedValue)}</h3>
-            <p>Yapay Zeka Analizi: ${aiComment}</p>
-            <br/>
-            <p>Raporunuzu detaylı incelemek için: <a href="https://evinin-degeri.com/result/${record.id}">tıklayın</a></p>
-          `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
+                <div style="text-align: center; padding: 20px 0;">
+                  <h1 style="color: #2563eb; margin-bottom: 5px;">Evinin Değeri</h1>
+                  <p style="color: #64748b; font-size: 14px; margin-top: 0;">Yapay Zeka Destekli Gayrimenkul Analizi</p>
+                </div>
+                
+                <div style="background-color: #f8fafc; border-radius: 12px; padding: 30px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
+                  <h2 style="margin-top: 0;">Merhaba ${contactInfo.fullName},</h2>
+                  <p>Sistemimizi kullandığınız için teşekkür ederiz. Evinizin değerleme hesaplaması yapay zeka ve güncel piyasa çarpanları kullanılarak başarıyla tamamlandı.</p>
+                  
+                  <div style="background-color: #fff; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #3b82f6; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <p style="margin: 0; font-size: 14px; color: #64748b;"><strong>Talep Numarası:</strong> #${(record as any).requestNumber}</p>
+                    <h3 style="color: #0f172a; font-size: 24px; margin: 10px 0;">Tahmini Değer: ${new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(estimatedValue)}</h3>
+                    <p style="margin: 0; font-style: italic; color: #475569;"><strong>Yapay Zeka Özeti:</strong> ${aiComment}</p>
+                  </div>
+                  
+                  <div style="text-align: center; margin-top: 30px;">
+                    <a href="https://evindegeri.com/result/${record.id}" style="background-color: #2563eb; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Raporun Tamamını Görüntüle</a>
+                  </div>
+                </div>
+
+                <div style="font-size: 12px; color: #94a3b8; text-align: justify; padding: 0 10px;">
+                  <p><strong>Yasal Uyarı:</strong> Bu raporda sunulan değerler, bölgesel piyasa verileri ve algoritmik yapay zeka varsayımlarına dayalı tahmini rakamlardır. Sunulan sonuçlar kesin bir ekspertiz raporu niteliği taşımaz ve <strong>kesinlikle bir yatırım tavsiyesi değildir</strong>. Alım-satım kararlarınızda profesyonel lisanslı bir değerleme uzmanına veya gayrimenkul danışmanına başvurmanız önerilir.</p>
+                  
+                  <p style="text-align: center; margin-top: 20px;">
+                    Geri bildirimleriniz ve sorularınız için bize ulaşın:<br/>
+                    <a href="mailto:evindestek@gmail.com" style="color: #2563eb; text-decoration: none;">evindestek@gmail.com</a>
+                  </p>
+                </div>
+              </div>
+            `
         });
       } catch (e) {
         console.error("Mail gönderme hatası:", e);
