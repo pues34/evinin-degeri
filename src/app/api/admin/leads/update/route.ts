@@ -50,7 +50,7 @@ export async function POST(req: Request) {
                 }));
 
                 await resend.emails.send({
-                    from: "Evinin Değeri Uzmanları <info@agality.dev>", // replace with verified domain in production if not resend dev
+                    from: "Evinin Değeri Uzmanları <bilgi@evindegeri.com>",
                     to: updated.contactInfo.email,
                     subject: "Değerleme Raporunuz Uzmanlarımız Tarafından Güncellendi 🏠",
                     html: emailHtml,

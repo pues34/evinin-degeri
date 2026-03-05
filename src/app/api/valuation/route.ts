@@ -250,7 +250,7 @@ export async function POST(req: NextRequest) {
     if (resend && contactInfo.email) {
       try {
         await resend.emails.send({
-          from: "Evinin Değeri <bilgi@evinin-degeri.com>",
+          from: "Evinin Değeri <bilgi@evindegeri.com>",
           to: contactInfo.email,
           subject: "Evinizin Değerleme Raporu Hazır!",
           html: `
