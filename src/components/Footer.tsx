@@ -51,10 +51,12 @@ export default async function Footer() {
 
                     {/* Legal */}
                     <div>
-                        <h4 className="font-semibold text-appleDark mb-4">Yasal</h4>
+                        <h4 className="font-semibold text-appleDark mb-4">Yasal Sertifikalar</h4>
                         <ul className="space-y-3">
                             <li><Link href="/p/gizlilik-politikasi" className="text-gray-500 hover:text-appleBlue transition-colors text-sm">Gizlilik Politikası</Link></li>
                             <li><Link href="/p/kullanim-kosullari" className="text-gray-500 hover:text-appleBlue transition-colors text-sm">Kullanım Koşulları</Link></li>
+                            <li><Link href="/mesafeli-satis-sozlesmesi" className="text-gray-500 hover:text-appleBlue transition-colors text-sm">Mesafeli Satış Sözleşmesi</Link></li>
+                            <li><Link href="/iptal-iade" className="text-gray-500 hover:text-appleBlue transition-colors text-sm">İptal ve İade Koşulları</Link></li>
                         </ul>
                     </div>
                 </div>
