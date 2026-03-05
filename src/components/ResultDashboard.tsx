@@ -68,7 +68,7 @@ export default function ResultDashboard({ id }: { id: string }) {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
                     <h1 className="text-3xl md:text-4xl font-semibold text-appleDark mb-2">Değerleme Sonucu</h1>
-                    <p className="text-appleLightGray">Talep Numaranız: <span className="font-mono text-appleDark">{id.split("-")[1] || id}</span></p>
+                    <p className="text-appleLightGray">Talep Numaranız: <span className="font-mono text-appleDark">#{data.requestNumber || id.split("-")[1] || id}</span></p>
                 </div>
                 <div className="flex gap-3 w-full md:w-auto">
                     <button onClick={copyLink} className="flex-1 md:flex-none flex justify-center items-center px-4 py-2 bg-white rounded-xl shadow-sm border border-gray-100 hover:bg-gray-50 transition-colors text-sm font-medium text-appleDark">
@@ -89,7 +89,7 @@ export default function ResultDashboard({ id }: { id: string }) {
                 <div className="hidden pdf-only-header mb-8 text-center bg-appleDark text-white p-6 rounded-2xl">
                     <h2 className="text-3xl font-bold tracking-tight">Evinin Değeri</h2>
                     <p className="text-sm opacity-80 mt-1">Profesyonel Gayrimenkul Değerleme Raporu</p>
-                    <p className="text-xs opacity-60 mt-2">ID: {id.split("-")[1] || id} | Tarih: {new Date().toLocaleDateString('tr-TR')}</p>
+                    <p className="text-xs opacity-60 mt-2">ID: #{data.requestNumber || id.split("-")[1] || id} | Tarih: {new Date().toLocaleDateString('tr-TR')}</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

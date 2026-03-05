@@ -447,6 +447,7 @@ export default function AdminDashboard() {
                                     <table className="w-full text-left text-sm">
                                         <thead className="bg-gray-50/50 text-gray-500">
                                             <tr>
+                                                <th className="px-6 py-4 font-medium">Talep No</th>
                                                 <th className="px-6 py-4 font-medium">Tarih</th>
                                                 <th className="px-6 py-4 font-medium">Ad Soyad</th>
                                                 <th className="px-6 py-4 font-medium">İletişim</th>
@@ -462,6 +463,7 @@ export default function AdminDashboard() {
                                             )}
                                             {dbLeads.map((lead: any) => (
                                                 <tr key={lead.id} className="hover:bg-gray-50/50 transition-colors">
+                                                    <td className="px-6 py-4 font-medium text-appleDark">#{lead.requestNumber || lead.id.substring(0, 6)}</td>
                                                     <td className="px-6 py-4 text-gray-500">{lead.date}</td>
                                                     <td className="px-6 py-4 font-medium text-appleDark">{lead.name}</td>
                                                     <td className="px-6 py-4">

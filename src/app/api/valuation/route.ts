@@ -236,6 +236,7 @@ export async function POST(req: NextRequest) {
           html: `
             <h1>Merhaba ${contactInfo.fullName},</h1>
             <p>Evinizin değerleme hesaplaması tamamlandı.</p>
+            <p><strong>Talep Numarası:</strong> #${record.requestNumber}</p>
             <h3>Tahmini Değer: ${new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(estimatedValue)}</h3>
             <p>Yapay Zeka Analizi: ${aiComment}</p>
             <br/>
@@ -247,7 +248,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ success: true, id: record.id, estimatedValue });
+    return NextResponse.json({ success: true, id: record.id, requestNumber: record.requestNumber, estimatedValue });
   } catch (error: any) {
     console.error("Valuation Error:", error);
     return NextResponse.json({ success: false, error: "Sunucu hatası oluştu." }, { status: 500 });

@@ -36,8 +36,8 @@ export default function MapComponent({ lat, lng }: { lat: number; lng: number })
                     }
                 }
 
-                // Fetch nearest station/metro/tram
-                const metroRes = await fetch(`https://overpass-api.de/api/interpreter?data=[out:json];(node["railway"="station"](around:5000,${lat},${lng});node["station"="subway"](around:5000,${lat},${lng});node["railway"="tram_stop"](around:5000,${lat},${lng});way["railway"="station"](around:5000,${lat},${lng}););out center 1;`);
+                // Fetch nearest station/metro/tram/metrobus
+                const metroRes = await fetch(`https://overpass-api.de/api/interpreter?data=[out:json];(node["railway"="station"](around:5000,${lat},${lng});node["station"="subway"](around:5000,${lat},${lng});node["railway"="tram_stop"](around:5000,${lat},${lng});way["railway"="station"](around:5000,${lat},${lng});node["public_transport"="station"](around:5000,${lat},${lng}););out center 1;`);
                 const metroData = await metroRes.json();
                 if (metroData.elements && metroData.elements.length > 0) {
                     const e = metroData.elements[0];

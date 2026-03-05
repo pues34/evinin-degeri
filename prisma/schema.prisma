@@ -10,6 +10,7 @@ datasource db {
 
 model ValuationRequest {
   id              String   @id @default(cuid())
+  requestNumber   Int      @default(autoincrement())
   createdAt       DateTime @default(now())
   
   // Konum Bilgileri
