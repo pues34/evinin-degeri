@@ -87,8 +87,11 @@ export async function POST(req: NextRequest) {
       console.warn("Could not load dynamic settings:", err);
     }
 
-    const monthsSinceAnchor = new Date().getMonth() - 0 + (12 * (new Date().getFullYear() - 2024));
-    let dynamicBaseSqmPrice = baseAnchorPrice * Math.pow((1 + monthlyInflationRate), monthsSinceAnchor);
+    const monthsSinceAnchor = new Date().getMonth() - 0 + (12 * (new Date().getFullYear() - 2026));
+    // If we're evaluating something in early 2026, the inflation multiplier should be small or 0 for the base year. 
+    // We prevent negative months if someone evaluates in Jan 2026 but anchor was meant to be mid-2026.
+    const effectiveMonths = Math.max(0, monthsSinceAnchor);
+    let dynamicBaseSqmPrice = baseAnchorPrice * Math.pow((1 + monthlyInflationRate), effectiveMonths);
 
     const grossSqm = Number(propertyData.grossSqm) || 100;
     let estimatedValue = dynamicBaseSqmPrice * grossSqm;
