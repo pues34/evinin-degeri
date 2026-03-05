@@ -21,6 +21,6 @@ export async function GET() {
         return NextResponse.json({ success: true, data: cities });
     } catch (error) {
         console.error("Location Fetch Error:", error);
-        return NextResponse.json({ success: false, error: "Veriler çekilemedi." }, { status: 500 });
+        return NextResponse.json({ success: false, error: error instanceof Error ? error.message : String(error) }, { status: 500 });
     }
 }
