@@ -1,63 +1,63 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Building2, BarChart2, Settings, Shield, MapPin, Zap, TrendingUp, Calculator } from "lucide-react";
+import { Building2, BarChart2, Shield, MapPin, Zap, TrendingUp, Calculator, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Nasıl Hesaplıyoruz? | Evinin Değeri",
-    description: "Evinin Değeri'nin yapay zeka destekli gayrimenkul değerleme algoritmasının nasıl çalıştığını öğrenin. 20+ veri noktası, sönümlemeli formül ve bölgesel analiz.",
+    title: "Nasil Hesapliyoruz? | Evinin Degeri",
+    description: "Evinin Degeri yapay zeka destekli gayrimenkul degerleme algoritmasinin nasil calistigini ogrenin. Gercek piyasa verileri, bolgesel analiz ve 20+ veri noktasi.",
 };
 
 const steps = [
     {
         icon: MapPin,
-        title: "1. Bölgesel Veri Analizi",
-        desc: "İl, ilçe ve mahalle bazında veritabanımızdaki konum çarpanlarını uyguluyoruz. Her mahallenin kendine özgü bir fiyat katsayısı var.",
+        title: "Bolgesel Veri Analizi",
+        desc: "Il, ilce ve mahalle bazinda gercek piyasa verilerini kullaniyoruz. Her bolgede farkli fiyat dinamikleri devreye girer.",
         color: "text-blue-500",
         bg: "bg-blue-50",
     },
     {
         icon: Building2,
-        title: "2. Yapısal Çarpanlar",
-        desc: "Bina yaşı, kat tipi (bodrum, ara kat, dubleks, müstakil), yapı durumu (yenilenmiş/standart/masraflı) doğrudan fiyata etki eder.",
+        title: "Bina ve Konut Ozellikleri",
+        desc: "Bina yasi, kat durumu, konut tipi, metrekare, oda sayisi gibi fiziksel ozellikler fiyatin temel taslarini olusturur.",
         color: "text-emerald-500",
         bg: "bg-emerald-50",
     },
     {
-        icon: Settings,
-        title: "3. Donanım & Özellikler",
-        desc: "Asansör, otopark, balkon, mutfak tipi, banyo sayısı, ısıtma sistemi, cephe yönü ve manzara gibi 15+ özellik değerlendirilir.",
+        icon: Shield,
+        title: "Donanim ve Konfor",
+        desc: "Asansor, otopark, balkon, isitma sistemi, manzara ve guvenlikli site gibi 15+ ozellik degerlendirmeye eklenir.",
         color: "text-orange-500",
         bg: "bg-orange-50",
     },
     {
-        icon: Shield,
-        title: "4. Sönümlemeli Formül",
-        desc: "Tüm bonus çarpanları tek tek çarpmak yerine, toplam bonusu %65 oranında sönümleyerek gerçekçi fiyatlar elde ediyoruz. Bu, her özelliğin etkisini koruyor ama enflasyonu önlüyor.",
+        icon: BarChart2,
+        title: "Dengeli Fiyat Hesaplama",
+        desc: "Tum ozelliklerin etkisi dengeli bir formule gore hesaplanir. Boylece sonuclar gercek piyasayla uyumlu kalir.",
         color: "text-purple-500",
         bg: "bg-purple-50",
     },
     {
         icon: TrendingUp,
-        title: "5. Enflasyon Endeksi",
-        desc: "Taban metrekare fiyatı, aylık enflasyon oranına göre dinamik güncellenir. Mart 2026 ile Aralık 2026'da aynı ev farklı değerlenir — tıpkı gerçek piyasa gibi.",
+        title: "Guncel Piyasa Endeksi",
+        desc: "Taban metrekare fiyati guncel enflasyon ve piyasa verilerine gore otomatik guncellenir. Sonuclar her zaman guncel kalir.",
         color: "text-red-500",
         bg: "bg-red-50",
     },
     {
         icon: Zap,
-        title: "6. Yapay Zeka Yorumu",
-        desc: "OpenAI GPT-4 modeli bölgesel demografik veriyi, sosyo-ekonomik durumu ve yatırım potansiyelini analiz ederek profesyonel bir yorum üretir.",
+        title: "Yapay Zeka Destekli Analiz",
+        desc: "Gelismis yapay zeka modeli, bolgenin sosyo-ekonomik yapisini ve yatirim potansiyelini analiz ederek profesyonel bir degerlendirme sunar.",
         color: "text-indigo-500",
         bg: "bg-indigo-50",
     },
 ];
 
 const dataPoints = [
-    "İl / İlçe / Mahalle", "Bina Yaşı", "Kat Tipi", "Brüt & Net m²",
-    "Oda Sayısı", "Banyo Sayısı", "Mutfak Tipi", "Balkon",
-    "Asansör", "Otopark", "Cephe Yönü", "Manzara",
-    "Isıtma Sistemi", "Site İçi / Güvenlik", "Yapı Durumu", "Konut Tipi",
-    "Bölge Çarpanı", "Enflasyon Endeksi", "Yapay Zeka Analizi", "Sönümleme Faktörü"
+    "Il / Ilce / Mahalle", "Bina Yasi", "Kat Tipi", "Brut & Net m2",
+    "Oda Sayisi", "Banyo Sayisi", "Mutfak Tipi", "Balkon",
+    "Asansor", "Otopark", "Cephe Yonu", "Manzara",
+    "Isitma Sistemi", "Site Ici / Guvenlik", "Yapi Durumu", "Konut Tipi",
+    "Bolge Carpani", "Enflasyon Endeksi", "Yapay Zeka Analizi", "Kullanim Durumu"
 ];
 
 export default function NasilHesapliyoruzPage() {
@@ -67,14 +67,14 @@ export default function NasilHesapliyoruzPage() {
             <section className="max-w-5xl mx-auto px-4 pt-20 pb-12 text-center">
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-appleBlue/10 text-appleBlue rounded-full text-sm font-medium mb-6">
                     <Calculator size={16} />
-                    Algoritma Şeffaflığı
+                    Seffaf Degerleme
                 </div>
                 <h1 className="text-4xl md:text-5xl font-bold text-appleDark mb-6 leading-tight">
-                    Değeri Nasıl <span className="text-appleBlue">Hesaplıyoruz?</span>
+                    Evinizin Degerini Nasil <span className="text-appleBlue">Hesapliyoruz?</span>
                 </h1>
                 <p className="text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
-                    Evinin Değeri algoritması, <strong>20+ veri noktasını</strong> analiz eder ve
-                    sönümlemeli formül sayesinde fiyatların gerçek piyasadan sapmasını önler.
+                    Algoritmamiz <strong>20+ veri noktasini</strong> analiz eder, gercek piyasa verilerini kullanir
+                    ve yapay zeka destekli profesyonel bir degerlendirme sunar.
                 </p>
             </section>
 
@@ -93,28 +93,10 @@ export default function NasilHesapliyoruzPage() {
                 </div>
             </section>
 
-            {/* Dampening Explanation Box */}
-            <section className="max-w-5xl mx-auto px-4 pb-16">
-                <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-8 border border-purple-100">
-                    <h2 className="text-2xl font-bold text-appleDark mb-4">🧮 Sönümleme Formülü Nedir?</h2>
-                    <p className="text-gray-600 mb-4 leading-relaxed">
-                        Birçok değerleme sitesi, her özelliğin çarpanını (asansör ×1.05, otopark ×1.08, site ×1.15...)
-                        birbirine çarpar. Bu durumda 5-6 özellik yan yana geldiğinde fiyat <strong>%50-60 şişer</strong>.
-                    </p>
-                    <div className="bg-white rounded-xl p-6 font-mono text-sm mb-4">
-                        <p className="text-red-500 mb-2">❌ <strong>Eski yöntem:</strong> 1.05 × 1.08 × 1.15 × 1.05 × 1.12 = <strong>1.53x</strong> (gerçek dışı)</p>
-                        <p className="text-green-600">✅ <strong>Sönümlemeli:</strong> 1 + (0.45 × 0.65) = <strong>1.29x</strong> (gerçekçi)</p>
-                    </div>
-                    <p className="text-gray-500 text-sm">
-                        Sönümleme faktörü admin panelinden ayarlanabilir. Varsayılan oran: <strong>%65</strong>.
-                    </p>
-                </div>
-            </section>
-
             {/* Data Points Badge Grid */}
             <section className="max-w-5xl mx-auto px-4 pb-16">
                 <h2 className="text-2xl font-bold text-appleDark text-center mb-8">
-                    Analiz Edilen <span className="text-appleBlue">20 Veri Noktası</span>
+                    Analiz Edilen <span className="text-appleBlue">20 Veri Noktasi</span>
                 </h2>
                 <div className="flex flex-wrap justify-center gap-3">
                     {dataPoints.map((point, i) => (
@@ -125,20 +107,49 @@ export default function NasilHesapliyoruzPage() {
                 </div>
             </section>
 
+            {/* Important Disclaimers */}
+            <section className="max-w-4xl mx-auto px-4 pb-16">
+                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-8">
+                    <h2 className="text-xl font-bold text-appleDark mb-4 flex items-center gap-2">
+                        <Shield size={20} className="text-amber-500" />
+                        Onemli Bilgilendirme
+                    </h2>
+                    <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
+                        <li className="flex items-start gap-2">
+                            <CheckCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
+                            Bu degerleme, yapay zeka algoritmasi ve guncel piyasa verileri kullanilarak uretilen <strong>tahmini bir degerdir</strong>. Resmi bir ekspertiz raporu yerine gecmez.
+                        </li>
+                        <li className="flex items-start gap-2">
+                            <CheckCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
+                            Sonuclar <strong>yatirim tavsiyesi niteliginde degildir</strong> ve yatirim kararlari icin bagimsiz mali danismanlik alinmasi tavsiye edilir.
+                        </li>
+                        <li className="flex items-start gap-2">
+                            <CheckCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
+                            Kesin alim-satim kararlari icin SPK lisansli gayrimenkul degerleme uzmanlariyla calisilmasi onerilir.
+                        </li>
+                        <li className="flex items-start gap-2">
+                            <CheckCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
+                            Degerlemeler enflasyon oranlari, bolgesel veriler ve yapay zeka analizi temelinde yapilmaktadir. Gercek piyasa fiyatlari farklilik gosterebilir.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
             {/* FAQ */}
             <section className="max-w-3xl mx-auto px-4 pb-20">
-                <h2 className="text-2xl font-bold text-appleDark text-center mb-8">Sıkça Sorulan Sorular</h2>
+                <h2 className="text-2xl font-bold text-appleDark text-center mb-8">Sikca Sorulan Sorular</h2>
                 <div className="space-y-4">
                     {[
-                        { q: "Bu değerleme resmi bir ekspertiz raporu mu?", a: "Hayır. Bu araç piyasa tahmini sunar; kesin alım-satım kararları için SPK lisanslı gayrimenkul değerleme uzmanları ile çalışmanızı öneririz." },
-                        { q: "Verilerim güvende mi?", a: "Evet. İletişim bilgileriniz yalnızca raporunuz için kullanılır. KVKK uyumlu olarak saklanır ve üçüncü taraflarla paylaşılmaz." },
-                        { q: "Sonuçlar ne kadar doğru?", a: "Algoritmamız mahalle çarpanları ve 20+ özellik sayesinde güncel piyasaya en yakın tahminleri üretir. Sönümleme formülümüz fiyat şişmesini önler." },
-                        { q: "İstanbul dışındaki şehirler destekleniyor mu?", a: "Şu anda İstanbul'a odaklanıyoruz. Ankara, İzmir ve Bursa yakında eklenecek." },
+                        { q: "Bu degerleme resmi bir ekspertiz raporu mudur?", a: "Hayir. Bu arac yapay zeka ve piyasa verilerine dayali tahmini bir deger sunar. Kesin alim-satim kararlari icin SPK lisansli gayrimenkul degerleme uzmanlari ile calisilmasi onerilir." },
+                        { q: "Verilerim guvende mi?", a: "Evet. Iletisim bilgileriniz yalnizca raporunuz icin kullanilir. KVKK uyumlu olarak saklanir ve ucuncu taraflarla paylasilmaz." },
+                        { q: "Sonuclar ne kadar dogru?", a: "Algoritmamiz mahalle bazli carpanlar ve 20+ ozellik sayesinde guncel piyasaya en yakin tahminleri uretir. Ancak gercek piyasa kosullari farklilik gosterebilir." },
+                        { q: "Istanbul disindaki sehirler destekleniyor mu?", a: "Su anda Istanbul'a odaklaniyoruz. Ankara, Izmir ve Bursa yakin zamanda eklenecek." },
+                        { q: "Bu hizmet ucretli mi?", a: "Temel degerleme hizmetimiz tamamen ucretsizdir. Kurumsal kullanicilara ozel limitsiz degerleme ve ek ozellikler icin PRO paketlerimize goz atabilirsiniz." },
                     ].map((faq, i) => (
                         <details key={i} className="bg-white border border-gray-100 rounded-xl overflow-hidden group">
                             <summary className="p-5 cursor-pointer font-medium text-appleDark hover:text-appleBlue transition-colors flex items-center justify-between">
                                 {faq.q}
-                                <span className="text-gray-400 group-open:rotate-180 transition-transform">▾</span>
+                                <span className="text-gray-400 group-open:rotate-180 transition-transform ml-2 shrink-0">&#9662;</span>
                             </summary>
                             <div className="px-5 pb-5 text-gray-500 text-sm leading-relaxed">{faq.a}</div>
                         </details>
@@ -148,11 +159,11 @@ export default function NasilHesapliyoruzPage() {
 
             {/* CTA */}
             <section className="bg-appleDark py-16 text-center">
-                <h2 className="text-3xl font-bold text-white mb-4">Evinizin Değerini Hemen Öğrenin</h2>
-                <p className="text-gray-400 mb-8">Ücretsiz, hızlı ve yapay zeka destekli.</p>
+                <h2 className="text-3xl font-bold text-white mb-4">Evinizin Degerini Hemen Ogrenin</h2>
+                <p className="text-gray-400 mb-8">Ucretsiz, hizli ve yapay zeka destekli.</p>
                 <Link href="/" className="inline-flex items-center px-8 py-4 bg-appleBlue text-white font-semibold rounded-2xl hover:bg-blue-600 transition-colors shadow-lg">
                     <Calculator size={20} className="mr-2" />
-                    Değerlemeye Başla
+                    Degerlemeye Basla
                 </Link>
             </section>
         </div>

@@ -1,17 +1,15 @@
 import Link from "next/link";
-import { Mail, MapPin, Hexagon, Instagram, Twitter, Linkedin, Building2, BarChart2, Calculator, HelpCircle, FileText } from "lucide-react";
+import { Mail, MapPin, Hexagon, Instagram, Twitter, Linkedin } from "lucide-react";
 
 import prisma from "@/lib/prisma";
 
 export default async function Footer() {
-    let pages: any[] = [];
     let settings: any = null;
 
     try {
-        pages = await (prisma as any).page.findMany({ select: { id: true, title: true, slug: true } });
         settings = await prisma.systemSettings.findFirst();
     } catch (e) {
-        console.error("Failed to load pages for footer", e);
+        console.error("Failed to load footer settings", e);
     }
 
     return (
@@ -23,10 +21,10 @@ export default async function Footer() {
                     <div className="col-span-2 md:col-span-1">
                         <Link href="/" className="inline-flex items-center gap-2 text-lg font-bold text-appleDark tracking-tight mb-4">
                             <span className="p-1.5 bg-appleDark text-white rounded-lg"><Hexagon size={16} className="fill-current" /></span>
-                            Evinin Değeri
+                            Evinin Degeri
                         </Link>
                         <p className="text-gray-500 text-sm leading-relaxed mb-4">
-                            Yapay zeka ile gayrimenkulünüzün gerçek değerini anında hesaplayın.
+                            Yapay zeka ile gayrimenkulunuzun gercek degerini aninda hesaplayin.
                         </p>
                         <div className="space-y-2 text-gray-500 text-xs">
                             <div className="flex items-center gap-2">
@@ -35,32 +33,30 @@ export default async function Footer() {
                             </div>
                             <div className="flex items-center gap-2">
                                 <MapPin size={12} className="text-appleBlue" />
-                                <span>İstanbul, Türkiye</span>
+                                <span>Istanbul, Turkiye</span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Hakkımızda */}
+                    {/* Kurumsal */}
                     <div>
-                        <h4 className="font-semibold text-appleDark text-sm mb-4">Hakkımızda</h4>
+                        <h4 className="font-semibold text-appleDark text-sm mb-4">Kurumsal</h4>
                         <ul className="space-y-2.5">
-                            <li><Link href="/hakkimizda" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Hakkımızda</Link></li>
-                            <li><Link href="/blog" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Emlak Güncesi</Link></li>
-                            <li><Link href="/nasil-hesapliyoruz" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Nasıl Hesaplıyoruz?</Link></li>
-                            {pages.map((p: any) => (
-                                <li key={p.id}><Link href={`/p/${p.slug}`} className="text-gray-500 hover:text-appleBlue transition-colors text-xs">{p.title}</Link></li>
-                            ))}
+                            <li><Link href="/hakkimizda" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Hakkimizda</Link></li>
+                            <li><Link href="/iletisim" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Iletisim</Link></li>
+                            <li><Link href="/blog" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Emlak Guncesi</Link></li>
+                            <li><Link href="/nasil-hesapliyoruz" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Nasil Hesapliyoruz?</Link></li>
                         </ul>
                     </div>
 
-                    {/* Çözümler */}
+                    {/* Cozumler */}
                     <div>
-                        <h4 className="font-semibold text-appleDark text-sm mb-4">Çözümler</h4>
+                        <h4 className="font-semibold text-appleDark text-sm mb-4">Cozumler</h4>
                         <ul className="space-y-2.5">
-                            <li><Link href="/" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">🏠 Ev Değerleme</Link></li>
-                            <li><Link href="/yatirim-haritasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">📍 Yatırım Haritası</Link></li>
-                            <li><Link href="/b2b" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">🏢 Kurumsal (B2B)</Link></li>
-                            <li><Link href="/b2b/pricing" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">💎 PRO Paketler</Link></li>
+                            <li><Link href="/" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Ev Degerleme</Link></li>
+                            <li><Link href="/yatirim-haritasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Yatirim Haritasi</Link></li>
+                            <li><Link href="/b2b" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Kurumsal (B2B)</Link></li>
+                            <li><Link href="/b2b/pricing" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">PRO Paketler</Link></li>
                         </ul>
                     </div>
 
@@ -68,10 +64,10 @@ export default async function Footer() {
                     <div>
                         <h4 className="font-semibold text-appleDark text-sm mb-4">Yasal</h4>
                         <ul className="space-y-2.5">
-                            <li><Link href="/p/gizlilik-politikasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Gizlilik Politikası</Link></li>
-                            <li><Link href="/p/kullanim-kosullari" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Kullanım Koşulları</Link></li>
-                            <li><Link href="/mesafeli-satis-sozlesmesi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Mesafeli Satış Sözleşmesi</Link></li>
-                            <li><Link href="/iptal-iade" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">İptal ve İade Koşulları</Link></li>
+                            <li><Link href="/p/gizlilik-politikasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Gizlilik Politikasi</Link></li>
+                            <li><Link href="/p/kullanim-kosullari" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Kullanim Kosullari</Link></li>
+                            <li><Link href="/mesafeli-satis-sozlesmesi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Mesafeli Satis Sozlesmesi</Link></li>
+                            <li><Link href="/iptal-iade" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Iptal ve Iade Kosullari</Link></li>
                         </ul>
                     </div>
 
@@ -96,15 +92,15 @@ export default async function Footer() {
                             )}
                         </div>
                         {(!settings?.instagramUrl && !settings?.twitterUrl && !settings?.linkedinUrl) && (
-                            <p className="text-xs text-gray-400 mt-2">Yakında!</p>
+                            <p className="text-xs text-gray-400 mt-2">Yakinda!</p>
                         )}
                     </div>
 
                 </div>
 
                 <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between text-xs text-gray-400">
-                    <p>&copy; {new Date().getFullYear()} Evinin Değeri. Tüm hakları saklıdır.</p>
-                    <p className="mt-2 md:mt-0">Yapay Zeka Destekli Gayrimenkul Değerleme Platformu</p>
+                    <p>&copy; {new Date().getFullYear()} Evinin Degeri. Tum haklari saklidir.</p>
+                    <p className="mt-2 md:mt-0">Yapay Zeka Destekli Gayrimenkul Degerleme Platformu</p>
                 </div>
             </div>
         </footer>
