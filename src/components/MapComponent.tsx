@@ -86,8 +86,17 @@ export default function MapComponent({ lat, lng, onPOIsLoaded }: MapProps) {
                 );
                 out center;`;
 
-                const res = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(combinedQuery)}`);
-                const data = await res.json();
+                let data;
+                try {
+                    const res = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(combinedQuery)}`);
+                    if (!res.ok) throw new Error("Main Overpass API failed");
+                    data = await res.json();
+                } catch (firstError) {
+                    console.warn("Main Overpass failed, trying fallback...", firstError);
+                    const fallbackRes = await fetch(`https://lz4.overpass-api.de/api/interpreter?data=${encodeURIComponent(combinedQuery)}`);
+                    if (!fallbackRes.ok) throw new Error("Fallback Overpass API failed");
+                    data = await fallbackRes.json();
+                }
 
                 (data.elements || []).forEach((e: any) => {
                     const eLat = e.lat || e.center?.lat;

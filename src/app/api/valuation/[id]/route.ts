@@ -74,21 +74,18 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         }
 
         // V27: m2 fiyat bolge karsilastirmasi ve Gecmis degerleme trendi
-        // Calculate real average m2 price for this neighborhood/district
-        const aggregations = await prisma.valuationRequest.aggregate({
-            _avg: {
-                estimatedValue: true,
-                netSqm: true
-            },
-            where: {
-                district: record.district,
-                city: record.city,
-            }
+        const districtValuations = await prisma.valuationRequest.findMany({
+            where: { district: record.district, city: record.city },
+            select: { estimatedValue: true, netSqm: true }
         });
 
         let districtAvgSqm = 0;
-        if (aggregations._avg.estimatedValue && aggregations._avg.netSqm) {
-            districtAvgSqm = aggregations._avg.estimatedValue / aggregations._avg.netSqm;
+        if (districtValuations && districtValuations.length > 0) {
+            const validVids = districtValuations.filter(v => v.estimatedValue > 0 && v.netSqm > 0);
+            if (validVids.length > 0) {
+                const sum = validVids.reduce((acc, v) => acc + (v.estimatedValue / v.netSqm), 0);
+                districtAvgSqm = Math.round(sum / validVids.length);
+            }
         }
 
         // Fetch last 3 months trend for the neighborhood
