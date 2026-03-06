@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Hexagon, Map, BookOpen, Building2, User, Calculator, LineChart, Target, Bot } from "lucide-react";
+import { Hexagon, Map, BookOpen, Building2, User, Calculator, LineChart, Target, Bot, CreditCard } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 
@@ -36,6 +36,9 @@ export default function Header() {
                         <Link href="/radari" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/radari' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
                             <Target size={16} className="text-indigo-500" /> Fırsat Radarı
                         </Link>
+                        <Link href="/fiyatlandirma" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/fiyatlandirma' ? 'text-appleBlue' : 'text-gray-500 hover:text-orange-500'}`}>
+                            <CreditCard size={16} /> Paketler
+                        </Link>
                         <Link href="/yatirim-haritasi" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/yatirim-haritasi' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
                             <Map size={16} /> Isı Haritası
                         </Link>
@@ -64,7 +67,10 @@ export default function Header() {
                                 <Link href="/giris" className="text-sm font-medium text-gray-600 hover:text-appleDark transition-colors">
                                     Giriş Yap
                                 </Link>
-                                <Link href="/b2b" className="px-4 py-2 border border-gray-200 text-gray-700 bg-white rounded-full text-sm font-medium shadow-sm hover:bg-gray-50 transition-all flex items-center gap-1.5">
+                                <Link href="/kayit" className="px-4 py-2 border border-gray-200 text-gray-700 bg-white rounded-full text-sm font-medium shadow-sm hover:bg-gray-50 transition-all flex items-center gap-1.5">
+                                    Kayıt Ol
+                                </Link>
+                                <Link href="/b2b" className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all flex items-center gap-1.5">
                                     Kurumsal (B2B)
                                 </Link>
                             </div>
@@ -76,7 +82,10 @@ export default function Header() {
                         {session ? (
                             <Link href={session.user?.role === 'user' ? '/portfoy' : '/b2b/dashboard'} className="px-3 py-1.5 bg-gray-50 text-appleDark rounded-lg text-xs font-bold border border-gray-200">Panel</Link>
                         ) : (
-                            <Link href="/giris" className="px-3 py-1.5 bg-blue-50 text-appleBlue rounded-lg text-xs font-bold border border-blue-100">Giriş</Link>
+                            <div className="flex gap-2">
+                                <Link href="/giris" className="px-3 py-1.5 bg-transparent text-gray-600 rounded-lg text-xs font-bold">Giriş</Link>
+                                <Link href="/kayit" className="px-3 py-1.5 bg-blue-50 text-appleBlue rounded-lg text-xs font-bold border border-blue-100">Kayıt Ol</Link>
+                            </div>
                         )}
                     </div>
                 </div>

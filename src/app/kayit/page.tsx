@@ -35,8 +35,9 @@ export default function UserRegisterPage() {
             return;
         }
 
-        if (formData.password.length < 6) {
-            setError("Şifre en az 6 karakter olmalıdır.");
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W_]{8,}$/;
+        if (!passwordRegex.test(formData.password)) {
+            setError("Şifre en az 8 karakter olmalı, en az bir büyük harf, bir küçük harf ve bir rakam içermelidir.");
             setLoading(false);
             return;
         }
@@ -184,6 +185,7 @@ export default function UserRegisterPage() {
                                         placeholder="••••••••"
                                     />
                                 </div>
+                                <p className="text-[10px] text-gray-400 mt-1">En az 8 kark., 1 büyük, 1 küçük harf ve rakam.</p>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Şifre (Tekrar)</label>

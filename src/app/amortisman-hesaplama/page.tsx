@@ -8,11 +8,17 @@ export default function AmortismanHesaplama() {
     const [propertyValue, setPropertyValue] = useState<string>("5000000");
     const [monthlyRent, setMonthlyRent] = useState<string>("25000");
 
-    const value = Number(propertyValue) || 0;
-    const rent = Number(monthlyRent) || 0;
+    // Değerler "Hesapla" butonuna basılana kadar pasif kalır
+    const [calculatedValue, setCalculatedValue] = useState<number>(5000000);
+    const [calculatedRent, setCalculatedRent] = useState<number>(25000);
 
-    const amortMonths = rent > 0 ? (value / rent).toFixed(0) : "0";
-    const amortYears = rent > 0 ? (value / rent / 12).toFixed(1) : "0.0";
+    const handleCalculate = () => {
+        setCalculatedValue(Number(propertyValue) || 0);
+        setCalculatedRent(Number(monthlyRent) || 0);
+    };
+
+    const amortMonths = calculatedRent > 0 ? (calculatedValue / calculatedRent).toFixed(0) : "0";
+    const amortYears = calculatedRent > 0 ? (calculatedValue / calculatedRent / 12).toFixed(1) : "0.0";
     const turkeyAverage = 214; // yaklasik 18 yil ortalama
     const isGood = Number(amortMonths) > 0 && Number(amortMonths) < turkeyAverage;
 
@@ -68,6 +74,13 @@ export default function AmortismanHesaplama() {
                                 <Info className="text-purple-600 mr-3 shrink-0 mt-0.5" size={18} />
                                 <p className="text-sm text-purple-800">Türkiye ortalamasında konutların amortisman süresi 16 - 20 Yıl (190 - 240 Ay) bandındadır.</p>
                             </div>
+
+                            <button
+                                onClick={handleCalculate}
+                                className="w-full bg-appleDark text-white font-bold py-4 rounded-2xl hover:bg-appleBlue transition-all shadow-md active:scale-95 flex items-center justify-center gap-2"
+                            >
+                                <RefreshCcw size={20} /> Hemen Hesapla
+                            </button>
                         </div>
 
                         {/* Results */}

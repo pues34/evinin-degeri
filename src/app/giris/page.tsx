@@ -86,8 +86,19 @@ function LoginForm() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Şifre</label>
-                            <div className="mt-1 relative rounded-xl shadow-sm">
+                            <div className="flex items-center justify-between mb-1">
+                                <label className="block text-sm font-medium text-gray-700">Şifre</label>
+                                <div className="text-sm">
+                                    <button
+                                        type="button"
+                                        onClick={() => alert("Şifre sıfırlama bağlantısı e-posta adresinize gönderildi. (Geliştirme Aşamasındadır)")}
+                                        className="font-medium text-appleBlue hover:text-indigo-500"
+                                    >
+                                        Şifremi unuttum?
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="relative rounded-xl shadow-sm">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <Lock className="h-5 w-5 text-gray-400" />
                                 </div>

@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { Search, MapPin, Tag, TrendingDown, Target, Zap, AlertCircle, Hexagon, Loader2 } from "lucide-react";
+import { Search, MapPin, Tag, TrendingDown, Target, Zap, AlertCircle, Hexagon, Loader2, UserPlus, LogIn } from "lucide-react";
+import Link from "next/link";
 
 export default function FirsatRadariPage() {
     const { data: session } = useSession();
@@ -29,7 +30,8 @@ export default function FirsatRadariPage() {
     }, [isPremium]);
 
     return (
-        <div className="min-h-screen flex flex-col pt-24 bg-gray-50">
+        <div className="min-h-screen flex flex-col pt-24 bg-gray-50">
+
             <main className="flex-grow container mx-auto px-4 py-8 max-w-6xl relative">
 
                 {/* Premium Blocker Overlay for non-logged or free users */}
@@ -39,17 +41,36 @@ export default function FirsatRadariPage() {
                             <div className="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <Target size={40} />
                             </div>
-                            <h2 className="text-3xl font-extrabold text-appleDark mb-4">Bu Bölüm Sadece Premium Yatırımcılara Özeldir!</h2>
-                            <p className="text-gray-500 mb-8 text-lg">Yapay Zeka algoritmamız her gün sahibinden.com vb. portallardaki binlerce ilanı tarar ve <strong>değerinin %10 altında satılan</strong> fırsat evlerini bulup bu radara taşır.</p>
 
-                            <div className="bg-gradient-to-r from-orange-400 to-red-500 text-white p-6 rounded-2xl mb-8 flex items-center shadow-md">
-                                <Zap className="mr-4 shrink-0" size={32} />
-                                <p className="text-sm font-bold text-left">Her 100 ilandan sadece 2 tanesi piyasa değerinin altında oluyor. Fırsatları başkalarından önce yakalamak için Premium&apos;a geçin.</p>
-                            </div>
+                            {!session ? (
+                                <>
+                                    <h2 className="text-3xl font-extrabold text-appleDark mb-4">Fırsat Radarına Hoş Geldiniz!</h2>
+                                    <p className="text-gray-500 mb-8 text-lg">Yapay Zeka algoritmamız her gün sahibinden.com vb. portallardaki ilanları tarar ve <strong>değerinin %10 altında satılan</strong> kelepir evleri bulur. İlanları görmek için lüfen giriş yapın.</p>
 
-                            <button className="w-full bg-appleDark text-white py-4 rounded-xl font-bold text-lg hover:bg-appleBlue transition shadow-sm">
-                                Premium Üyeliğe Yükselt (Aylık 299 TL)
-                            </button>
+                                    <div className="flex flex-col sm:flex-row gap-4">
+                                        <Link href="/kayit" className="flex-1 bg-appleDark text-white py-4 rounded-xl font-bold text-lg hover:bg-appleBlue transition shadow-sm flex items-center justify-center gap-2">
+                                            <UserPlus size={20} /> Kayıt Ol
+                                        </Link>
+                                        <Link href="/giris" className="flex-1 bg-white text-appleDark border border-gray-200 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition shadow-sm flex items-center justify-center gap-2">
+                                            <LogIn size={20} /> Giriş Yap
+                                        </Link>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <h2 className="text-3xl font-extrabold text-appleDark mb-4">Bu Bölüm Sadece Premium Yatırımcılara Özeldir!</h2>
+                                    <p className="text-gray-500 mb-8 text-lg">Yapay Zeka algoritmamız her gün sahibinden.com vb. portallardaki binlerce ilanı tarar ve <strong>değerinin %10 altında satılan</strong> fırsat evlerini bulup bu radara taşır.</p>
+
+                                    <div className="bg-gradient-to-r from-orange-400 to-red-500 text-white p-6 rounded-2xl mb-8 flex items-center shadow-md">
+                                        <Zap className="mr-4 shrink-0" size={32} />
+                                        <p className="text-sm font-bold text-left">Her 100 ilandan sadece 2 tanesi piyasa değerinin altında oluyor. Fırsatları başkalarından önce yakalamak için Premium&apos;a geçin.</p>
+                                    </div>
+
+                                    <button className="w-full bg-appleDark text-white py-4 rounded-xl font-bold text-lg hover:bg-appleBlue transition shadow-sm">
+                                        Premium Üyeliğe Yükselt (Aylık 299 TL)
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 )}
@@ -124,6 +145,7 @@ export default function FirsatRadariPage() {
                         ))}
                     </div>
                 )}
-            </main>        </div>
+            </main>
+        </div>
     );
 }
