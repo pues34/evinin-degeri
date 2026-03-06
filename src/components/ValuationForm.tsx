@@ -12,11 +12,16 @@ const steps = [
     { id: 2, title: "Bina", icon: Building },
     { id: 3, title: "İç Mekan", icon: Home },
     { id: 4, title: "Ekstralar", icon: CheckCircle2 },
+    { id: 5, title: "Yapay Zeka (Foto)", icon: Calculator },
 ];
 
 export default function ValuationForm() {
     const [currentStep, setCurrentStep] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Photo Upload States
+    const [photos, setPhotos] = useState<string[]>([]);
+    const [uploadingPhotos, setUploadingPhotos] = useState(false);
 
     // Dynamic location states
     const [locationsMap, setLocationsMap] = useState<City[]>([]);
@@ -66,13 +71,42 @@ export default function ValuationForm() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        if (files.length + photos.length > 7) {
+            alert("En fazla 7 adet fotoğraf yükleyebilirsiniz.");
+            return;
+        }
+
+        setUploadingPhotos(true);
+        const newPhotos: string[] = [];
+
+        files.forEach(file => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                newPhotos.push(reader.result as string);
+                if (newPhotos.length === files.length) {
+                    setPhotos(prev => [...prev, ...newPhotos]);
+                    setUploadingPhotos(false);
+                }
+            };
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        });
+    };
+
+    const removePhoto = (index: number) => {
+        setPhotos(photos.filter((_, i) => i !== index));
+    };
+
     const nextStep = () => {
         // Prevent progressing if location is not fully selected
         if (currentStep === 1 && (!formData.city || !formData.district || !formData.neighborhood)) {
             alert("Lütfen il, ilçe ve mahalle seçimini tamamlayın.");
             return;
         }
-        if (currentStep < 4) {
+        if (currentStep < 5) {
             setCurrentStep(prev => prev + 1);
         }
     };
@@ -275,6 +309,61 @@ export default function ValuationForm() {
                         </div>
                     </div>
                 );
+            case 5:
+                return (
+                    <div className="space-y-6">
+                        <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100 flex items-start gap-4">
+                            <CheckCircle2 className="text-appleBlue mt-1 shrink-0" size={20} />
+                            <div>
+                                <h4 className="text-sm font-bold text-appleDark mb-1">Vision AI Ekspertizi (Opsiyonel)</h4>
+                                <p className="text-xs text-gray-600 leading-relaxed">
+                                    Evinizin mutfak, banyo, salon, zemin veya dış görünümünü gösteren maksimum 7 adet fotoğraf yükleyin. Yapay zekamız, malzemenin lükslük/masraf durumunu analiz ederek değerlemeye akıllıca yansıtacaktır.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div className="flex items-center justify-between mb-2">
+                                <label className="block text-sm font-medium text-appleDark">Fotoğraf Yükle (Maks 7)</label>
+                                <span className="text-xs font-semibold text-gray-500">{photos.length} / 7</span>
+                            </div>
+
+                            <label className={`w-full flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-2xl transition-all cursor-pointer ${photos.length >= 7 ? 'opacity-50 pointer-events-none border-gray-200 bg-gray-50' : 'border-blue-200 hover:border-appleBlue bg-blue-50/30'}`}>
+                                <div className="p-3 bg-white text-appleBlue rounded-full shadow-sm mb-3">
+                                    <Home size={24} />
+                                </div>
+                                <span className="text-sm font-medium text-gray-700">Tıkla veya Sürükle Bırak</span>
+                                <span className="text-xs text-gray-400 mt-1">PNG, JPG (Maks 5MB)</span>
+                                <input
+                                    type="file"
+                                    className="hidden"
+                                    multiple
+                                    accept="image/*"
+                                    onChange={handlePhotoUpload}
+                                    disabled={photos.length >= 7 || uploadingPhotos}
+                                />
+                            </label>
+
+                            {uploadingPhotos && <p className="text-xs text-appleBlue text-center mt-2 font-medium animate-pulse">Fotoğraflar İşleniyor...</p>}
+                        </div>
+
+                        {photos.length > 0 && (
+                            <div className="grid grid-cols-4 gap-3 mt-4">
+                                {photos.map((photo, idx) => (
+                                    <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 group">
+                                        <img src={photo} alt={`Uploaded ${idx}`} className="w-full h-full object-cover" />
+                                        <button
+                                            onClick={() => removePhoto(idx)}
+                                            className="absolute top-1 right-1 p-1 bg-white/90 text-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white"
+                                        >
+                                            <span className="text-xs font-bold px-1">X</span>
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                );
         }
     };
 
@@ -323,7 +412,7 @@ export default function ValuationForm() {
                         Geri
                     </button>
 
-                    {currentStep < 4 ? (
+                    {currentStep < 5 ? (
                         <button
                             onClick={nextStep}
                             className="flex items-center px-8 py-3 bg-appleDark text-white rounded-2xl text-sm font-semibold hover:bg-black transition-all shadow-lg shadow-black/10 transform hover:-translate-y-1"
@@ -343,7 +432,7 @@ export default function ValuationForm() {
                 </div>
             </div>
 
-            <LeadModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} formData={formData} />
+            <LeadModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} formData={{ ...formData, aiPhotosBase64: photos }} />
         </>
     );
 }

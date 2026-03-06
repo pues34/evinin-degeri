@@ -4,6 +4,8 @@ import { Resend } from "resend";
 import { checkRateLimit } from "@/lib/rateLimit";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { getEarthquakeRiskForDistrict } from "@/lib/earthquakeData";
+import { getLiveMarketIndex } from "@/lib/marketIndex";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 import prisma from "@/lib/prisma";
@@ -27,7 +29,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { contactInfo, agreed, ...propertyData } = body;
+    const { contactInfo, agreed, aiPhotosBase64, ...propertyData } = body;
 
     if (!agreed) {
       return NextResponse.json({ success: false, error: "Legal approval required" }, { status: 400 });
@@ -252,26 +254,107 @@ export async function POST(req: NextRequest) {
       console.warn("Could not load location multipliers from DB:", err);
     }
 
-    // Final value application
+    // Final base value application
     estimatedValue *= regionMultiplier;
 
-    // 2. OpenAI Integration (JSON Structured Output for Demographics)
+    // === MACROECONOMIC (INTEREST RATE) IMPACT ===
+    // High mortgage rates (> %3 monthly) generally decrease demand and suppress real house prices.
+    // In a real scenario, this would be fetched live from TCMB. For this MVP, we simulate:
+    const currentMortgageRate = 3.85; // % monthly
+    let macroMultiplier = 1.0;
+    if (currentMortgageRate > 3.0) {
+      // Rule of thumb: every 1% above 3% drops cash value effectively by ~3%
+      const excessRate = currentMortgageRate - 3.0;
+      macroMultiplier = 1 - (excessRate * 0.03);
+    } else if (currentMortgageRate < 1.5) {
+      macroMultiplier = 1.05; // Cheap credit boosts prices
+    }
+    estimatedValue *= macroMultiplier;
+
+    // === EARTHQUAKE & SOIL RISK INTEGRATION ===
+    const earthquakeData = getEarthquakeRiskForDistrict(propertyData.city, propertyData.district);
+    estimatedValue *= earthquakeData.multiplier;
+
+    // === LIVE MARKET INDEX INTEGRATION ===
+    const marketData = getLiveMarketIndex(propertyData.city, propertyData.district);
+    estimatedValue *= marketData.suggestedMultiplier;
+
+    // === VISION AI INTEGRATION ===
+    let visionMultiplier = 1.0;
+    let visionAnalysisText = "Fotoğraf yüklenmediği için standart analiz yapıldı.";
+
+    if (aiPhotosBase64 && Array.isArray(aiPhotosBase64) && aiPhotosBase64.length > 0 && process.env.OPENAI_API_KEY) {
+      try {
+        const contentPayload: any[] = [
+          {
+            type: "text",
+            text: `Sen profesyonel bir gayrimenkul değerleme uzmanısın. Ekteki fotoğrafları inceleyerek evin genel durumu, malzeme kalitesi (lüks, standart, masraflı) ve kondisyonu hakkında yorum yap.
+                Özellikle mutfak, banyo ve zemin kaplamalarına dikkat et. Salon boyutları ve ışık alma durumunu değerlendir.
+                
+                Lütfen dönüşünü SADECE aşağıdaki JSON formatında yap ve başka hiçbir şey yazma:
+                {
+                    "multiplier": 1.05,
+                    "analysis": "Evde birinci sınıf ahşap parke ve özel tasarım ankastre mutfak kullanılmış. Banyo tamamen yenilenmiş ve lüks vitrifiye mevcut. Bu durum evin değerine belirgin bir prim katacaktır."
+                }`
+          }
+        ];
+
+        // Ensure we only process up to 7 photos
+        const photosToProcess = aiPhotosBase64.slice(0, 7);
+
+        for (const base64Image of photosToProcess) {
+          contentPayload.push({
+            type: "image_url",
+            image_url: {
+              url: base64Image,
+              detail: "low"
+            }
+          });
+        }
+
+        const visionResponse = await openai.chat.completions.create({
+          model: "gpt-4o-mini", // Use mini for faster vision processing in this context, or gpt-4o if high detail is needed.
+          messages: [
+            { role: "system", content: "Sen profesyonel bir gayrimenkul değerleme AI uzmanısın. Yalnızca JSON formatında yanıt vermelisin." },
+            { role: "user", content: contentPayload }
+          ],
+          response_format: { type: "json_object" },
+          max_tokens: 500,
+        });
+
+        const vResultText = visionResponse.choices[0]?.message?.content || "{}";
+        const vParsed = JSON.parse(vResultText);
+
+        visionMultiplier = vParsed.multiplier || 1.0;
+        visionAnalysisText = vParsed.analysis || "Fotoğraf analizi tamamlandı.";
+
+        // Clamp the vision multiplier to prevent extreme manipulation (e.g., max 25% swing)
+        visionMultiplier = Math.min(Math.max(visionMultiplier, 0.75), 1.25);
+
+        estimatedValue *= visionMultiplier; // Apply Vision AI impact immediately
+
+      } catch (err) {
+        console.error("Vision AI integration error:", err);
+      }
+    }
+
+    // 2. OpenAI Integration (JSON Structured Output for Demographics and Summary)
     let aiComment = `Yapay zeka analizini tamamlayamadı. Bölgedeki kentsel dönüşüm ve talebe göre ortalama fiyat: ${new Intl.NumberFormat('tr-TR').format(estimatedValue)} TL olarak değerlendirilmiştir.`;
-    let demographicsData = null;
+    let demographicsData: any = { marketCondition: marketData.condition, marketIndex: marketData.indexValue };
 
     if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== "buraya-kendi-openai-api-keyinizi-girin") {
       try {
-        const prmt = `Sen uzman bir emlak ekspertiz uzmanısın. ${propertyData.city} ili, ${propertyData.district} ilçesi, ${propertyData.neighborhood} mahallesinde bulunan, ${age} yaşında, ${propertyData.rooms} oda sayılı, net ${propertyData.netSqm} m2, ${floorType} bir konutu değerlendiriyorsun. Konutun ısıtma tipi: ${propertyData.heatingType || "Bilinmiyor"}, cephesi: ${propertyData.facade || "Bilinmiyor"}, manzarası: ${propertyData.view || "Yok"}. Lokasyon çarpanı ${regionMultiplier}x olarak belirlenmiş. Algoritmik tahmini piyasa değeri: ${new Intl.NumberFormat('tr-TR').format(estimatedValue)} TL.
+        const prmt = `Sen uzman bir emlak ekspertiz uzmanısın.${propertyData.city} ili, ${propertyData.district} ilçesi, ${propertyData.neighborhood} mahallesinde bulunan, ${age} yaşında, ${propertyData.rooms} oda sayılı, net ${propertyData.netSqm} m2, ${floorType} bir konutu değerlendiriyorsun.Konutun ısıtma tipi: ${propertyData.heatingType || "Bilinmiyor"}, cephesi: ${propertyData.facade || "Bilinmiyor"}, manzarası: ${propertyData.view || "Yok"}. Lokasyon çarpanı ${regionMultiplier}x olarak belirlenmiş.Algoritmik tahmini piyasa değeri: ${new Intl.NumberFormat('tr-TR').format(estimatedValue)} TL.Fotoğraf Analitiği Sonucu(Eğer varsa): ${visionAnalysisText}.
 
-ÖNEMLİ: Lütfen SADECE geçerli bir JSON formatında cevap ver. Başka hiçbir açıklama yazma. JSON formatı tam olarak şöyle olmalı:
-{
-  "aiComment": "Evin özelliklerine, yaşına, konum avantajlarına (örn: ulaşım, sahile yakınlık vb.) ve mahallenin gayrimenkul yatırım potansiyeline değinen, amortisman değerlendirmesi de içeren 4-5 cümlelik kapsamlı ve profesyonel bir analiz yorumu yaz. Yapay zeka olduğunu belli etme, direkt analiz yap.",
-  "demographics": {
-    "populationDensity": "Örn: Yoğun Dağılım / Orta / Seyrek",
-    "socioEconomicStatus": "Örn: A+ seviye elit / B sınıfı gelişen / C sınıfı vb.",
-    "averageAge": "Örn: Genç / Orta Yaş / Emekli Ağırlıklı"
-  }
-}`;
+    ÖNEMLİ: Lütfen SADECE geçerli bir JSON formatında cevap ver.Başka hiçbir açıklama yazma.JSON formatı tam olarak şöyle olmalı:
+    {
+      "aiComment": "Evin özelliklerine, yaşına, konum avantajlarına (örn: ulaşım, sahile yakınlık vb.) ve mahallenin gayrimenkul yatırım potansiyeline değinen, amortisman değerlendirmesi de içeren 4-5 cümlelik kapsamlı ve profesyonel bir analiz yorumu yaz. Yapay zeka olduğunu belli etme, direkt analiz yap.",
+        "demographics": {
+        "populationDensity": "Örn: Yoğun Dağılım / Orta / Seyrek",
+          "socioEconomicStatus": "Örn: A+ seviye elit / B sınıfı gelişen / C sınıfı vb.",
+            "averageAge": "Örn: Genç / Orta Yaş / Emekli Ağırlıklı"
+      }
+    } `;
 
         const completion = await openai.chat.completions.create({
           model: "gpt-4o-mini",
@@ -286,7 +369,7 @@ export async function POST(req: NextRequest) {
         if (completion.choices[0].message.content) {
           const parsed = JSON.parse(completion.choices[0].message.content);
           if (parsed.aiComment) aiComment = parsed.aiComment;
-          if (parsed.demographics) demographicsData = parsed.demographics;
+          if (parsed.demographics) demographicsData = { ...demographicsData, ...parsed.demographics };
         }
       } catch (err) {
         console.error("OpenAI Hata:", err);
@@ -317,7 +400,11 @@ export async function POST(req: NextRequest) {
         aiComment: aiComment,
         ipAddress: ip !== "unknown" ? ip : null,
         demographics: demographicsData ? demographicsData : undefined,
+        visionAnalysis: aiPhotosBase64 && aiPhotosBase64.length > 0 ? { multiplier: visionMultiplier, text: visionAnalysisText, photoCount: aiPhotosBase64.length } : undefined,
         realtorId: session?.user?.role === "realtor" ? session.user.id : null,
+        // (Earthquake Risk string can be appended to AI Comment or tracked separately if DB supports it. 
+        //  For now, appending it to the AI Comment to avoid another DB migration unless necessary)
+        // contactInfo relation stays the same...
         contactInfo: {
           create: {
             fullName: contactInfo.fullName,
@@ -338,37 +425,49 @@ export async function POST(req: NextRequest) {
           to: contactInfo.email,
           subject: "Evinizin Değerleme Raporu Hazır!",
           html: `
-              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
-                <div style="text-align: center; padding: 20px 0;">
-                  <h1 style="color: #2563eb; margin-bottom: 5px;">Evinin Değeri</h1>
-                  <p style="color: #64748b; font-size: 14px; margin-top: 0;">Yapay Zeka Destekli Gayrimenkul Analizi</p>
-                </div>
-                
-                <div style="background-color: #f8fafc; border-radius: 12px; padding: 30px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
-                  <h2 style="margin-top: 0;">Merhaba ${contactInfo.fullName},</h2>
-                  <p>Sistemimizi kullandığınız için teşekkür ederiz. Evinizin değerleme hesaplaması yapay zeka ve güncel piyasa çarpanları kullanılarak başarıyla tamamlandı.</p>
-                  
-                  <div style="background-color: #fff; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #3b82f6; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                    <p style="margin: 0; font-size: 14px; color: #64748b;"><strong>Talep Numarası:</strong> #${(record as any).requestNumber}</p>
-                    <h3 style="color: #0f172a; font-size: 24px; margin: 10px 0;">Tahmini Değer: ${new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(estimatedValue)}</h3>
-                    <p style="margin: 0; font-style: italic; color: #475569;"><strong>Yapay Zeka Özeti:</strong> ${aiComment}</p>
-                  </div>
-                  
-                  <div style="text-align: center; margin-top: 30px;">
-                    <a href="https://evindegeri.com/result/${record.id}" style="background-color: #2563eb; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Raporun Tamamını Görüntüle</a>
-                  </div>
-                </div>
-
-                <div style="font-size: 12px; color: #94a3b8; text-align: justify; padding: 0 10px;">
-                  <p><strong>Yasal Uyarı:</strong> Bu raporda sunulan değerler, bölgesel piyasa verileri ve algoritmik yapay zeka varsayımlarına dayalı tahmini rakamlardır. Sunulan sonuçlar kesin bir ekspertiz raporu niteliği taşımaz ve <strong>kesinlikle bir yatırım tavsiyesi değildir</strong>. Alım-satım kararlarınızda profesyonel lisanslı bir değerleme uzmanına veya gayrimenkul danışmanına başvurmanız önerilir.</p>
-                  
-                  <p style="text-align: center; margin-top: 20px;">
-                    Geri bildirimleriniz ve sorularınız için bize ulaşın:<br/>
-                    <a href="mailto:evindestek@gmail.com" style="color: #2563eb; text-decoration: none;">evindestek@gmail.com</a>
-                  </p>
-                </div>
+      < div style = "font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;" >
+        <div style="text-align: center; padding: 20px 0;" >
+          <h1 style="color: #2563eb; margin-bottom: 5px;" > Evinin Değeri </h1>
+            < p style = "color: #64748b; font-size: 14px; margin-top: 0;" > Yapay Zeka Destekli Gayrimenkul Analizi </p>
               </div>
-            `
+
+              < div style = "background-color: #f8fafc; border-radius: 12px; padding: 30px; margin-bottom: 20px; border: 1px solid #e2e8f0;" >
+                <h2 style="margin-top: 0;" > Merhaba ${contactInfo.fullName}, </h2>
+                  < p > Sistemimizi kullandığınız için teşekkür ederiz.Evinizin değerleme hesaplaması yapay zeka ve güncel piyasa çarpanları kullanılarak başarıyla tamamlandı.</p>
+
+                    < div style = "background-color: #fff; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #3b82f6; box-shadow: 0 1px 3px rgba(0,0,0,0.1);" >
+                      <p style="margin: 0; font-size: 14px; color: #64748b;"><strong>Talep Numarası:</strong> #${(record as any).requestNumber}</p>
+                    <h3 style="color: #0f172a; font-size: 24px; margin: 10px 0;">Tahmini Değer: ${new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(estimatedValue)}</h3>
+                    
+                    ${earthquakeData.riskLevel !== "BİLİNMİYOR" ? `
+                    <div style="margin: 15px 0; padding: 10px; background-color: #f1f5f9; border-radius: 6px;">
+                        <p style="margin: 0; font-size: 13px; color: #334155;"><strong>Zemin/Deprem Riski:</strong> ${earthquakeData.riskLevel}</p>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #64748b;">${earthquakeData.details}</p>
+                    </div>` : ""}
+                    
+                    <div style="margin: 15px 0; padding: 10px; background-color: #f8fafc; border-radius: 6px; border-left: 3px solid #10b981;">
+                        <p style="margin: 0; font-size: 13px; color: #334155;"><strong>Piyasa Durumu:</strong> ${marketData.condition}</p>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #64748b;">Bölgedeki canlı ilan endeksi: ${marketData.indexValue}/100. Piyasa hızına göre değerlemeye ${marketData.suggestedMultiplier !== 1.0 ? "%" + Math.round(Math.abs(1 - marketData.suggestedMultiplier) * 100) + " düzeltme" : "nötr etki"} uygulandı.</p>
+                    </div>
+
+                    <p style="margin: 0; font-style: italic; color: #475569;"><strong>Yapay Zeka Özeti:</strong> ${aiComment}</p>
+                  </div>          </div>
+
+                            < div style = "text-align: center; margin-top: 30px;" >
+                              <a href="https://evindegeri.com/result/${record.id}" style = "background-color: #2563eb; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;" > Raporun Tamamını Görüntüle </a>
+                                </div>
+                                </div>
+
+                                < div style = "font-size: 12px; color: #94a3b8; text-align: justify; padding: 0 10px;" >
+                                  <p><strong>Yasal Uyarı: </strong> Bu raporda sunulan değerler, bölgesel piyasa verileri ve algoritmik yapay zeka varsayımlarına dayalı tahmini rakamlardır. Sunulan sonuçlar kesin bir ekspertiz raporu niteliği taşımaz ve <strong>kesinlikle bir yatırım tavsiyesi değildir</strong >.Alım - satım kararlarınızda profesyonel lisanslı bir değerleme uzmanına veya gayrimenkul danışmanına başvurmanız önerilir.</p>
+
+                                    < p style = "text-align: center; margin-top: 20px;" >
+                                      Geri bildirimleriniz ve sorularınız için bize ulaşın: <br/>
+                                        < a href = "mailto:evindestek@gmail.com" style = "color: #2563eb; text-decoration: none;" > evindestek@gmail.com</a>
+                                          </p>
+                                          </div>
+                                          </div>
+                                            `
         });
 
         // Send Notification to Admin
@@ -377,20 +476,20 @@ export async function POST(req: NextRequest) {
           to: "evindestek@gmail.com", // Admin email
           subject: "Yeni Değerleme Talebi!",
           html: `
-              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                <h2 style="color: #2563eb;">Yeni Değerleme Oluşturuldu</h2>
-                <p>Sistem üzerinden yeni bir değerleme raporu oluşturuldu.</p>
-                <ul style="background: #f8fafc; padding: 15px; border-radius: 8px;">
-                  <li><strong>Talep No:</strong> #${(record as any).requestNumber}</li>
-                  <li><strong>Müşteri:</strong> ${contactInfo.fullName}</li>
-                  <li><strong>E-posta:</strong> ${contactInfo.email}</li>
-                  <li><strong>Telefon:</strong> ${contactInfo.phone}</li>
-                  <li><strong>Konum:</strong> ${propertyData.neighborhood}, ${propertyData.district}, ${propertyData.city}</li>
-                  <li><strong>Tahmini Değer:</strong> ${new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(estimatedValue)}</li>
-                </ul>
-                <p>Yönetim panelinden Talepler sekmesini inceleyebilirsiniz.</p>
-              </div>
-          `
+                                          < div style = "font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;" >
+                                            <h2 style="color: #2563eb;" > Yeni Değerleme Oluşturuldu </h2>
+                                              < p > Sistem üzerinden yeni bir değerleme raporu oluşturuldu.</p>
+                                                < ul style = "background: #f8fafc; padding: 15px; border-radius: 8px;" >
+                                                  <li><strong>Talep No: </strong> #${(record as any).requestNumber}</li >
+                                                    <li><strong>Müşteri: </strong> ${contactInfo.fullName}</li >
+                                                      <li><strong>E - posta: </strong> ${contactInfo.email}</li >
+                                                        <li><strong>Telefon: </strong> ${contactInfo.phone}</li >
+                                                          <li><strong>Konum: </strong> ${propertyData.neighborhood}, ${propertyData.district}, ${propertyData.city}</li >
+                                                            <li><strong>Tahmini Değer: </strong> ${new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(estimatedValue)}</li >
+                                                              </ul>
+                                                              < p > Yönetim panelinden Talepler sekmesini inceleyebilirsiniz.</p>
+                                                                </div>
+                                                                  `
         });
 
       } catch (e) {

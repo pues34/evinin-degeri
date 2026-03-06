@@ -1,17 +1,19 @@
 "use client";
 
-import { Crown, Activity, ExternalLink, History, TrendingUp, Download, CheckCircle, BarChart3, Users, Clock, UserPlus, LogOut } from "lucide-react";
+import { Crown, Activity, ExternalLink, History, TrendingUp, Download, CheckCircle, BarChart3, Users, Clock, UserPlus, LogOut, Share2, X, Map } from "lucide-react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import FastSupportForm from "@/components/FastSupportForm";
+import SocialMediaGenerator from "@/components/SocialMediaGenerator";
 import { useState } from "react";
 
 export default function B2BClientInterface({ user, valuations, leads, isActivePro }: { user: any, valuations: any[], leads: any[], isActivePro: boolean }) {
     const [downloading, setDownloading] = useState(false);
-    const [activeTab, setActiveTab] = useState<'PORTFOLIO' | 'LEAD_MARKET' | 'MY_BRAND'>('PORTFOLIO');
+    const [activeTab, setActiveTab] = useState<'PORTFOLIO' | 'LEAD_MARKET' | 'HEATMAP' | 'MY_BRAND'>('PORTFOLIO');
     const [logoUrl, setLogoUrl] = useState(user?.customLogoUrl || "");
     const [savingLogo, setSavingLogo] = useState(false);
+    const [socialPostData, setSocialPostData] = useState<any>(null);
 
     const handleSaveLogo = async () => {
         setSavingLogo(true);
@@ -62,8 +64,32 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
         setTimeout(() => setDownloading(false), 1000);
     };
 
+    // Calculate Heatmap data
+    const districtCounts: Record<string, number> = {};
+    valuations.forEach(v => {
+        if (v.district) {
+            districtCounts[v.district] = (districtCounts[v.district] || 0) + 1;
+        }
+    });
+
+    const heatmapData = Object.entries(districtCounts)
+        .map(([name, count]) => ({ name, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10); // Top 10 hottest regions
+
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 relative">
+            {socialPostData && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+                    <div className="bg-white rounded-2xl w-full max-w-4xl relative shadow-2xl overflow-y-auto max-h-[90vh]">
+                        <button onClick={() => setSocialPostData(null)} className="absolute top-4 right-4 z-50 p-2 bg-gray-100 rounded-full hover:bg-gray-200 text-gray-800">
+                            <X size={20} />
+                        </button>
+                        <SocialMediaGenerator valuationData={socialPostData} realtorLogo={logoUrl} />
+                    </div>
+                </div>
+            )}
+
             {/* Ultra Modern Header */}
             <div className="relative overflow-hidden rounded-[2.5rem] bg-appleDark text-white p-10 border border-gray-800 shadow-2xl">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-appleBlue rounded-full blur-[120px] opacity-30 pointer-events-none -translate-y-1/2 translate-x-1/2" />
@@ -205,15 +231,21 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
                         </button>
                         <button
                             onClick={() => setActiveTab('LEAD_MARKET')}
-                            className={`flex-1 sm:flex-none px-8 py-5 font-bold text-sm flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'LEAD_MARKET' ? 'border-amber-500 text-amber-600 bg-white' : 'border-transparent text-gray-500 hover:text-amber-600'}`}
+                            className={`flex-1 sm:flex-none px-6 py-5 font-bold text-sm flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'LEAD_MARKET' ? 'border-amber-500 text-amber-600 bg-white' : 'border-transparent text-gray-500 hover:text-amber-600'}`}
                         >
-                            <UserPlus size={18} /> Müşteri Pazarı (Leads)
+                            <UserPlus size={18} /> Leads
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('HEATMAP')}
+                            className={`flex-1 sm:flex-none px-6 py-5 font-bold text-sm flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'HEATMAP' ? 'border-rose-500 text-rose-600 bg-white' : 'border-transparent text-gray-500 hover:text-rose-600'}`}
+                        >
+                            <Map size={18} /> Isı Haritası
                         </button>
                         <button
                             onClick={() => setActiveTab('MY_BRAND')}
-                            className={`flex-1 sm:flex-none px-8 py-5 font-bold text-sm flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'MY_BRAND' ? 'border-purple-500 text-purple-600 bg-white' : 'border-transparent text-gray-500 hover:text-purple-600'}`}
+                            className={`flex-1 sm:flex-none px-6 py-5 font-bold text-sm flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'MY_BRAND' ? 'border-purple-500 text-purple-600 bg-white' : 'border-transparent text-gray-500 hover:text-purple-600'}`}
                         >
-                            <Crown size={18} /> Markam & Logonuz
+                            <Crown size={18} /> Markam
                         </button>
                     </div>
                     <div className="p-4 sm:p-0 sm:pr-8 w-full sm:w-auto">
@@ -265,9 +297,12 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
                                                 <td className="py-5 px-8 text-base font-bold text-green-600">
                                                     {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(val.estimatedValue)}
                                                 </td>
-                                                <td className="py-5 px-8 text-right">
-                                                    <Link href={`/result/${val.id}`} className="inline-flex items-center text-sm font-medium text-appleBlue hover:text-blue-700 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        Görüntüle <ExternalLink size={14} className="ml-1" />
+                                                <td className="py-5 px-8 text-right space-x-3 whitespace-nowrap">
+                                                    <button onClick={() => setSocialPostData(val)} className="inline-flex items-center text-sm font-medium text-purple-600 hover:text-purple-800 bg-purple-50 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <Share2 size={14} className="mr-1" /> Paylaş
+                                                    </button>
+                                                    <Link href={`/result/${val.id}`} className="inline-flex items-center text-sm font-medium text-appleBlue hover:text-blue-700 bg-blue-50 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        Aç <ExternalLink size={14} className="ml-1" />
                                                     </Link>
                                                 </td>
                                             </tr>
@@ -351,6 +386,45 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
                                         ))}
                                     </div>
                                 )}
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* TAB CONTENT: HEATMAP */}
+                {activeTab === 'HEATMAP' && (
+                    <div className="bg-white min-h-[400px] p-8">
+                        <div className="bg-rose-50 border border-rose-100 rounded-2xl p-6 mb-8 flex items-start gap-4">
+                            <Map className="text-rose-600 shrink-0 mt-1" size={24} />
+                            <div>
+                                <h4 className="text-lg font-bold text-rose-800 mb-1">Bölgesel Isı Haritası (Trendler)</h4>
+                                <p className="text-rose-700/80 text-sm">
+                                    Portföyünüzde ve sistem genelinde en çok değerleme yapılan, dolayısıyla konut pazarının en hareketli olduğu ilk 10 bölgeyi görüntüleyin.
+                                </p>
+                            </div>
+                        </div>
+
+                        {heatmapData.length > 0 ? (
+                            <div className="h-[400px] w-full mt-4 bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart data={heatmapData} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                                        <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f3f4f6" />
+                                        <XAxis type="number" hide />
+                                        <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#4b5563', fontSize: 13, fontWeight: 500 }} width={120} />
+                                        <Tooltip
+                                            cursor={{ fill: '#fff1f2' }}
+                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' }}
+                                            labelStyle={{ fontWeight: 'bold', color: '#111827', marginBottom: '4px' }}
+                                            formatter={(value: any) => [value + " Değerleme", "Hareketlilik"]}
+                                        />
+                                        <Bar dataKey="count" fill="#f43f5e" radius={[0, 6, 6, 0]} barSize={24}>
+                                        </Bar>
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        ) : (
+                            <div className="h-[300px] w-full flex items-center justify-center bg-gray-50 rounded-2xl border border-gray-100 border-dashed mt-4">
+                                <p className="text-gray-400 font-medium">Bölgesel eğilim analizi için henüz yeterli veri yok.</p>
                             </div>
                         )}
                     </div>

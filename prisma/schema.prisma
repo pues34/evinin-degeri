@@ -48,7 +48,8 @@ model ValuationRequest {
   estimatedValue  Float
   aiComment       String?
   demographics    Json?
-
+  visionAnalysis  Json?    // V2: Görüntü destekli otonom analiz sonucu
+  
   // Admin CRM (V4)
   adminNote       String?  @db.Text
   overridenValue  Float?
