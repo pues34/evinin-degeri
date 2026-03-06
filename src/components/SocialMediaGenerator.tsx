@@ -52,8 +52,8 @@ export default function SocialMediaGenerator({ valuationData, realtorLogo }: { v
                 <div>
                     <h3 className="text-lg font-bold text-appleDark flex items-center">
                         <Share2 className="mr-2 text-appleBlue" size={20} />
-                        Sosyal Medya Postu Oluştur</h3 >
-                    <p className="text-sm text-gray-500 mt-1">Bu ekspertizi Instagram veya WhatsApp'ta paylaşmak için hazır grafiğe dönüştürün.</p>
+                        Sosyal Medya Postu Oluştur</h3>
+                    <p className="text-sm text-gray-500 mt-1">Bu ekspertizi Instagram veya WhatsApp&apos;ta paylaşmak için hazır grafiğe dönüştürün.</p>
                 </div>
             </div>
 
