@@ -15,7 +15,7 @@ export default function Header() {
     return (
         <header className="sticky top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
             <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-16">
+                <div className="flex justify-between items-center h-16 gap-4 lg:gap-8">
                     <Link href="/" className="flex items-center gap-2 group shrink-0">
                         <span className="p-1.5 bg-appleDark text-white rounded-lg group-hover:bg-appleBlue transition-colors">
                             <Hexagon size={20} className="fill-current" />
