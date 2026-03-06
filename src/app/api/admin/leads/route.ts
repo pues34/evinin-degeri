@@ -10,7 +10,10 @@ export async function GET() {
     try {
         const session = await getServerSession(authOptions) as any;
         if (!session || session.user.role !== "admin") {
-            return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+            return NextResponse.json(
+                { success: false, error: "Unauthorized" },
+                { status: 401, headers: { 'Cache-Control': 'no-store' } }
+            );
         }
 
         const reqs = await prisma.valuationRequest.findMany({
@@ -38,9 +41,15 @@ export async function GET() {
             propertyDetails: `${r.city}, ${r.district}, ${r.neighborhood} - ${r.rooms} (${r.netSqm} m²)`
         }));
 
-        return NextResponse.json({ success: true, data: payload });
+        return NextResponse.json(
+            { success: true, data: payload },
+            { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' } }
+        );
     } catch (error) {
-        console.error("Admin leads fetch error:", error);
-        return NextResponse.json({ success: false, error: "Sunucu hatası" }, { status: 500 });
+        console.error("Admin leads GET error:", error);
+        return NextResponse.json(
+            { success: false, error: "Sunucu hatası" },
+            { status: 500, headers: { 'Cache-Control': 'no-store' } }
+        );
     }
 }

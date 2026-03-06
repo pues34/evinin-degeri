@@ -10,7 +10,10 @@ export async function GET(req: Request) {
     try {
         const session = await getServerSession(authOptions) as any;
         if (!session || session.user.role !== "admin") {
-            return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+            return NextResponse.json(
+                { success: false, error: "Unauthorized" },
+                { status: 401, headers: { 'Cache-Control': 'no-store' } }
+            );
         }
 
         const realtors = await prisma.realtor.findMany({
@@ -29,9 +32,15 @@ export async function GET(req: Request) {
             }
         });
 
-        return NextResponse.json({ success: true, data: realtors });
+        return NextResponse.json(
+            { success: true, data: realtors },
+            { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate' } }
+        );
     } catch (error) {
         console.error("Admin Realtors GET error:", error);
-        return NextResponse.json({ success: false, error: "Sunucu hatası" }, { status: 500 });
+        return NextResponse.json(
+            { success: false, error: "Sunucu hatası" },
+            { status: 500, headers: { 'Cache-Control': 'no-store' } }
+        );
     }
 }
