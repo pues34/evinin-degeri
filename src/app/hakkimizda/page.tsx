@@ -1,4 +1,3 @@
-import Footer from "@/components/Footer";
 import { Hexagon, TrendingUp, Shield, Sparkles, MoveRight, BrainCircuit } from "lucide-react";
 import Link from "next/link";
 
@@ -104,9 +103,6 @@ export default function AboutPage() {
                     </div>
                 </div>
 
-            </main>
-
-            <Footer />
-        </div>
+            </main>        </div>
     );
 }

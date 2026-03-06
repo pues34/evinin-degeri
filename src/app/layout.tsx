@@ -33,6 +33,8 @@ export const metadata: Metadata = {
 
 import SmartChatbot from "@/components/SmartChatbot";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import ClientFooterWrapper from "@/components/ClientFooterWrapper";
 import CookieConsent from "@/components/CookieConsent";
 
 export default function RootLayout({
@@ -69,6 +71,9 @@ export default function RootLayout({
           <main className="min-h-screen flex flex-col">
             {children}
           </main>
+          <ClientFooterWrapper>
+            <Footer />
+          </ClientFooterWrapper>
           <SmartChatbot />
           <CookieConsent />
         </Providers>

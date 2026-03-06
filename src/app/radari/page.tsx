@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { Search, MapPin, Tag, TrendingDown, Target, Zap, AlertCircle, Hexagon, Loader2 } from "lucide-react";
 
 export default function FirsatRadariPage() {
@@ -31,9 +29,7 @@ export default function FirsatRadariPage() {
     }, [isPremium]);
 
     return (
-        <div className="min-h-screen flex flex-col pt-24 bg-gray-50">
-            <Header />
-
+        <div className="min-h-screen flex flex-col pt-24 bg-gray-50">
             <main className="flex-grow container mx-auto px-4 py-8 max-w-6xl relative">
 
                 {/* Premium Blocker Overlay for non-logged or free users */}
@@ -128,9 +124,6 @@ export default function FirsatRadariPage() {
                         ))}
                     </div>
                 )}
-            </main>
-
-            <Footer />
-        </div>
+            </main>        </div>
     );
 }

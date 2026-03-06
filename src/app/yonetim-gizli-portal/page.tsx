@@ -1810,7 +1810,7 @@ export default function AdminDashboard() {
                                                     <input type="number" name="askingPrice" required className="w-full p-2.5 rounded-xl border outline-none text-sm" placeholder="2500000" />
                                                 </div>
                                                 <div>
-                                                    <label className="block text-xs text-gray-500 mb-1">Evnin Değeri AI (TL)</label>
+                                                    <label className="block text-xs text-gray-500 mb-1">Evinin Değeri AI (TL)</label>
                                                     <input type="number" name="estimatedValue" required className="w-full p-2.5 rounded-xl border outline-none text-sm" placeholder="3200000" />
                                                 </div>
                                             </div>

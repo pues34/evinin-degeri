@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Footer from "@/components/Footer";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
@@ -29,8 +28,6 @@ export default async function DynamicCMSPage({ params }: { params: { slug: strin
                     className="prose prose-blue max-w-none text-gray-600 space-y-6"
                     dangerouslySetInnerHTML={{ __html: page.content }}
                 />
-            </div>
-            <Footer />
-        </div>
+            </div>        </div>
     );
 }

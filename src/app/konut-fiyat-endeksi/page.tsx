@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Activity, TrendingUp, TrendingDown, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -54,9 +52,7 @@ export default function KonutFiyatEndeksi() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col pt-24 bg-gray-50">
-            <Header />
-
+        <div className="min-h-screen flex flex-col pt-24 bg-gray-50">
             <main className="flex-grow container mx-auto px-4 py-8 max-w-5xl">
                 <div className="mb-10 flex items-center gap-3">
                     <div className="p-3 bg-indigo-100 text-indigo-600 rounded-2xl"><Activity size={24} /></div>
@@ -162,9 +158,6 @@ export default function KonutFiyatEndeksi() {
                         <strong>Neden Önemli?</strong> Resmi kurumların açıkladığı endeksler genellikle tapu dairesinde gösterilen (genelde düşük gösterilen) resmi harç bedelleri üzerinden hesaplanırken; algoritmalarımız piyasadaki gerçek alıcı ve satıcı potansiyel verilerini baz alarak gerçeğe en yakın likit satılabilir mülk değerini listeler.
                     </p>
                 </div>
-            </main>
-
-            <Footer />
-        </div>
+            </main>        </div>
     );
 }

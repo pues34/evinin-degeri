@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { Calculator, TrendingUp, Info } from "lucide-react";
 import Link from "next/link";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 export default function KiraHesaplama() {
     const [propertyValue, setPropertyValue] = useState<string>("5000000");
@@ -19,9 +17,7 @@ export default function KiraHesaplama() {
     const amortYears = rent > 0 ? (value / rent / 12).toFixed(1) : "0.0";
 
     return (
-        <div className="min-h-screen flex flex-col pt-24 bg-gray-50">
-            <Header />
-
+        <div className="min-h-screen flex flex-col pt-24 bg-gray-50">
             <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl">
                 <div className="text-center mb-10">
                     <h1 className="text-4xl font-extrabold text-appleDark mb-4">Kira Getirisi Hesaplama Aracı</h1>
@@ -127,9 +123,6 @@ export default function KiraHesaplama() {
                         Emlak yatırımı yapmadan önce bölgedeki diğer emsalleri iyi analiz etmek çok önemlidir. Çoğu yatırımcı <strong>Evinin Değeri</strong> platformunu kullanarak mülkün gerçek piyasa ve yapay zeka analizli değerini bulduktan sonra, kira getirilerini bağımsızca bu sayfa üzerinden hesaplayarak kendi yatırım skorlarını teyit ederler.
                     </p>
                 </div>
-            </main>
-
-            <Footer />
-        </div>
+            </main>        </div>
     );
 }

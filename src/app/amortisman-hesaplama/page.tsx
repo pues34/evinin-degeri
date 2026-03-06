@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { Clock, RefreshCcw, Info } from "lucide-react";
 import Link from "next/link";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 export default function AmortismanHesaplama() {
     const [propertyValue, setPropertyValue] = useState<string>("5000000");
@@ -20,7 +18,6 @@ export default function AmortismanHesaplama() {
 
     return (
         <div className="min-h-screen flex flex-col pt-24 bg-gray-50">
-            <Header />
 
             <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl">
                 <div className="text-center mb-10">
@@ -89,7 +86,7 @@ export default function AmortismanHesaplama() {
                             <div className={`p-4 rounded-xl w-full flex items-center justify-center gap-3 ${isGood ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
                                 <RefreshCcw size={20} />
                                 <span className="font-medium text-sm">
-                                    {isGood ? "Yatırım geri dönüş hızı Türkiye ortalamasından BAŞARILI!" : Number(amortMonths) === 0 ? "Lütfen değerleri formatında girin." : "Amortisman süresi ülke ortalamasının üzerinde. Risk içeriyor."}
+                                    {isGood ? "Yatırım geri dönüş hızı Türkiye ortalamasından BAŞARILI!" : Number(amortMonths) === 0 ? "Lütfen geçerli değerler girin." : "Amortisman süresi ülke ortalamasının üzerinde. Risk içeriyor."}
                                 </span>
                             </div>
                         </div>
@@ -108,8 +105,6 @@ export default function AmortismanHesaplama() {
                     <p>Eğer amortisman süreniz kısalırsa yatırım kârlılığınız artar. Ticari gayrimenkuller (dükkan, ofis) konutlara göre genellikle çok daha kısa amortisman süreleri sunar ancak ticari riskleri (boş kalma süresi vb) daha yüksek olabilir.</p>
                 </div>
             </main>
-
-            <Footer />
         </div>
     );
 }

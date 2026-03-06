@@ -1,4 +1,3 @@
-import Footer from "@/components/Footer";
 import { LineChart, ShieldCheck, MapPin, Crown, TrendingUp } from "lucide-react";
 import TestimonialSlider from "@/components/TestimonialSlider";
 import prisma from "@/lib/prisma";
@@ -157,8 +156,6 @@ export default async function Home() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

@@ -2,8 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { Bot, User, Send, Sparkles, AlertCircle, Loader2 } from "lucide-react";
 
 export default function AIAssistantPage() {
@@ -57,9 +55,7 @@ export default function AIAssistantPage() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col pt-24 bg-gray-50 h-screen overflow-hidden">
-            <Header />
-
+        <div className="min-h-screen flex flex-col pt-24 bg-gray-50 h-screen overflow-hidden">
             <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl flex flex-col h-[calc(100vh-100px)] relative">
 
                 {/* Premium Blocker Overlay */}
