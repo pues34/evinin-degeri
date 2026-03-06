@@ -83,6 +83,40 @@ export const authOptions: AuthOptions = {
                     subscriptionEnd: realtor.subscriptionEnd
                 } as any;
             }
+        }),
+        CredentialsProvider({
+            id: "b2c-login",
+            name: "Bireysel Yatırımcı Girişi",
+            credentials: {
+                email: { label: "Email", type: "email", placeholder: "bireysel@ornek.com" },
+                password: { label: "Şifre", type: "password" }
+            },
+            async authorize(credentials) {
+                if (!credentials?.email || !credentials?.password) {
+                    throw new Error("E-posta veya şifre eksik.");
+                }
+
+                const user = await prisma.user.findUnique({
+                    where: { email: credentials.email }
+                });
+
+                if (!user) {
+                    throw new Error("Kullanıcı bulunamadı.");
+                }
+
+                const isValid = await bcrypt.compare(credentials.password, user.password);
+                if (!isValid) {
+                    throw new Error("Şifre hatalı.");
+                }
+
+                return {
+                    id: user.id,
+                    name: user.name || "Yatırımcı",
+                    email: user.email,
+                    role: "user",
+                    isPremium: user.isPremium
+                } as any;
+            }
         })
     ],
     pages: {
@@ -102,6 +136,7 @@ export const authOptions: AuthOptions = {
                 if (session.subscriptionTier !== undefined) token.subscriptionTier = session.subscriptionTier;
                 if (session.customLogoUrl !== undefined) token.customLogoUrl = session.customLogoUrl;
                 if (session.subscriptionEnd !== undefined) token.subscriptionEnd = session.subscriptionEnd;
+                if (session.isPremium !== undefined) token.isPremium = session.isPremium;
             }
             return token;
         },
@@ -112,6 +147,7 @@ export const authOptions: AuthOptions = {
                 (session.user as any).subscriptionTier = token.subscriptionTier;
                 (session.user as any).customLogoUrl = token.customLogoUrl;
                 (session.user as any).subscriptionEnd = token.subscriptionEnd;
+                (session.user as any).isPremium = token.isPremium;
                 (session.user as any).id = token.sub;
             }
             return session;

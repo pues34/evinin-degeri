@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Hexagon, Map, BookOpen, Building2, User, Calculator, LineChart } from "lucide-react";
+import { Hexagon, Map, BookOpen, Building2, User, Calculator, LineChart, Target, Bot } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 
@@ -33,6 +33,9 @@ export default function Header() {
                         <Link href="/konut-fiyat-endeksi" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/konut-fiyat-endeksi' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
                             <LineChart size={16} /> Fiyat Endeksi
                         </Link>
+                        <Link href="/radari" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/radari' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
+                            <Target size={16} className="text-indigo-500" /> Fırsat Radarı
+                        </Link>
                         <Link href="/yatirim-haritasi" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/yatirim-haritasi' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
                             <Map size={16} /> Isı Haritası
                         </Link>
@@ -40,22 +43,40 @@ export default function Header() {
                             <BookOpen size={16} /> Emlak Blog
                         </Link>
                         {session ? (
-                            <Link href="/b2b/dashboard" className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all flex items-center gap-1.5">
-                                <User size={16} /> B2B Panel
-                            </Link>
+                            <>
+                                {session.user?.role === "realtor" || session.user?.role === "admin" ? (
+                                    <Link href="/b2b/dashboard" className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all flex items-center gap-1.5">
+                                        <Building2 size={16} /> B2B Panel
+                                    </Link>
+                                ) : (
+                                    <>
+                                        <Link href="/portfoy" className="px-4 py-2 bg-appleDark text-white rounded-full text-sm font-medium shadow-sm hover:bg-appleBlue transition-all flex items-center gap-1.5">
+                                            <User size={16} /> Portföyüm
+                                        </Link>
+                                        <Link href="/ai-danisman" className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-1.5">
+                                            <Bot size={16} /> AI Danışman
+                                        </Link>
+                                    </>
+                                )}
+                            </>
                         ) : (
-                            <Link href="/b2b" className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all flex items-center gap-1.5">
-                                <Building2 size={16} /> Kurumsal (B2B)
-                            </Link>
+                            <div className="flex items-center gap-3">
+                                <Link href="/giris" className="text-sm font-medium text-gray-600 hover:text-appleDark transition-colors">
+                                    Giriş Yap
+                                </Link>
+                                <Link href="/b2b" className="px-4 py-2 border border-gray-200 text-gray-700 bg-white rounded-full text-sm font-medium shadow-sm hover:bg-gray-50 transition-all flex items-center gap-1.5">
+                                    Kurumsal (B2B)
+                                </Link>
+                            </div>
                         )}
                     </nav>
 
                     {/* Mobile Menu Button */}
                     <div className="md:hidden flex items-center gap-3">
                         {session ? (
-                            <Link href="/b2b/dashboard" className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold border border-emerald-100">Panel</Link>
+                            <Link href={session.user?.role === 'user' ? '/portfoy' : '/b2b/dashboard'} className="px-3 py-1.5 bg-gray-50 text-appleDark rounded-lg text-xs font-bold border border-gray-200">Panel</Link>
                         ) : (
-                            <Link href="/b2b" className="px-3 py-1.5 bg-blue-50 text-appleBlue rounded-lg text-xs font-bold border border-blue-100">Kurumsal</Link>
+                            <Link href="/giris" className="px-3 py-1.5 bg-blue-50 text-appleBlue rounded-lg text-xs font-bold border border-blue-100">Giriş</Link>
                         )}
                     </div>
                 </div>

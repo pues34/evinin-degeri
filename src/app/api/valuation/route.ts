@@ -419,8 +419,7 @@ export async function POST(req: NextRequest) {
         demographics: demographicsData ? demographicsData : undefined,
         visionAnalysis: aiPhotosBase64 && aiPhotosBase64.length > 0 ? { multiplier: visionMultiplier, text: visionAnalysisText, photoCount: aiPhotosBase64.length } : undefined,
         realtorId: session?.user?.role === "realtor" ? session.user.id : null,
-        // (Earthquake Risk string can be appended to AI Comment or tracked separately if DB supports it. 
-        //  For now, appending it to the AI Comment to avoid another DB migration unless necessary)
+        userId: session?.user?.role === "user" ? session.user.id : null,
         // contactInfo relation stays the same...
         contactInfo: {
           create: {

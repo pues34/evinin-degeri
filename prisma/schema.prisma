@@ -70,6 +70,10 @@ model ValuationRequest {
   realtorId       String?
   realtor         Realtor? @relation(fields: [realtorId], references: [id], onDelete: SetNull)
 
+  // Bireysel Yatırımcı Portföyü (Phase 3)
+  userId          String?
+  user            User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
   // İlişkili İletişim Bilgileri (Lead)
   contactInfo     ContactInfo?
 
@@ -249,4 +253,50 @@ model Testimonial {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// ============================================
+// PHASE 3: PropTech Bloomberg Terminal
+// ============================================
+
+model User {
+  id              String   @id @default(cuid())
+  name            String?
+  email           String   @unique
+  password        String
+  phone           String?
+  
+  // B2C Abonelik veya Premium Satın Alımlar
+  isPremium       Boolean  @default(false)
+  
+  // Kullanıcının Portföyüne Eklediği Kendi Evleri
+  portfolio       ValuationRequest[]
+  
+  // Radardaki Favori / Fırsat İlanlar
+  savedListings   SavedListing[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model SavedListing {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // İlan verisi
+  listingUrl      String?  @db.Text
+  title           String?
+  city            String
+  district        String
+  askingPrice     Float
+  
+  // Sistemimizin bu ilana biçtiği değer
+  systemValuation Float
+  
+  // (systemValuation - askingPrice) / systemValuation -> Fırsat yüzdesi
+  opportunityScore Float   @default(0)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
