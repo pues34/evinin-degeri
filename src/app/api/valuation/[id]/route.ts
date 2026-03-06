@@ -15,10 +15,10 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     try {
         let record = null;
 
-        // Handle UUID formats safely
-        const isUUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(params.id);
+        // Handle UUID and CUID formats safely
+        const isIdValid = params.id && params.id.length > 10;
 
-        if (isUUID) {
+        if (isIdValid) {
             record = await prisma.valuationRequest.findUnique({
                 where: { id: params.id },
                 include: { realtor: { select: { customLogoUrl: true, subscriptionTier: true } } }

@@ -649,7 +649,7 @@ export default function AdminDashboard() {
                                     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-80">
                                         <h4 className="text-sm font-medium text-gray-500 mb-6 text-center">Son 7 Günlük Sorgu Trendi</h4>
                                         <div style={{ width: '100%', height: 250 }}>
-                                            <ResponsiveContainer>
+                                            <ResponsiveContainer width="100%" height="100%">
                                                 <BarChart data={stats.trend}>
                                                     <XAxis dataKey="date" stroke="#8884d8" fontSize={12} tickLine={false} axisLine={false} />
                                                     <YAxis stroke="#8884d8" fontSize={12} tickLine={false} axisLine={false} />
@@ -663,7 +663,7 @@ export default function AdminDashboard() {
                                     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-80">
                                         <h4 className="text-sm font-medium text-gray-500 mb-6 text-center">En Çok Sorgulanan 5 İlçe</h4>
                                         <div style={{ width: '100%', height: 250 }}>
-                                            <ResponsiveContainer>
+                                            <ResponsiveContainer width="100%" height="100%">
                                                 <PieChart>
                                                     <Pie
                                                         data={stats.topDistricts}
@@ -1479,65 +1479,6 @@ export default function AdminDashboard() {
                                                                 className="text-red-500 hover:text-red-700 text-xs font-medium px-3 py-1.5 bg-red-50 hover:bg-red-100 rounded-lg transition-colors">
                                                                 Sil
                                                             </button>
-                                                        </td>
-                                                    </tr>
-                                                ))
-                                            )}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        )}
-
-                        {activeTab === "b2b-users" && (
-                            <div className="p-8">
-                                <div className="flex justify-between items-center mb-6">
-                                    <h3 className="font-semibold text-lg text-appleDark">Kurumsal Emlakçı Yönetimi (B2B)</h3>
-                                    <p className="text-sm text-gray-500">Üye olan emlak danışmanları ve abonelik statüleri.</p>
-                                </div>
-                                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                                    <table className="w-full text-left text-sm">
-                                        <thead className="bg-gray-50/50 text-gray-500 border-b border-gray-100">
-                                            <tr>
-                                                <th className="px-6 py-4 font-medium">Tarih</th>
-                                                <th className="px-6 py-4 font-medium">Firma / İsim</th>
-                                                <th className="px-6 py-4 font-medium">İletişim</th>
-                                                <th className="px-6 py-4 font-medium">Paket</th>
-                                                <th className="px-6 py-4 font-medium text-center">İşlem</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-gray-50">
-                                            {realtors.length === 0 ? (
-                                                <tr><td colSpan={5} className="text-center py-8 text-gray-400">Kayıtlı emlakçı bulunmuyor.</td></tr>
-                                            ) : (
-                                                realtors.map((r: any) => (
-                                                    <tr key={r.id} className="transition-colors hover:bg-gray-50 bg-white">
-                                                        <td className="px-6 py-4 text-gray-500 whitespace-nowrap">
-                                                            {new Date(r.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' })}
-                                                        </td>
-                                                        <td className="px-6 py-4">
-                                                            <div className="font-medium text-appleDark">{r.companyName || r.brokerName}</div>
-                                                            <div className="text-xs text-appleLightGray">{r.region}</div>
-                                                        </td>
-                                                        <td className="px-6 py-4">
-                                                            <div className="text-gray-600">{r.user.email}</div>
-                                                            <div className="text-gray-400 text-xs">{r.phone}</div>
-                                                        </td>
-                                                        <td className="px-6 py-4">
-                                                            {r.subscriptionTier === "PRO_PLUS" ? (
-                                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200 shadow-sm"><Crown size={12} className="mr-1" /> PRO PLUS</span>
-                                                            ) : r.subscriptionTier === "PRO" ? (
-                                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">PRO</span>
-                                                            ) : (
-                                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">Ücretsiz</span>
-                                                            )}
-                                                        </td>
-                                                        <td className="px-6 py-4 text-center">
-                                                            {r.subscriptionTier === "PRO_PLUS" || r.subscriptionTier === "PRO" ? (
-                                                                <button onClick={() => handleToggleB2bPro(r.id, true)} className="text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition-colors">İptal Et</button>
-                                                            ) : (
-                                                                <button onClick={() => handleToggleB2bPro(r.id, false)} className="text-xs font-medium text-green-600 bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded-lg border border-green-200 transition-colors">PRO Yap</button>
-                                                            )}
                                                         </td>
                                                     </tr>
                                                 ))
