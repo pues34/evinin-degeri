@@ -63,63 +63,55 @@ export default function MapComponent({ lat, lng, onPOIsLoaded }: MapProps) {
             const radius = 5000; // 5km
 
             try {
-                // 1. Hospitals & clinics (top 3)
-                const hospQuery = `[out:json];(node["amenity"~"hospital|clinic"](around:${radius},${lat},${lng});way["amenity"~"hospital|clinic"](around:${radius},${lat},${lng}););out center 5;`;
-                const hospRes = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(hospQuery)}`);
-                const hospData = await hospRes.json();
-                (hospData.elements || []).forEach((e: any) => {
-                    const eLat = e.lat || e.center?.lat;
-                    const eLon = e.lon || e.center?.lon;
-                    if (eLat && eLon) {
-                        allPois.push({ lat: eLat, lng: eLon, name: e.tags?.name || "Hastane", type: "hospital", distance: haversine(lat, lng, eLat, eLon) });
-                    }
-                });
+                // Consolidated single Overpass API Query to avoid 429 Too Many Requests
+                const combinedQuery = `[out:json];
+                (
+                  node["amenity"~"^hospital$|^clinic$"](around:${radius},${lat},${lng});
+                  way["amenity"~"^hospital$|^clinic$"](around:${radius},${lat},${lng});
+                  
+                  node["railway"="station"](around:${radius},${lat},${lng});
+                  node["station"="subway"](around:${radius},${lat},${lng});
+                  node["railway"="tram_stop"](around:${radius},${lat},${lng});
+                  node["public_transport"="station"](around:${radius},${lat},${lng});
+                  
+                  node["amenity"~"^school$|^university$|^college$"](around:${radius},${lat},${lng});
+                  way["amenity"~"^school$|^university$|^college$"](around:${radius},${lat},${lng});
+                  
+                  node["leisure"="park"](around:${radius},${lat},${lng});
+                  way["leisure"="park"](around:${radius},${lat},${lng});
+                  
+                  node["shop"="mall"](around:${radius},${lat},${lng});
+                  way["shop"="mall"](around:${radius},${lat},${lng});
+                  node["shop"="supermarket"](around:${radius},${lat},${lng});
+                );
+                out center;`;
 
-                // 2. Metro / Metrobus / Tram (top 3)
-                const metroQuery = `[out:json];(node["railway"="station"](around:${radius},${lat},${lng});node["station"="subway"](around:${radius},${lat},${lng});node["railway"="tram_stop"](around:${radius},${lat},${lng});node["public_transport"="station"](around:${radius},${lat},${lng}););out center 5;`;
-                const metroRes = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(metroQuery)}`);
-                const metroData = await metroRes.json();
-                (metroData.elements || []).forEach((e: any) => {
-                    const eLat = e.lat || e.center?.lat;
-                    const eLon = e.lon || e.center?.lon;
-                    if (eLat && eLon) {
-                        allPois.push({ lat: eLat, lng: eLon, name: e.tags?.name || "Metro/Istasyon", type: "metro", distance: haversine(lat, lng, eLat, eLon) });
-                    }
-                });
+                const res = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(combinedQuery)}`);
+                const data = await res.json();
 
-                // 3. Schools (top 3)
-                const schoolQuery = `[out:json];(node["amenity"~"school|university|college"](around:${radius},${lat},${lng});way["amenity"~"school|university|college"](around:${radius},${lat},${lng}););out center 5;`;
-                const schoolRes = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(schoolQuery)}`);
-                const schoolData = await schoolRes.json();
-                (schoolData.elements || []).forEach((e: any) => {
+                (data.elements || []).forEach((e: any) => {
                     const eLat = e.lat || e.center?.lat;
                     const eLon = e.lon || e.center?.lon;
                     if (eLat && eLon) {
-                        allPois.push({ lat: eLat, lng: eLon, name: e.tags?.name || "Okul", type: "school", distance: haversine(lat, lng, eLat, eLon) });
-                    }
-                });
+                        const amenity = e.tags?.amenity || "";
+                        const leisure = e.tags?.leisure || "";
+                        const shop = e.tags?.shop || "";
+                        const railway = e.tags?.railway || "";
+                        const station = e.tags?.station || "";
+                        const publicTransport = e.tags?.public_transport || "";
 
-                // 4. Parks (top 2)
-                const parkQuery = `[out:json];(node["leisure"="park"](around:${radius},${lat},${lng});way["leisure"="park"](around:${radius},${lat},${lng}););out center 3;`;
-                const parkRes = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(parkQuery)}`);
-                const parkData = await parkRes.json();
-                (parkData.elements || []).forEach((e: any) => {
-                    const eLat = e.lat || e.center?.lat;
-                    const eLon = e.lon || e.center?.lon;
-                    if (eLat && eLon) {
-                        allPois.push({ lat: eLat, lng: eLon, name: e.tags?.name || "Park", type: "park", distance: haversine(lat, lng, eLat, eLon) });
-                    }
-                });
+                        let type = "";
+                        let name = e.tags?.name || "";
 
-                // 5. Shopping malls (top 2)
-                const shopQuery = `[out:json];(node["shop"="mall"](around:${radius},${lat},${lng});way["shop"="mall"](around:${radius},${lat},${lng});node["shop"="supermarket"](around:${radius},${lat},${lng}););out center 3;`;
-                const shopRes = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(shopQuery)}`);
-                const shopData = await shopRes.json();
-                (shopData.elements || []).forEach((e: any) => {
-                    const eLat = e.lat || e.center?.lat;
-                    const eLon = e.lon || e.center?.lon;
-                    if (eLat && eLon) {
-                        allPois.push({ lat: eLat, lng: eLon, name: e.tags?.name || "AVM/Market", type: "shopping", distance: haversine(lat, lng, eLat, eLon) });
+                        if (amenity.match(/^(hospital|clinic)$/)) { type = "hospital"; name = name || "Hastane / Klinik"; }
+                        else if (railway === "station" || station === "subway" || railway === "tram_stop" || publicTransport === "station") { type = "metro"; name = name || "İstasyon / Durak"; }
+                        else if (amenity.match(/^(school|university|college)$/)) { type = "school"; name = name || "Eğitim Kurumu"; }
+                        else if (leisure === "park") { type = "park"; name = name || "Park / Yeşil Alan"; }
+                        else if (shop === "mall" || shop === "supermarket") { type = "shopping"; name = name || "Alışveriş / Market"; }
+
+                        if (type) {
+                            allPois.push({ lat: eLat, lng: eLon, name, type, distance: haversine(lat, lng, eLat, eLon) });
+                        }
                     }
                 });
 
@@ -137,8 +129,21 @@ export default function MapComponent({ lat, lng, onPOIsLoaded }: MapProps) {
             const limits: Record<string, number> = { hospital: 3, metro: 3, school: 3, park: 2, shopping: 2 };
             const finalPois: POIItem[] = [];
             Object.entries(grouped).forEach(([type, items]) => {
+                // Deduplicate items that might return multiple ways/nodes for the same place
+                const uniqueNames = new Set<string>();
+                const deduplicated: POIItem[] = [];
+
                 items.sort((a, b) => a.distance - b.distance);
-                finalPois.push(...items.slice(0, limits[type] || 3));
+
+                for (const item of items) {
+                    if (!uniqueNames.has(item.name)) {
+                        uniqueNames.add(item.name);
+                        deduplicated.push(item);
+                        if (deduplicated.length >= (limits[type] || 3)) break;
+                    }
+                }
+
+                finalPois.push(...deduplicated);
             });
 
             setPois(finalPois);

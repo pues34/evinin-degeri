@@ -77,13 +77,13 @@ export async function POST(req: NextRequest) {
     let mKot1 = 0.90;
     let mZemin = 0.95;
     let mUst = 0.95;
-    let mCati = 1.25;
-    let mMustakil = 1.50;
+    let mCati = 1.15;
+    let mMustakil = 1.30;
     let mAra = 1.15;
     let mMutfakKapali = 1.05;
     let mBalkonVar = 1.10;
     let mCiftBanyo = 1.07;
-    let bAgeDepreciation = 0.01;
+    let bAgeDepreciation = 0.013;
     let mFacadeGuney = 1.05;
     let mFacadeKuzey = 0.95;
     let mSiteIci = 1.15;
@@ -93,11 +93,11 @@ export async function POST(req: NextRequest) {
     let mHeatingDogalgaz = 1.03;
     let mHeatingYerden = 1.05;
     let mHeatingSoba = 0.93;
-    let mViewDeniz = 1.12;
-    let mViewDoga = 1.06;
+    let mViewDeniz = 1.08;
+    let mViewDoga = 1.04;
     let mViewSehir = 1.03;
     let mPropertyDubleks = 1.08;
-    let dampeningFactor = 0.65;
+    let dampeningFactor = 0.55;
 
     try {
       const settings = await prisma.algorithmSettings.findMany();

@@ -15,6 +15,7 @@ export default function AdminDashboard() {
     const [dbLeads, setDbLeads] = useState<any[]>([]);
     const [contacts, setContacts] = useState<any[]>([]);
     const [realtors, setRealtors] = useState<any[]>([]);
+    const [feedbacks, setFeedbacks] = useState<any[]>([]);
     const [stats, setStats] = useState<any>(null);
 
     // Location states
@@ -322,6 +323,13 @@ export default function AdminDashboard() {
             .catch(err => console.error(err));
     };
 
+    const loadFeedbacks = () => {
+        fetch("/api/admin/feedbacks")
+            .then(res => res.json())
+            .then(data => { if (data.success) setFeedbacks(data.data); })
+            .catch(err => console.error(err));
+    };
+
     const handleReadContact = async (id: string, isRead: boolean) => {
         await fetch("/api/admin/contact", {
             method: "PATCH",
@@ -445,6 +453,8 @@ export default function AdminDashboard() {
             loadContacts();
         } else if (session && activeTab === "b2b-users") {
             loadRealtors();
+        } else if (session && activeTab === "feedbacks") {
+            loadFeedbacks();
         } else if (session && activeTab === "testimonials") {
             loadTestimonials();
         } else if (session && activeTab === "overview") {
@@ -528,6 +538,12 @@ export default function AdminDashboard() {
                         className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'contacts' ? 'bg-appleBlue text-white' : 'text-gray-600 hover:bg-gray-50'}`}
                     >
                         <MessageSquare size={18} className="mr-3" /> Gelen Kutusu
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("feedbacks")}
+                        className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'feedbacks' ? 'bg-appleBlue text-white' : 'text-gray-600 hover:bg-gray-50'}`}
+                    >
+                        <Shield size={18} className="mr-3" /> Fiyat Şikayetleri
                     </button>
                     <button
                         onClick={() => setActiveTab("blog")}
@@ -1238,6 +1254,59 @@ export default function AdminDashboard() {
                                         )}
                                     </div>
 
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === "feedbacks" && (
+                            <div className="p-8">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h3 className="font-semibold text-lg text-appleDark">Kullanıcı Fiyat Geri Bildirimleri</h3>
+                                    <p className="text-sm text-gray-500">Müşterilerin sonuç sayfasında verdiği fiyat hassasiyeti bildirimleri.</p>
+                                </div>
+
+                                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                                    <table className="w-full text-left text-sm">
+                                        <thead className="bg-gray-50/50 text-gray-500 border-b border-gray-100">
+                                            <tr>
+                                                <th className="px-6 py-4 font-medium">Tarih</th>
+                                                <th className="px-6 py-4 font-medium">Bölge (İl/İlçe/Mahalle)</th>
+                                                <th className="px-6 py-4 font-medium">Tahmini Fiyat</th>
+                                                <th className="px-6 py-4 font-medium">Uzman Fiyatı</th>
+                                                <th className="px-6 py-4 font-medium">Geri Bildirim</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-50">
+                                            {feedbacks.length === 0 ? (
+                                                <tr>
+                                                    <td colSpan={5} className="text-center py-8 text-gray-400">Henüz bildirim yok.</td>
+                                                </tr>
+                                            ) : (
+                                                feedbacks.map((f: any) => (
+                                                    <tr key={f.id} className="transition-colors bg-white hover:bg-gray-50">
+                                                        <td className="px-6 py-4 text-gray-500 whitespace-nowrap">
+                                                            {new Date(f.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            <div className="font-medium text-appleDark">{f.neighborhood}</div>
+                                                            <div className="text-gray-400 text-xs">{f.district}, {f.city}</div>
+                                                        </td>
+                                                        <td className="px-6 py-4 font-medium text-appleDark hidden md:table-cell">
+                                                            {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(f.estimatedValue)}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-gray-600">
+                                                            {f.overridenValue ? new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(f.overridenValue) : '-'}
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            {f.priceFeedback === 'YUKSEK' && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200">Çok Yüksek</span>}
+                                                            {f.priceFeedback === 'NORMAL' && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">Normal</span>}
+                                                            {f.priceFeedback === 'DUSUK' && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">Çok Düşük</span>}
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            )}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         )}

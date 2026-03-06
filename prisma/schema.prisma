@@ -52,6 +52,9 @@ model ValuationRequest {
   // Admin CRM (V4)
   adminNote       String?  @db.Text
   overridenValue  Float?
+  
+  // Fiyat Geri Bildirim Sistemi (V28)
+  priceFeedback   String?  // "YUKSEK", "NORMAL", "DUSUK"
 
   // İsteğe Bağlı Ödeme / Onay Altyapısı (V6)
   paymentStatus   Boolean  @default(true) // Şimdilik ücretsiz 

@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { Copy, CheckCircle, BrainCircuit, TrendingUp, MapPin, Users, Hexagon, Shield, GraduationCap, TreePine, ShoppingBag, Train } from "lucide-react";
+import { Copy, CheckCircle, BrainCircuit, TrendingUp, MapPin, Users, Hexagon, Shield, GraduationCap, TreePine, ShoppingBag, Train, ThumbsUp, ThumbsDown, Minus } from "lucide-react";
 import Link from "next/link";
 import PdfButton from "./PdfButton";
 import AdBanner from "./AdBanner";
@@ -123,6 +123,30 @@ export default function ResultDashboard({ id }: { id: string }) {
     const [pois, setPois] = useState<POIItem[]>([]);
     const [neighborhoodScore, setNeighborhoodScore] = useState<{ total: number; categories: Record<string, { score: number; max: number; count: number; nearest: number }> } | null>(null);
 
+    // V28: Feedback System State
+    const [feedbackStatus, setFeedbackStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const [selectedFeedback, setSelectedFeedback] = useState<string | null>(null);
+
+    const submitFeedback = async (val: string) => {
+        if (!id) return;
+        setFeedbackStatus("loading");
+        setSelectedFeedback(val);
+        try {
+            const res = await fetch("/api/valuation/feedback", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, feedback: val })
+            });
+            if (res.ok) {
+                setFeedbackStatus("success");
+            } else {
+                setFeedbackStatus("error");
+            }
+        } catch {
+            setFeedbackStatus("error");
+        }
+    };
+
     useEffect(() => {
         // Fetch Valuation Data
         fetch(`/api/valuation/${id}`)
@@ -242,6 +266,42 @@ export default function ResultDashboard({ id }: { id: string }) {
                                     <p className="text-sm text-blue-50 leading-relaxed opacity-100">{data.aiComment}</p>
                                 </div>
                             </div>
+
+                            {/* V28: Feedback System */}
+                            <div className="mt-8 border-t border-white/20 pt-6">
+                                <p className="text-sm text-blue-200 mb-4 opacity-100 text-center">Bu sonuc lokasyon ve enflasyon endekslerine gore hesaplanmistir. Algoritmayi gelistirmemize yardimci olun:</p>
+
+                                {feedbackStatus === "success" ? (
+                                    <div className="bg-green-500/20 text-green-100 border border-green-500/30 p-3 rounded-xl flex items-center justify-center gap-2 text-sm font-medium">
+                                        <CheckCircle size={18} /> Geri bildiriminiz icin tesekkurler!
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-wrap justify-center gap-3">
+                                        <button
+                                            onClick={() => submitFeedback("DUSUK")}
+                                            disabled={feedbackStatus === "loading"}
+                                            className="px-4 py-2 bg-white/10 hover:bg-white/20 disabled:opacity-50 border border-white/20 rounded-xl text-sm font-medium flex items-center gap-2 transition-colors"
+                                        >
+                                            <ThumbsDown size={16} /> Dusuk Buldum
+                                        </button>
+                                        <button
+                                            onClick={() => submitFeedback("NORMAL")}
+                                            disabled={feedbackStatus === "loading"}
+                                            className="px-4 py-2 bg-white/10 hover:bg-white/20 disabled:opacity-50 border border-white/20 rounded-xl text-sm font-medium flex items-center gap-2 transition-colors"
+                                        >
+                                            <Minus size={16} /> Fiyat Normal
+                                        </button>
+                                        <button
+                                            onClick={() => submitFeedback("YUKSEK")}
+                                            disabled={feedbackStatus === "loading"}
+                                            className="px-4 py-2 bg-white/10 hover:bg-white/20 disabled:opacity-50 border border-white/20 rounded-xl text-sm font-medium flex items-center gap-2 transition-colors"
+                                        >
+                                            <ThumbsUp size={16} /> Yuksek Buldum
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+
                         </div>
                     </div>
 
