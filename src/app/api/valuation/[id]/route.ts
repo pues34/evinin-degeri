@@ -59,12 +59,74 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
             console.error("Geocoding Error:", geoError);
         }
 
+        // V27: m2 fiyat bolge karsilastirmasi ve Gecmis degerleme trendi
+        // Calculate real average m2 price for this neighborhood/district
+        const aggregations = await prisma.valuationRequest.aggregate({
+            _avg: {
+                estimatedValue: true,
+                netSqm: true
+            },
+            where: {
+                district: record.district,
+                city: record.city,
+            }
+        });
+
+        let districtAvgSqm = 0;
+        if (aggregations._avg.estimatedValue && aggregations._avg.netSqm) {
+            districtAvgSqm = aggregations._avg.estimatedValue / aggregations._avg.netSqm;
+        }
+
+        // Fetch last 3 months trend for the neighborhood
+        const threeMonthsAgo = new Date();
+        threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 6); // Fetch 6 months to be safe, display latest
+
+        const historicalData = await prisma.valuationRequest.findMany({
+            where: {
+                neighborhood: record.neighborhood,
+                district: record.district,
+                city: record.city,
+                createdAt: {
+                    gte: threeMonthsAgo
+                }
+            },
+            select: {
+                createdAt: true,
+                estimatedValue: true,
+                netSqm: true
+            },
+            orderBy: {
+                createdAt: 'asc'
+            }
+        });
+
+        // Group by month
+        const trendMap = new Map();
+        historicalData.forEach(item => {
+            if (!item.netSqm || !item.estimatedValue) return;
+            const monthYear = item.createdAt.toLocaleDateString("tr-TR", { month: "short", year: "numeric" });
+            if (!trendMap.has(monthYear)) {
+                trendMap.set(monthYear, { totalValue: 0, totalSqm: 0, count: 0 });
+            }
+            const current = trendMap.get(monthYear);
+            current.totalValue += item.estimatedValue;
+            current.totalSqm += item.netSqm;
+            current.count += 1;
+        });
+
+        const neighborhoodTrend = Array.from(trendMap.entries()).map(([month, data]) => ({
+            month,
+            avgSqmPrice: Math.round(data.totalValue / data.totalSqm)
+        }));
+
         return NextResponse.json({
             success: true,
             data: {
                 ...record,
                 factors: factors.length > 0 ? factors : [{ name: "Standart Plan", effect: "-" }],
-                location
+                location,
+                districtAvgSqm,
+                neighborhoodTrend
             }
         });
     } catch (error: any) {

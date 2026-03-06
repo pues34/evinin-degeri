@@ -237,11 +237,11 @@ export async function POST(req: NextRequest) {
 
     if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== "buraya-kendi-openai-api-keyinizi-girin") {
       try {
-        const prmt = `Sen uzman bir emlak ekspertiz uzmanısın. ${propertyData.city} ili, ${propertyData.district} ilçesi, ${propertyData.neighborhood} mahallesinde bulunan, ${age} yaşında, ${propertyData.rooms} oda sayılı, net ${propertyData.netSqm} m2, ${floorType} bir konutu değerlendiriyorsun. Lokasyon çarpanı ${regionMultiplier}x olarak belirlenmiş. Tahmini piyasa değeri: ${new Intl.NumberFormat('tr-TR').format(estimatedValue)} TL.
+        const prmt = `Sen uzman bir emlak ekspertiz uzmanısın. ${propertyData.city} ili, ${propertyData.district} ilçesi, ${propertyData.neighborhood} mahallesinde bulunan, ${age} yaşında, ${propertyData.rooms} oda sayılı, net ${propertyData.netSqm} m2, ${floorType} bir konutu değerlendiriyorsun. Konutun ısıtma tipi: ${propertyData.heatingType || "Bilinmiyor"}, cephesi: ${propertyData.facade || "Bilinmiyor"}, manzarası: ${propertyData.view || "Yok"}. Lokasyon çarpanı ${regionMultiplier}x olarak belirlenmiş. Algoritmik tahmini piyasa değeri: ${new Intl.NumberFormat('tr-TR').format(estimatedValue)} TL.
 
 ÖNEMLİ: Lütfen SADECE geçerli bir JSON formatında cevap ver. Başka hiçbir açıklama yazma. JSON formatı tam olarak şöyle olmalı:
 {
-  "aiComment": "Evin özelliklerine, yaşına ve mahallenin gayrimenkul talebine değinen, maksimum 3 cümlelik profesyonel analiz yorumu.",
+  "aiComment": "Evin özelliklerine, yaşına, konum avantajlarına (örn: ulaşım, sahile yakınlık vb.) ve mahallenin gayrimenkul yatırım potansiyeline değinen, amortisman değerlendirmesi de içeren 4-5 cümlelik kapsamlı ve profesyonel bir analiz yorumu yaz. Yapay zeka olduğunu belli etme, direkt analiz yap.",
   "demographics": {
     "populationDensity": "Örn: Yoğun Dağılım / Orta / Seyrek",
     "socioEconomicStatus": "Örn: A+ seviye elit / B sınıfı gelişen / C sınıfı vb.",
@@ -346,6 +346,29 @@ export async function POST(req: NextRequest) {
               </div>
             `
         });
+
+        // Send Notification to Admin
+        await resend.emails.send({
+          from: "Evinin Değeri Sistem <bilgi@evindegeri.com>",
+          to: "evindestek@gmail.com", // Admin email
+          subject: "Yeni Değerleme Talebi!",
+          html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <h2 style="color: #2563eb;">Yeni Değerleme Oluşturuldu</h2>
+                <p>Sistem üzerinden yeni bir değerleme raporu oluşturuldu.</p>
+                <ul style="background: #f8fafc; padding: 15px; border-radius: 8px;">
+                  <li><strong>Talep No:</strong> #${(record as any).requestNumber}</li>
+                  <li><strong>Müşteri:</strong> ${contactInfo.fullName}</li>
+                  <li><strong>E-posta:</strong> ${contactInfo.email}</li>
+                  <li><strong>Telefon:</strong> ${contactInfo.phone}</li>
+                  <li><strong>Konum:</strong> ${propertyData.neighborhood}, ${propertyData.district}, ${propertyData.city}</li>
+                  <li><strong>Tahmini Değer:</strong> ${new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(estimatedValue)}</li>
+                </ul>
+                <p>Yönetim panelinden Talepler sekmesini inceleyebilirsiniz.</p>
+              </div>
+          `
+        });
+
       } catch (e) {
         console.error("Mail gönderme hatası:", e);
       }

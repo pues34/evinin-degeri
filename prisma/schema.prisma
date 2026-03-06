@@ -149,14 +149,15 @@ model Page {
 }
 
 model BlogPost {
-  id        String   @id @default(cuid())
-  title     String
-  slug      String   @unique
-  summary   String?  @db.Text
-  content   String   @db.Text
-  imageUrl  String?  @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  summary     String?  @db.Text
+  content     String   @db.Text
+  imageUrl    String?  @db.Text
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Realtor {
@@ -211,4 +212,15 @@ model SystemSettings {
   valuationCounter Int      @default(0)          // Sayaç Manipülasyonu
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  comment   String   @db.Text
+  rating    Int      @default(5)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -1,13 +1,14 @@
 "use client";
 
-import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { Copy, CheckCircle, BrainCircuit, TrendingUp, MapPin, Users, Hexagon, Shield, GraduationCap, TreePine, ShoppingBag, Train } from "lucide-react";
 import Link from "next/link";
 import PdfButton from "./PdfButton";
 import AdBanner from "./AdBanner";
-import ValuationChart from "./ValuationChart";
+import { motion } from "framer-motion";
+import ValuationChart from './ValuationChart';
+import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 
 import type { POIItem } from "./MapComponent";
 
@@ -293,9 +294,21 @@ export default function ResultDashboard({ id }: { id: string }) {
                                 </p>
                             </div>
                             <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
-                                <span className="text-xs text-gray-500 font-medium">Bolge Ortalamasi (Tahmini)</span>
+                                <span className="text-xs text-gray-500 font-medium">{data.district} Ortalamasi (Gerceklesmis)</span>
                                 <p className="text-xl font-bold text-appleDark mt-1">
-                                    {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(Math.round(sqmPrice * 0.95))} - {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(Math.round(sqmPrice * 1.08))} /m2
+                                    {data.districtAvgSqm > 0 ? (
+                                        <>
+                                            {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(data.districtAvgSqm)} /m2
+                                            <span className={`text-sm font-normal ml-2 ${sqmPrice > data.districtAvgSqm ? 'text-green-600' : 'text-red-500'}`}>
+                                                (Ortalamaya gore %{Math.abs(Math.round(((sqmPrice - data.districtAvgSqm) / data.districtAvgSqm) * 100))} {sqmPrice > data.districtAvgSqm ? 'yuksek' : 'dusuk'})
+                                            </span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(Math.round(sqmPrice * 0.95))} - {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(Math.round(sqmPrice * 1.08))} /m2
+                                            <span className="text-xs font-normal text-gray-400 ml-2">(Tahmini)</span>
+                                        </>
+                                    )}
                                 </p>
                             </div>
                         </div>
@@ -313,12 +326,40 @@ export default function ResultDashboard({ id }: { id: string }) {
                     )}
 
                     <div className="md:col-span-2 glass-card p-6">
-                        <h3 className="font-semibold text-lg text-appleDark mb-2 flex items-center">
+                        <h3 className="font-semibold text-lg text-appleDark mb-4 flex items-center">
                             <TrendingUp size={20} className="mr-2 text-appleBlue" />
-                            Emlak Endeksi ve Gelecek Projeksiyonu
+                            Gecmis Degerleme Trendi ({data.neighborhood})
                         </h3>
-                        <p className="text-sm text-gray-500 mb-6">TCMB verileri ve bolgesel enflasyon oranlarina dayali gecmis performans ve 2 yillik makine ogrenmesi tahmini.</p>
-                        <ValuationChart currentValue={displayValue} />
+                        {data.neighborhoodTrend && data.neighborhoodTrend.length > 1 ? (
+                            <>
+                                <p className="text-sm text-gray-500 mb-6">Bu mahallede yapilan gerceklesmis degerlemelerin son 6 aylik ortalama m2 fiyat degisimi.</p>
+                                <div style={{ width: '100%', height: 300 }}>
+                                    <ResponsiveContainer>
+                                        <BarChart data={data.neighborhoodTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                                            <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                                            <YAxis
+                                                stroke="#94a3b8"
+                                                fontSize={12}
+                                                tickLine={false}
+                                                axisLine={false}
+                                                tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
+                                            />
+                                            <Tooltip
+                                                cursor={{ fill: 'rgba(0,0,0,0.02)' }}
+                                                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
+                                                formatter={(value: any) => [new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(value) + " /m2", "Ort. m2 Fiyati"]}
+                                            />
+                                            <Bar dataKey="avgSqmPrice" fill="#0071E3" radius={[6, 6, 0, 0]} maxBarSize={50} />
+                                        </BarChart>
+                                    </ResponsiveContainer>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <p className="text-sm text-gray-500 mb-6">TCMB verileri ve bolgesel enflasyon oranlarina dayali gecmis performans ve makine ogrenmesi tahmini.</p>
+                                <ValuationChart currentValue={displayValue} />
+                            </>
+                        )}
                     </div>
 
                     {/* Kira Getirisi ve Amortisman Karti */}
@@ -386,10 +427,10 @@ export default function ResultDashboard({ id }: { id: string }) {
                     )}
 
                     {/* Map Section */}
-                    <div className="md:col-span-3 glass-card p-2 relative min-h-[350px]">
-                        <div className="absolute top-6 left-6 z-10 bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl shadow-sm border border-white flex items-center">
-                            <MapPin size={16} className="text-appleBlue mr-2" />
-                            <span className="font-medium text-sm text-appleDark">Konum Analizi</span>
+                    <div className="md:col-span-3 glass-card p-0 md:p-2 relative min-h-[350px] overflow-hidden">
+                        <div className="absolute top-4 left-4 z-[999] bg-white/90 backdrop-blur-md px-3 py-1.5 md:px-4 md:py-2 rounded-xl shadow-sm border border-white flex items-center">
+                            <MapPin size={16} className="text-appleBlue mr-1 md:mr-2" />
+                            <span className="font-medium text-xs md:text-sm text-appleDark">Konum Analizi</span>
                         </div>
                         <MapComponent lat={data.location.lat} lng={data.location.lng} onPOIsLoaded={handlePOIsLoaded} />
                     </div>
@@ -423,7 +464,7 @@ export default function ResultDashboard({ id }: { id: string }) {
                             </div>
 
                             {/* Category Bars */}
-                            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                                 {[
                                     { key: "hospital", label: "Saglik", icon: <Shield size={16} />, color: "bg-red-500", bgColor: "bg-red-50", textColor: "text-red-600" },
                                     { key: "metro", label: "Ulasim", icon: <Train size={16} />, color: "bg-blue-500", bgColor: "bg-blue-50", textColor: "text-blue-600" },
@@ -458,7 +499,7 @@ export default function ResultDashboard({ id }: { id: string }) {
                             {pois.length > 0 && (
                                 <div className="mt-6 pt-6 border-t border-gray-100">
                                     <h4 className="text-sm font-semibold text-appleDark mb-3">Yakin Tesisler</h4>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                                    <div className="grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-3 gap-2">
                                         {pois.slice(0, 9).map((poi, i) => (
                                             <div key={i} className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg text-xs">
                                                 <span style={{

@@ -58,7 +58,8 @@ export async function POST(req: NextRequest) {
             "sponsorSidebarUrl", "sponsorSidebarLink", "mFacadeGuney", "mFacadeKuzey", "mSiteIci",
             "mYenilenmis", "mMasrafli", "b2bMonthlyPrice", "b2bDiscountPercentage",
             "mHeatingDogalgaz", "mHeatingYerden", "mHeatingSoba",
-            "mViewDeniz", "mViewDoga", "mViewSehir", "mPropertyDubleks", "dampeningFactor"
+            "mViewDeniz", "mViewDoga", "mViewSehir", "mPropertyDubleks", "dampeningFactor",
+            "dailyRateLimit", "dailyBlogCount", "blogCategories", "blogAutoPublish"
         ];
 
         for (const key of algoKeys) {

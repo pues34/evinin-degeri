@@ -2,7 +2,7 @@
 
 import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { Users, Settings, LogOut, LayoutDashboard, Search, Map, BarChart2, MessageSquare, Building2, Crown, Bell, Filter, CheckSquare, Edit, Trash2 } from "lucide-react";
+import { Users, Search, RefreshCw, BarChart2, Star, Calculator, Map, Mail, Bell, MessageSquare, LayoutDashboard, Settings, Activity, Clock, FileText, CheckCircle, Smartphone, Globe, Shield, Crown, Eye, X, ChevronRight, Share2, TrendingUp, Building2, Trash2, Edit2, Download, LogOut } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 
 export const dynamic = 'force-dynamic';
@@ -85,6 +85,8 @@ export default function AdminDashboard() {
         b2bProPlusPrice: "",
         dailyRateLimit: "3",
         dailyBlogCount: "5",
+        blogCategories: "",
+        blogAutoPublish: "true",
 
         // V22: New Multipliers
         mHeatingDogalgaz: "",
@@ -104,6 +106,40 @@ export default function AdminDashboard() {
         valuationCounter: 0,
     });
     const [savingSettings, setSavingSettings] = useState(false);
+
+    // V27: Test Algorithm Mode States
+    const [testArea, setTestArea] = useState("100");
+    const [testAge, setTestAge] = useState("5");
+    const [testFloor, setTestFloor] = useState("Ara Kat");
+    const [testElevator, setTestElevator] = useState(true);
+    const [testParking, setTestParking] = useState(true);
+    const [testResult, setTestResult] = useState<number | null>(null);
+
+    const handleCalculateTest = () => {
+        const area = parseFloat(testArea || "0");
+        const age = parseFloat(testAge || "0");
+        const basePrice = parseFloat(settings.baseSqmPrice || "25000");
+        const ageDep = parseFloat(settings.buildingAgeDepreciation || "1.2");
+
+        let val = basePrice * area;
+
+        // Age desc
+        val -= val * (age * (ageDep / 100));
+
+        // Floor
+        if (testFloor === "Ara Kat") val *= parseFloat(settings.multAra || "1.05");
+        else if (testFloor === "Zemin/Giris") val *= parseFloat(settings.multZemin || "0.95");
+        else if (testFloor === "En Ust Kat") val *= parseFloat(settings.multUst || "0.98");
+        else if (testFloor === "Dubleks") val *= parseFloat(settings.multCati || "1.1");
+        else if (testFloor === "Mustakil") val *= parseFloat(settings.multMustakil || "1.3");
+        else if (testFloor === "Kot") val *= parseFloat(settings.multKot1 || "0.85");
+        else if (testFloor === "Bodrum") val *= parseFloat(settings.multBodrum || "0.75");
+
+        if (testElevator) val *= parseFloat(settings.elevatorMultiplier || "1.05");
+        if (testParking) val *= parseFloat(settings.parkingMultiplier || "1.10");
+
+        setTestResult(val);
+    };
 
     const loadLocations = () => {
         fetch("/api/locations")
@@ -202,6 +238,48 @@ export default function AdminDashboard() {
         const data = await res.json();
         if (data.success) loadBlogs();
         else alert("Silme başarısız: " + data.error);
+    };
+
+    // V27: Testimonials
+    const [testimonials, setTestimonials] = useState<any[]>([]);
+    const [testimonialForm, setTestimonialForm] = useState({ name: "", role: "", comment: "", rating: 5, isActive: true });
+
+    const loadTestimonials = () => {
+        fetch("/api/admin/testimonials")
+            .then(res => res.json())
+            .then(data => { if (data.success) setTestimonials(data.data); })
+            .catch(err => console.error(err));
+    };
+
+    const handleAddTestimonial = async () => {
+        if (!testimonialForm.name || !testimonialForm.comment) return alert("İsim ve Yorum zorunludur");
+        const res = await fetch("/api/admin/testimonials", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(testimonialForm)
+        });
+        const data = await res.json();
+        if (data.success) {
+            setTestimonialForm({ name: "", role: "", comment: "", rating: 5, isActive: true });
+            loadTestimonials();
+        } else alert("Ekleme başarısız: " + data.error);
+    };
+
+    const handleDeleteTestimonial = async (id: string) => {
+        if (!confirm("Bu yorumu silmek istiyor musunuz?")) return;
+        const res = await fetch(`/api/admin/testimonials?id=${id}`, { method: "DELETE" });
+        const data = await res.json();
+        if (data.success) loadTestimonials();
+        else alert("Silme başarısız: " + data.error);
+    };
+
+    const handleToggleTestimonial = async (id: string, currentStatus: boolean) => {
+        const res = await fetch("/api/admin/testimonials", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id, isActive: !currentStatus })
+        });
+        if ((await res.json()).success) loadTestimonials();
     };
 
     const handleSaveSettings = async () => {
@@ -367,6 +445,8 @@ export default function AdminDashboard() {
             loadContacts();
         } else if (session && activeTab === "b2b-users") {
             loadRealtors();
+        } else if (session && activeTab === "testimonials") {
+            loadTestimonials();
         } else if (session && activeTab === "overview") {
             fetch("/api/admin/stats")
                 .then(res => res.json())
@@ -454,6 +534,12 @@ export default function AdminDashboard() {
                         className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'blog' ? 'bg-appleBlue text-white' : 'text-gray-600 hover:bg-gray-50'}`}
                     >
                         <LayoutDashboard size={18} className="mr-3" /> SEO Blog (AI)
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("testimonials")}
+                        className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'testimonials' ? 'bg-appleBlue text-white' : 'text-gray-600 hover:bg-gray-50'}`}
+                    >
+                        <Star size={18} className="mr-3" /> Referans Yönetimi
                     </button>
                     <button
                         onClick={() => setActiveTab("site-settings")}
@@ -805,6 +891,36 @@ export default function AdminDashboard() {
                                                         </label>
                                                         <input type="number" value={settings.dailyBlogCount || "5"} onChange={e => setSettings({ ...settings, dailyBlogCount: e.target.value })} className="w-full p-2 rounded-xl border border-indigo-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-indigo-50/30 text-sm font-medium" />
                                                         <p className="text-xs text-gray-400 mt-1">Her gun otomatik uretilecek blog sayisi (1-10)</p>
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-2 gap-4 mt-4">
+                                                    <div className="col-span-2">
+                                                        <label className="block text-sm text-gray-600 mb-2 font-medium">Blog Kategorileri (Secilen konularda icerik uretilir)</label>
+                                                        <div className="grid grid-cols-2 gap-2">
+                                                            {['Emlak Trendleri', 'Yatirim Rehberi', 'Sehir Analizi', 'Mevzuat', 'Kira Piyasasi', 'Yapay Zeka', 'Renovasyon'].map(cat => {
+                                                                const isChecked = (settings.blogCategories || "").includes(cat);
+                                                                return (
+                                                                    <label key={cat} className="flex items-center gap-2 text-sm text-gray-700 bg-white p-2 rounded-lg border border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
+                                                                        <input type="checkbox" checked={isChecked} onChange={(e) => {
+                                                                            let cats = (settings.blogCategories || "").split(',').filter(Boolean);
+                                                                            if (e.target.checked && !cats.includes(cat)) cats.push(cat);
+                                                                            else if (!e.target.checked) cats = cats.filter(c => c !== cat);
+                                                                            setSettings({ ...settings, blogCategories: cats.join(',') });
+                                                                        }} className="rounded text-indigo-500 focus:ring-indigo-500 cursor-pointer w-4 h-4" />
+                                                                        {cat}
+                                                                    </label>
+                                                                )
+                                                            })}
+                                                        </div>
+                                                        <p className="text-xs text-gray-400 mt-2">Secim yapilmazsa sistem tum konulardan karisik secmeye baslar.</p>
+                                                    </div>
+                                                    <div className="col-span-2">
+                                                        <label className="block text-sm text-gray-600 mb-1 font-medium">Otomatik Yayinlama</label>
+                                                        <select value={settings.blogAutoPublish || "true"} onChange={e => setSettings({ ...settings, blogAutoPublish: e.target.value })} className="w-full p-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-white text-sm">
+                                                            <option value="true">Evet, uretildiginde hemen yayinla</option>
+                                                            <option value="false">Hayir, taslak olarak kaydet (Inceleme icin)</option>
+                                                        </select>
+                                                        <p className="text-xs text-gray-400 mt-1">Taslak yazilar sadece admin panelde gorunur, blog sayfasinda gizlenir.</p>
                                                     </div>
                                                 </div>
                                                 <button
@@ -1235,7 +1351,55 @@ export default function AdminDashboard() {
                             <div className="p-8">
                                 <div className="flex justify-between items-center mb-6">
                                     <h3 className="font-semibold text-lg text-appleDark">Otomatik Yapay Zeka Blog Yönetimi</h3>
-                                    <p className="text-sm text-gray-500">Google SEO için sektör haberlerini yapay zekaya yazdırın.</p>
+                                    <p className="text-sm text-gray-500">Bu ayarlar, kullanıcıların evinin değerini hesaplayan algoritmanın temelini oluşturur. Lütfen dikkatli değiştirin.</p>
+                                </div>
+                                <div className="mb-6 p-6 rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white shadow-sm relative overflow-hidden text-sm">
+                                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                                        <Calculator size={100} />
+                                    </div>
+                                    <h4 className="font-bold text-appleBlue mb-4 flex items-center gap-2 relative z-10"><Calculator size={18} /> Algoritma Test Modu</h4>
+                                    <p className="text-gray-600 mb-4 relative z-10 max-w-2xl">Ayarları <strong>kaydetmeden önce</strong> mevcut değerlerin nasıl bir sonuç vereceğini test edin. (Temel çarpanlarla yaklaşık bir sonuç verir, il/ilçe çarpanları hesaba katılmaz)</p>
+
+                                    <div className="grid grid-cols-2 md:grid-cols-6 gap-4 relative z-10 items-end">
+                                        <div>
+                                            <label className="block text-xs text-gray-500 mb-1">M2 (Brüt)</label>
+                                            <input type="number" value={testArea} onChange={e => setTestArea(e.target.value)} className="w-full p-2.5 rounded-xl border border-gray-200 outline-none" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs text-gray-500 mb-1">Bina Yaşı</label>
+                                            <input type="number" value={testAge} onChange={e => setTestAge(e.target.value)} className="w-full p-2.5 rounded-xl border border-gray-200 outline-none" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs text-gray-500 mb-1">Bulunduğu Kat</label>
+                                            <select value={testFloor} onChange={e => setTestFloor(e.target.value)} className="w-full p-2.5 rounded-xl border border-gray-200 outline-none bg-white">
+                                                <option value="Ara Kat">Ara Kat</option>
+                                                <option value="Zemin/Giris">Zemin/Giriş</option>
+                                                <option value="En Ust Kat">En Üst Kat</option>
+                                                <option value="Dubleks">Çatı/Dubleks</option>
+                                                <option value="Mustakil">Müstakil</option>
+                                                <option value="Kot">Kot 1</option>
+                                                <option value="Bodrum">Bodrum</option>
+                                            </select>
+                                        </div>
+                                        <div className="flex flex-col justify-center h-[42px] gap-2 p-2 bg-white rounded-xl border border-gray-200">
+                                            <label className="flex items-center gap-2 text-xs font-medium cursor-pointer">
+                                                <input type="checkbox" checked={testElevator} onChange={e => setTestElevator(e.target.checked)} className="rounded" /> Asansör
+                                            </label>
+                                            <label className="flex items-center gap-2 text-xs font-medium cursor-pointer">
+                                                <input type="checkbox" checked={testParking} onChange={e => setTestParking(e.target.checked)} className="rounded" /> Otopark
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <button onClick={handleCalculateTest} className="w-full p-2.5 bg-appleBlue text-white rounded-xl font-medium hover:bg-blue-600 transition-colors">Test Et</button>
+                                        </div>
+                                        <div>
+                                            {testResult !== null && (
+                                                <div className="p-2.5 bg-green-500 text-white rounded-xl font-bold text-center">
+                                                    {new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 0 }).format(testResult)} TL
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                     <div className="glass-card p-6 shadow-sm border border-gray-100 flex flex-col h-[500px]">
@@ -1299,11 +1463,81 @@ export default function AdminDashboard() {
                                 </div>
                             </div>
                         )}
+
+                        {activeTab === "testimonials" && (
+                            <div className="p-8">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h3 className="font-semibold text-lg text-appleDark">Referans ve Yorum Yönetimi</h3>
+                                    <p className="text-sm text-gray-500">Anasayfada gösterilecek müşteri yorumlarını buradan ekleyip silebilirsiniz.</p>
+                                </div>
+
+                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                    <div className="lg:col-span-1 glass-card p-6 shadow-sm border border-gray-100 flex flex-col h-fit">
+                                        <h4 className="font-medium text-appleDark mb-6 flex items-center">
+                                            <Star className="mr-2 text-yellow-500" size={18} /> Yeni Yorum Ekle
+                                        </h4>
+                                        <div className="space-y-4 flex-1">
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">Müşteri Adı Özsoyad</label>
+                                                <input type="text" value={testimonialForm.name} onChange={e => setTestimonialForm({ ...testimonialForm, name: e.target.value })} className="w-full p-2.5 rounded-xl border border-gray-200 outline-none text-sm" placeholder="Örn: Ayşe Yılmaz" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">Ünvan / Rol (Opsiyonel)</label>
+                                                <input type="text" value={testimonialForm.role} onChange={e => setTestimonialForm({ ...testimonialForm, role: e.target.value })} className="w-full p-2.5 rounded-xl border border-gray-200 outline-none text-sm" placeholder="Örn: Ev Sahibi" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">Puan (1-5)</label>
+                                                <select value={testimonialForm.rating} onChange={e => setTestimonialForm({ ...testimonialForm, rating: parseInt(e.target.value) })} className="w-full p-2.5 rounded-xl border border-gray-200 outline-none text-sm bg-white">
+                                                    <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+                                                    <option value="4">⭐⭐⭐⭐ (4)</option>
+                                                    <option value="3">⭐⭐⭐ (3)</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm text-gray-600 mb-1">Yorum İçeriği</label>
+                                                <textarea value={testimonialForm.comment} onChange={e => setTestimonialForm({ ...testimonialForm, comment: e.target.value })} className="w-full p-2.5 rounded-xl border border-gray-200 outline-none h-32 text-sm" placeholder="Yorum metni..." />
+                                            </div>
+                                        </div>
+                                        <button onClick={handleAddTestimonial} className="w-full py-3 bg-appleDark text-white rounded-xl shadow-apple font-medium mt-6 hover:bg-black transition-all">
+                                            Yorumu Kaydet
+                                        </button>
+                                    </div>
+                                    <div className="lg:col-span-2 space-y-4">
+                                        {testimonials.length === 0 && (
+                                            <div className="text-center py-12 text-gray-400 bg-white rounded-2xl border border-gray-100 border-dashed">
+                                                Henüz eklenmiş bir yorum yok.
+                                            </div>
+                                        )}
+                                        {testimonials.map((t: any) => (
+                                            <div key={t.id} className={`p-5 rounded-2xl border transition-all flex items-start gap-4 ${t.isActive ? 'bg-white border-gray-100 shadow-sm' : 'bg-gray-50 border-gray-200 opacity-70'}`}>
+                                                <div className="flex-1">
+                                                    <div className="flex justify-between items-start mb-2">
+                                                        <div>
+                                                            <h5 className="font-bold text-appleDark text-sm">{t.name} <span className="text-xs text-gray-400 font-normal ml-2">{t.role}</span></h5>
+                                                            <div className="text-yellow-400 text-xs mt-0.5">{"⭐".repeat(t.rating)}</div>
+                                                        </div>
+                                                        <span className="text-xs text-gray-400">{new Date(t.createdAt).toLocaleDateString('tr-TR')}</span>
+                                                    </div>
+                                                    <p className="text-sm text-gray-600 italic">&quot;{t.comment}&quot;</p>
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <button onClick={() => handleToggleTestimonial(t.id, t.isActive)} className={`text-xs px-3 py-1.5 rounded-lg border font-medium ${t.isActive ? 'text-amber-600 border-amber-200 bg-amber-50 hover:bg-amber-100' : 'text-green-600 border-green-200 bg-green-50 hover:bg-green-100'}`}>
+                                                        {t.isActive ? 'Gizle' : 'Göster'}
+                                                    </button>
+                                                    <button onClick={() => handleDeleteTestimonial(t.id)} className="text-xs px-3 py-1.5 rounded-lg border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 font-medium whitespace-nowrap">
+                                                        Sil
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                     </div>
                 </div>
             </div>
         </div >
     );
 }
-
-

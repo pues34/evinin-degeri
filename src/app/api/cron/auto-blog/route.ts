@@ -68,7 +68,31 @@ export async function GET(req: Request) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const DAILY_COUNT = 5;
+    // DB'den dinamik ayarlari cek
+    const algoSettings = await prisma.algorithmSettings.findMany({
+        where: { key: { in: ['dailyBlogCount', 'blogCategories', 'blogAutoPublish'] } }
+    });
+    const algoObj: Record<string, string> = {};
+    algoSettings.forEach(s => algoObj[s.key] = s.value);
+
+    const DAILY_COUNT = parseInt(algoObj.dailyBlogCount || "5", 10);
+    const isPublished = algoObj.blogAutoPublish !== "false";
+    const selectedCats = (algoObj.blogCategories || "").split(',').filter(Boolean);
+
+    let activeTopics = BLOG_TOPICS;
+    if (selectedCats.length > 0) {
+        // Map UI categories to backend categories loosely
+        activeTopics = BLOG_TOPICS.filter(t =>
+            selectedCats.some(c =>
+                t.category.toLowerCase().includes(c.toLowerCase()) ||
+                c.toLowerCase().includes(t.category.split(' ')[0].toLowerCase()) ||
+                (c.includes('Trend') && t.category.includes('Piyasa')) ||
+                (c.includes('Zeka') && t.category.includes('Teknoloji')) ||
+                (c.includes('Sehir') && t.category.includes('Mahalle'))
+            )
+        );
+        if (activeTopics.length === 0) activeTopics = BLOG_TOPICS;
+    }
 
     // Bugun zaten uretilmis mi kontrol et
     const today = new Date();
@@ -87,8 +111,8 @@ export async function GET(req: Request) {
     for (let i = 0; i < remaining; i++) {
         try {
             // Rastgele kategori ve konu sec
-            const catIndex = Math.floor(Math.random() * BLOG_TOPICS.length);
-            const cat = BLOG_TOPICS[catIndex];
+            const catIndex = Math.floor(Math.random() * activeTopics.length);
+            const cat = activeTopics[catIndex];
             const promptIndex = Math.floor(Math.random() * cat.prompts.length);
             const topic = cat.prompts[promptIndex];
 
@@ -177,7 +201,8 @@ CIKTI FORMATI (STRICT JSON):
                     slug,
                     summary: aiOutput.summary || "",
                     content: finalContent,
-                    imageUrl
+                    imageUrl,
+                    isPublished
                 }
             });
 
