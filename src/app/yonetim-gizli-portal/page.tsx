@@ -2,7 +2,7 @@
 
 import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { Users, Search, RefreshCw, BarChart2, Star, Calculator, Map, Mail, Bell, MessageSquare, LayoutDashboard, Settings, Activity, Clock, FileText, CheckCircle, Smartphone, Globe, Shield, CreditCard, Crown, Eye, X, ChevronRight, Share2, TrendingUp, Building2, Trash2, Edit2, Download, LogOut } from "lucide-react";
+import { Users, Search, RefreshCw, BarChart2, Star, Calculator, Map, Mail, Bell, MessageSquare, LayoutDashboard, Settings, Activity, Clock, FileText, CheckCircle, Smartphone, Globe, Shield, CreditCard, Crown, Eye, X, ChevronRight, Share2, TrendingUp, Building2, Trash2, Edit2, Download, LogOut, Target } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 
 export const dynamic = 'force-dynamic';
@@ -18,6 +18,10 @@ export default function AdminDashboard() {
     const [feedbacks, setFeedbacks] = useState<any[]>([]);
     const [payments, setPayments] = useState<any[]>([]);
     const [stats, setStats] = useState<any>(null);
+
+    // Phase 3 States
+    const [b2cUsers, setB2cUsers] = useState<any[]>([]);
+    const [radarDeals, setRadarDeals] = useState<any[]>([]);
 
     // Location states
     const [locationsMap, setLocationsMap] = useState<any[]>([]);
@@ -472,6 +476,16 @@ export default function AdminDashboard() {
             loadContacts();
         } else if (session && activeTab === "b2b-users") {
             loadRealtors();
+        } else if (session && activeTab === "b2c-users") {
+            fetch("/api/admin/users")
+                .then(res => res.json())
+                .then(data => { if (!data.error) setB2cUsers(data); })
+                .catch(err => console.error(err));
+        } else if (session && activeTab === "radar-deals") {
+            fetch("/api/admin/radar")
+                .then(res => res.json())
+                .then(data => { if (!data.error) setRadarDeals(data); })
+                .catch(err => console.error(err));
         } else if (session && activeTab === "feedbacks") {
             loadFeedbacks();
         } else if (session && activeTab === "testimonials") {
@@ -556,6 +570,18 @@ export default function AdminDashboard() {
                         className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'b2b-users' ? 'bg-appleBlue text-white' : 'text-gray-600 hover:bg-gray-50'}`}
                     >
                         <Building2 size={18} className="mr-3" /> B2B Emlakçılar
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("b2c-users")}
+                        className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'b2c-users' ? 'bg-appleBlue text-white' : 'text-gray-600 hover:bg-gray-50'}`}
+                    >
+                        <Users size={18} className="mr-3" /> Bireysel Kullanıcılar
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("radar-deals")}
+                        className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'radar-deals' ? 'bg-appleBlue text-white' : 'text-gray-600 hover:bg-gray-50'}`}
+                    >
+                        <Target size={18} className="mr-3" /> Yatırım Radarı
                     </button>
                     <button
                         onClick={() => setActiveTab("contacts")}
@@ -1661,6 +1687,167 @@ export default function AdminDashboard() {
                                                 </button>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === "b2c-users" && (
+                            <div className="p-8">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h3 className="font-semibold text-lg text-appleDark">Bireysel Kullanıcılar (B2C)</h3>
+                                    <p className="text-sm text-gray-500">Kayıtlı son kullanıcıları, favorilerini ve portföylerini inceleyin.</p>
+                                </div>
+                                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                                    <table className="w-full text-left text-sm">
+                                        <thead className="bg-gray-50/50 text-gray-500 border-b border-gray-100">
+                                            <tr>
+                                                <th className="px-6 py-4 font-medium">Kayıt Tarihi</th>
+                                                <th className="px-6 py-4 font-medium">Kullanıcı (Email/İsim)</th>
+                                                <th className="px-6 py-4 font-medium">İstatistik (Portföy/Favori)</th>
+                                                <th className="px-6 py-4 font-medium">Premium Durumu</th>
+                                                <th className="px-6 py-4 font-medium text-center">İşlemler</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-50">
+                                            {b2cUsers.length === 0 ? (
+                                                <tr><td colSpan={5} className="text-center py-8 text-gray-400">Hiç kullanıcı bulunamadı.</td></tr>
+                                            ) : (
+                                                b2cUsers.map((u: any) => (
+                                                    <tr key={u.id}>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">{new Date(u.createdAt).toLocaleDateString("tr-TR")}</td>
+                                                        <td className="px-6 py-4">
+                                                            <div className="font-semibold text-appleDark">{u.name || "İsim Yok"}</div>
+                                                            <div className="text-xs text-gray-500">{u.email}</div>
+                                                            {u.phone && <div className="text-xs text-gray-400">{u.phone}</div>}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-gray-500">
+                                                            <span className="bg-gray-100 text-gray-600 px-2 py-1 object-center rounded-lg text-xs font-bold mr-2">{u._count?.portfolio || 0} Ev</span>
+                                                            <span className="bg-orange-50 text-orange-600 px-2 py-1 rounded-lg text-xs font-bold">{u._count?.savedListings || 0} Radar</span>
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            {u.isPremium ? (
+                                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"><Crown size={12} className="mr-1" /> Premium</span>
+                                                            ) : (
+                                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Ücretsiz</span>
+                                                            )}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-center space-x-2">
+                                                            <button
+                                                                onClick={async () => {
+                                                                    const res = await fetch("/api/admin/users", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: u.id, isPremium: !u.isPremium }) });
+                                                                    if (res.ok) {
+                                                                        const up = await res.json();
+                                                                        setB2cUsers(prev => prev.map(o => o.id === u.id ? { ...o, isPremium: up.isPremium } : o));
+                                                                    }
+                                                                }}
+                                                                className={`text-xs px-3 py-1.5 rounded-lg border font-medium ${u.isPremium ? 'text-gray-600 border-gray-200 hover:bg-gray-50' : 'text-blue-600 border-blue-200 bg-blue-50 hover:bg-blue-100'}`}
+                                                            >
+                                                                {u.isPremium ? "Premium'u İptal Et" : "Premium Yap"}
+                                                            </button>
+                                                            <button onClick={async () => {
+                                                                if (confirm("Silmek istediğinize emin misiniz?")) {
+                                                                    await fetch(`/api/admin/users?id=${u.id}`, { method: "DELETE" });
+                                                                    setB2cUsers(prev => prev.filter(o => o.id !== u.id));
+                                                                }
+                                                            }} className="text-xs px-3 py-1.5 rounded-lg border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 font-medium">Sil</button>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === "radar-deals" && (
+                            <div className="p-8">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h3 className="font-semibold text-lg text-appleDark">Yapay Zeka Yatırım Radarı</h3>
+                                    <p className="text-sm text-gray-500">Premium B2C kullanıcılarına sunulan iskontolu fırsat ilanlarını buradan ekleyin/silin.</p>
+                                </div>
+
+                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                    <div className="lg:col-span-1 glass-card p-6 shadow-sm border border-gray-100 flex flex-col h-fit">
+                                        <h4 className="font-medium text-appleDark mb-6 flex items-center">
+                                            <Target className="mr-2 text-indigo-500" size={18} /> Yeni Fırsat Radara Ekle
+                                        </h4>
+                                        <form className="space-y-4" onSubmit={async (e) => {
+                                            e.preventDefault();
+                                            const fd = new FormData(e.currentTarget);
+                                            const body = Object.fromEntries(fd.entries());
+                                            const r = await fetch("/api/admin/radar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+                                            if (r.ok) {
+                                                const nd = await r.json();
+                                                setRadarDeals([nd, ...radarDeals]);
+                                                (e.target as HTMLFormElement).reset();
+                                            } else {
+                                                alert("Hata oluştu.");
+                                            }
+                                        }}>
+                                            <div>
+                                                <label className="block text-xs text-gray-500 mb-1">İlan Başlığı</label>
+                                                <input name="title" required className="w-full p-2.5 rounded-xl border outline-none text-sm" placeholder="Örn: Acil Satılık 2+1..." />
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <div>
+                                                    <label className="block text-xs text-gray-500 mb-1">İl</label>
+                                                    <input name="city" required className="w-full p-2.5 rounded-xl border outline-none text-sm" placeholder="İstanbul" />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs text-gray-500 mb-1">İlçe</label>
+                                                    <input name="district" required className="w-full p-2.5 rounded-xl border outline-none text-sm" placeholder="Kadıköy" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs text-gray-500 mb-1">Mahalle</label>
+                                                <input name="neighborhood" required className="w-full p-2.5 rounded-xl border outline-none text-sm" placeholder="Suadiye" />
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <div>
+                                                    <label className="block text-xs text-gray-500 mb-1">İstenen Fiyat (TL)</label>
+                                                    <input type="number" name="askingPrice" required className="w-full p-2.5 rounded-xl border outline-none text-sm" placeholder="2500000" />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs text-gray-500 mb-1">Evnin Değeri AI (TL)</label>
+                                                    <input type="number" name="estimatedValue" required className="w-full p-2.5 rounded-xl border outline-none text-sm" placeholder="3200000" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs text-gray-500 mb-1">Görsel URL (Opsiyonel)</label>
+                                                <input name="imageUrl" className="w-full p-2.5 rounded-xl border outline-none text-sm" placeholder="https://..." />
+                                            </div>
+                                            <button type="submit" className="w-full py-3 bg-indigo-600 text-white rounded-xl shadow-md font-bold text-sm hover:bg-indigo-700">Kaydet ve Radara Koy</button>
+                                        </form>
+                                    </div>
+
+                                    <div className="lg:col-span-2 space-y-4">
+                                        {radarDeals.length === 0 && <div className="text-center py-12 text-gray-400 bg-white rounded-xl border border-dashed">Radar henüz boş.</div>}
+                                        {radarDeals.map((r: any) => (
+                                            <div key={r.id} className="bg-white p-4 rounded-2xl border flex gap-4 items-center">
+                                                <img src={r.imageUrl || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=150&q=80"} className="w-24 h-24 object-cover rounded-xl" />
+                                                <div className="flex-1">
+                                                    <div className="flex justify-between">
+                                                        <h5 className="font-bold text-appleDark text-sm">{r.title}</h5>
+                                                        <span className="bg-red-50 text-red-600 px-2 py-1 rounded text-xs font-bold whitespace-nowrap">%{Number(r.discount).toFixed(1)} İndirim</span>
+                                                    </div>
+                                                    <p className="text-xs text-gray-500 mt-1">{r.district}, {r.city} - {r.neighborhood}</p>
+                                                    <div className="flex justify-between items-end mt-2">
+                                                        <div>
+                                                            <div className="text-[10px] text-gray-400">İstenen: <span className="font-bold text-gray-600">{Intl.NumberFormat('tr-TR').format(r.askingPrice)} ₺</span></div>
+                                                            <div className="text-[10px] text-green-700 font-bold">Gerçek: {Intl.NumberFormat('tr-TR').format(r.estimatedValue)} ₺</div>
+                                                        </div>
+                                                        <button onClick={async () => {
+                                                            if (confirm("Silmek istediğinize emin misiniz?")) {
+                                                                await fetch(`/api/admin/radar?id=${r.id}`, { method: "DELETE" });
+                                                                setRadarDeals(prev => prev.filter(o => o.id !== r.id));
+                                                            }
+                                                        }} className="text-xs px-3 py-1.5 rounded-lg border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 font-medium">Sil</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             </div>

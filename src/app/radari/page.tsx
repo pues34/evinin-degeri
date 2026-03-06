@@ -1,52 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Search, MapPin, Tag, TrendingDown, Target, Zap, AlertCircle, Hexagon } from "lucide-react";
+import { Search, MapPin, Tag, TrendingDown, Target, Zap, AlertCircle, Hexagon, Loader2 } from "lucide-react";
 
 export default function FirsatRadariPage() {
     const { data: session } = useSession();
-
-    // Mock Data for the MVP. In Phase 3.5 these will come from a scraper or actual API
-    const mockListings = [
-        {
-            id: "1",
-            title: "Sahibinden Satılık 3+1 Masrafsız Daire",
-            city: "İstanbul",
-            district: "Kadıköy",
-            neighborhood: "Suadiye",
-            askingPrice: 15500000,
-            ourValuation: 17200000,
-            discount: 10.98,
-            image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            id: "2",
-            title: "Metrobüse 5 dk, Fırsat 2+1",
-            city: "İstanbul",
-            district: "Şişli",
-            neighborhood: "Mecidiyeköy",
-            askingPrice: 7800000,
-            ourValuation: 8650000,
-            discount: 10.89,
-            image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
-        },
-        {
-            id: "3",
-            title: "Acil Satılık Deniz Manzaralı Lüks Rezidans",
-            city: "İstanbul",
-            district: "Beşiktaş",
-            neighborhood: "Levent",
-            askingPrice: 22000000,
-            ourValuation: 24500000,
-            discount: 11.36,
-            image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80"
-        }
-    ];
+    const [listings, setListings] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
     const isPremium = session?.user?.isPremium;
+
+    useEffect(() => {
+        if (isPremium) {
+            fetch("/api/radar/public")
+                .then(res => res.json())
+                .then(data => {
+                    setListings(Array.isArray(data) ? data : []);
+                    setLoading(false);
+                })
+                .catch(err => {
+                    console.error("Failed to load radar data", err);
+                    setLoading(false);
+                });
+        } else {
+            setLoading(false); // If not premium, no need to show loading, they just see the blocker
+        }
+    }, [isPremium]);
 
     return (
         <div className="min-h-screen flex flex-col pt-24 bg-gray-50">
@@ -99,45 +81,53 @@ export default function FirsatRadariPage() {
                 </div>
 
                 {/* Radar Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
-                    {mockListings.map((listing) => (
-                        <div key={listing.id} className="bg-white rounded-[24px] border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition group flex flex-col">
-                            <div className="h-48 bg-gray-200 relative overflow-hidden">
-                                <img src={listing.image} alt="Emlak Görseli" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                                <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1.5 rounded-lg font-bold text-sm flex items-center shadow-md">
-                                    <TrendingDown size={16} className="mr-1" /> %{listing.discount} İskontolu
-                                </div>
-                            </div>
-                            <div className="p-6 flex-grow flex flex-col">
-                                <h3 className="font-bold text-appleDark text-lg mb-2 line-clamp-2">{listing.title}</h3>
-                                <p className="text-sm text-gray-500 flex items-center mb-4">
-                                    <MapPin size={16} className="mr-1" /> {listing.district}, {listing.city}
-                                </p>
-
-                                <div className="mt-auto space-y-4">
-                                    <div className="bg-gray-50 p-4 rounded-xl flex justify-between items-center border border-gray-100">
-                                        <div className="text-gray-500 text-sm">İstenen Fiyat:</div>
-                                        <div className="font-bold text-appleDark text-lg">
-                                            {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(listing.askingPrice)}
-                                        </div>
-                                    </div>
-                                    <div className="bg-green-50 p-4 rounded-xl flex justify-between items-center border border-green-100 shadow-inner">
-                                        <div className="text-green-800 text-sm font-bold flex items-center">
-                                            <Hexagon size={16} className="mr-1 fill-current" /> Bizim Değerleme:
-                                        </div>
-                                        <div className="font-extrabold text-green-700 text-xl">
-                                            {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(listing.ourValuation)}
-                                        </div>
+                {loading ? (
+                    <div className="flex justify-center items-center py-24 relative z-10 w-full">
+                        <Loader2 className="w-10 h-10 animate-spin text-indigo-600" />
+                    </div>
+                ) : listings.length === 0 && isPremium ? (
+                    <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm relative z-10">
+                        <Target className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                        <h3 className="text-xl font-bold text-gray-900">Şu An Fırsat Bulunamadı</h3>
+                        <p className="text-gray-500 mt-2">Yapay zekamız sürekli piyasayı tarıyor. Daha sonra tekrar kontrol edin.</p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
+                        {listings.map((listing) => (
+                            <div key={listing.id} className="bg-white rounded-[24px] border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition group flex flex-col">
+                                <div className="h-48 bg-gray-200 relative overflow-hidden">
+                                    <img src={listing.imageUrl || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80"} alt="Emlak Görseli" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                                    <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1.5 rounded-lg font-bold text-sm flex items-center shadow-md">
+                                        <TrendingDown size={16} className="mr-1" /> %{Number(listing.discount).toFixed(1)} İskontolu
                                     </div>
                                 </div>
-                                <button className="w-full mt-6 bg-appleDark text-white py-3 rounded-xl font-bold hover:bg-appleBlue transition">
-                                    İlan Detayına Git
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                                <div className="p-6 flex-grow flex flex-col">
+                                    <h3 className="font-bold text-appleDark text-lg mb-2 line-clamp-2">{listing.title}</h3>
+                                    <p className="text-sm text-gray-500 flex items-center mb-4">
+                                        <MapPin size={16} className="mr-1" /> {listing.district}, {listing.city}
+                                    </p>
 
+                                    <div className="mt-auto space-y-4">
+                                        <div className="bg-gray-50 p-4 rounded-xl flex justify-between items-center border border-gray-100">
+                                            <div className="text-gray-500 text-sm">İstenen Fiyat:</div>
+                                            <div className="font-bold text-appleDark text-lg">
+                                                {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(listing.askingPrice)}
+                                            </div>
+                                        </div>
+                                        <div className="bg-green-50 p-4 rounded-xl flex justify-between items-center border border-green-100 shadow-inner">
+                                            <div className="text-green-800 text-sm font-bold flex items-center">
+                                                <Hexagon size={16} className="mr-1 fill-current" /> Bizim Değerleme:
+                                            </div>
+                                            <div className="font-extrabold text-green-700 text-xl">
+                                                {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(listing.estimatedValue)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </main>
 
             <Footer />
