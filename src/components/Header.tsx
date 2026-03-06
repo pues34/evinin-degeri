@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Hexagon, Map, BookOpen, Building2, User } from "lucide-react";
+import { Hexagon, Map, BookOpen, Building2, User, Calculator, LineChart } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 
@@ -26,6 +26,12 @@ export default function Header() {
                     <nav className="hidden md:flex items-center gap-6">
                         <Link href="/" className={`text-sm font-medium transition-colors ${pathname === '/' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
                             Ev Değerleme
+                        </Link>
+                        <Link href="/kira-hesaplama" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/kira-hesaplama' || pathname === '/amortisman-hesaplama' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
+                            <Calculator size={16} /> Hesaplamalar
+                        </Link>
+                        <Link href="/konut-fiyat-endeksi" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/konut-fiyat-endeksi' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
+                            <LineChart size={16} /> Fiyat Endeksi
                         </Link>
                         <Link href="/yatirim-haritasi" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/yatirim-haritasi' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
                             <Map size={16} /> Isı Haritası
