@@ -114,6 +114,9 @@ export default function AdminDashboard() {
     const [testFloor, setTestFloor] = useState("Ara Kat");
     const [testElevator, setTestElevator] = useState(true);
     const [testParking, setTestParking] = useState(true);
+    const [testBalcony, setTestBalcony] = useState(true);
+    const [testHeating, setTestHeating] = useState("Dogalgaz");
+    const [testView, setTestView] = useState("Sehir");
     const [testResult, setTestResult] = useState<number | null>(null);
 
     const handleCalculateTest = () => {
@@ -138,6 +141,15 @@ export default function AdminDashboard() {
 
         if (testElevator) val *= parseFloat(settings.elevatorMultiplier || "1.05");
         if (testParking) val *= parseFloat(settings.parkingMultiplier || "1.10");
+        if (testBalcony) val *= parseFloat(settings.multBalkonVar || "1.03");
+
+        if (testHeating === "Dogalgaz") val *= parseFloat(settings.mHeatingDogalgaz || "1.02");
+        else if (testHeating === "Yerden") val *= parseFloat(settings.mHeatingYerden || "1.08");
+        else if (testHeating === "Soba") val *= parseFloat(settings.mHeatingSoba || "0.85");
+
+        if (testView === "Deniz") val *= parseFloat(settings.mViewDeniz || "1.25");
+        else if (testView === "Doga") val *= parseFloat(settings.mViewDoga || "1.05");
+        else if (testView === "Sehir") val *= parseFloat(settings.mViewSehir || "1.0");
 
         setTestResult(val);
     };
@@ -1374,6 +1386,65 @@ export default function AdminDashboard() {
                             </div>
                         )}
 
+                        {activeTab === "b2b-users" && (
+                            <div className="p-8">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h3 className="font-semibold text-lg text-appleDark">Kurumsal Emlakçı Yönetimi (B2B)</h3>
+                                    <p className="text-sm text-gray-500">Üye olan emlak danışmanları ve abonelik statüleri.</p>
+                                </div>
+                                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                                    <table className="w-full text-left text-sm">
+                                        <thead className="bg-gray-50/50 text-gray-500 border-b border-gray-100">
+                                            <tr>
+                                                <th className="px-6 py-4 font-medium">Tarih</th>
+                                                <th className="px-6 py-4 font-medium">Firma / İsim</th>
+                                                <th className="px-6 py-4 font-medium">İletişim</th>
+                                                <th className="px-6 py-4 font-medium">Paket</th>
+                                                <th className="px-6 py-4 font-medium text-center">İşlem</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-50">
+                                            {realtors.length === 0 ? (
+                                                <tr><td colSpan={5} className="text-center py-8 text-gray-400">Kayıtlı emlakçı bulunmuyor.</td></tr>
+                                            ) : (
+                                                realtors.map((r: any) => (
+                                                    <tr key={r.id} className="transition-colors hover:bg-gray-50 bg-white">
+                                                        <td className="px-6 py-4 text-gray-500 whitespace-nowrap">
+                                                            {new Date(r.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' })}
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            <div className="font-medium text-appleDark">{r.companyName || r.brokerName}</div>
+                                                            <div className="text-xs text-appleLightGray">{r.region}</div>
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            <div className="text-gray-600">{r.user.email}</div>
+                                                            <div className="text-gray-400 text-xs">{r.phone}</div>
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            {r.subscriptionTier === "PRO_PLUS" ? (
+                                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200 shadow-sm"><Crown size={12} className="mr-1" /> PRO PLUS</span>
+                                                            ) : r.subscriptionTier === "PRO" ? (
+                                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">PRO</span>
+                                                            ) : (
+                                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">Ücretsiz</span>
+                                                            )}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-center">
+                                                            {r.subscriptionTier === "PRO_PLUS" || r.subscriptionTier === "PRO" ? (
+                                                                <button onClick={() => handleToggleB2bPro(r.id, true)} className="text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition-colors">İptal Et</button>
+                                                            ) : (
+                                                                <button onClick={() => handleToggleB2bPro(r.id, false)} className="text-xs font-medium text-green-600 bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded-lg border border-green-200 transition-colors">PRO Yap</button>
+                                                            )}
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )}
+
                         {activeTab === "pages" && (
                             <div className="p-8">
                                 <div className="flex justify-between items-center mb-6">
@@ -1429,43 +1500,61 @@ export default function AdminDashboard() {
                                     <h4 className="font-bold text-appleBlue mb-4 flex items-center gap-2 relative z-10"><Calculator size={18} /> Algoritma Test Modu</h4>
                                     <p className="text-gray-600 mb-4 relative z-10 max-w-2xl">Ayarları <strong>kaydetmeden önce</strong> mevcut değerlerin nasıl bir sonuç vereceğini test edin. (Temel çarpanlarla yaklaşık bir sonuç verir, il/ilçe çarpanları hesaba katılmaz)</p>
 
-                                    <div className="grid grid-cols-2 md:grid-cols-6 gap-4 relative z-10 items-end">
+                                    <div className="grid grid-cols-2 lg:grid-cols-8 gap-3 relative z-10 items-end">
                                         <div>
                                             <label className="block text-xs text-gray-500 mb-1">M2 (Brüt)</label>
-                                            <input type="number" value={testArea} onChange={e => setTestArea(e.target.value)} className="w-full p-2.5 rounded-xl border border-gray-200 outline-none" />
+                                            <input type="number" value={testArea} onChange={e => setTestArea(e.target.value)} className="w-full p-2 rounded-xl border border-gray-200 outline-none" />
                                         </div>
                                         <div>
                                             <label className="block text-xs text-gray-500 mb-1">Bina Yaşı</label>
-                                            <input type="number" value={testAge} onChange={e => setTestAge(e.target.value)} className="w-full p-2.5 rounded-xl border border-gray-200 outline-none" />
+                                            <input type="number" value={testAge} onChange={e => setTestAge(e.target.value)} className="w-full p-2 rounded-xl border border-gray-200 outline-none" />
                                         </div>
                                         <div>
-                                            <label className="block text-xs text-gray-500 mb-1">Bulunduğu Kat</label>
-                                            <select value={testFloor} onChange={e => setTestFloor(e.target.value)} className="w-full p-2.5 rounded-xl border border-gray-200 outline-none bg-white">
+                                            <label className="block text-xs text-gray-500 mb-1">Kat</label>
+                                            <select value={testFloor} onChange={e => setTestFloor(e.target.value)} className="w-full p-2 rounded-xl border border-gray-200 outline-none bg-white">
                                                 <option value="Ara Kat">Ara Kat</option>
-                                                <option value="Zemin/Giris">Zemin/Giriş</option>
-                                                <option value="En Ust Kat">En Üst Kat</option>
-                                                <option value="Dubleks">Çatı/Dubleks</option>
+                                                <option value="Zemin/Giris">Zemin</option>
+                                                <option value="En Ust Kat">En Üst</option>
+                                                <option value="Dubleks">Dubleks</option>
                                                 <option value="Mustakil">Müstakil</option>
                                                 <option value="Kot">Kot 1</option>
                                                 <option value="Bodrum">Bodrum</option>
                                             </select>
                                         </div>
-                                        <div className="flex flex-col justify-center h-[42px] gap-2 p-2 bg-white rounded-xl border border-gray-200">
-                                            <label className="flex items-center gap-2 text-xs font-medium cursor-pointer">
+                                        <div>
+                                            <label className="block text-xs text-gray-500 mb-1">Isıtma</label>
+                                            <select value={testHeating} onChange={e => setTestHeating(e.target.value)} className="w-full p-2 rounded-xl border border-gray-200 outline-none bg-white text-xs">
+                                                <option value="Dogalgaz">D.Gaz</option>
+                                                <option value="Yerden">Yerden</option>
+                                                <option value="Soba">Soba</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs text-gray-500 mb-1">Manzara</label>
+                                            <select value={testView} onChange={e => setTestView(e.target.value)} className="w-full p-2 rounded-xl border border-gray-200 outline-none bg-white text-xs">
+                                                <option value="Sehir">Şehir</option>
+                                                <option value="Doga">Doğa</option>
+                                                <option value="Deniz">Deniz</option>
+                                            </select>
+                                        </div>
+                                        <div className="flex flex-col justify-center gap-1.5 p-2 bg-white rounded-xl border border-gray-200">
+                                            <label className="flex items-center gap-1.5 text-[11px] font-medium cursor-pointer">
                                                 <input type="checkbox" checked={testElevator} onChange={e => setTestElevator(e.target.checked)} className="rounded" /> Asansör
                                             </label>
-                                            <label className="flex items-center gap-2 text-xs font-medium cursor-pointer">
+                                            <label className="flex items-center gap-1.5 text-[11px] font-medium cursor-pointer">
                                                 <input type="checkbox" checked={testParking} onChange={e => setTestParking(e.target.checked)} className="rounded" /> Otopark
                                             </label>
                                         </div>
-                                        <div>
-                                            <button onClick={handleCalculateTest} className="w-full p-2.5 bg-appleBlue text-white rounded-xl font-medium hover:bg-blue-600 transition-colors">Test Et</button>
+                                        <div className="flex flex-col justify-center gap-1.5 p-2 bg-white rounded-xl border border-gray-200">
+                                            <label className="flex items-center gap-1.5 text-[11px] font-medium cursor-pointer">
+                                                <input type="checkbox" checked={testBalcony} onChange={e => setTestBalcony(e.target.checked)} className="rounded" /> Balkon
+                                            </label>
                                         </div>
-                                        <div>
-                                            {testResult !== null && (
-                                                <div className="p-2.5 bg-green-500 text-white rounded-xl font-bold text-center">
-                                                    {new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 0 }).format(testResult)} TL
-                                                </div>
+                                        <div className="flex flex-col gap-1.5">
+                                            {testResult === null ? (
+                                                <button onClick={handleCalculateTest} className="w-full p-2 bg-appleBlue text-white rounded-xl text-sm font-medium hover:bg-blue-600 transition-colors">Test Et</button>
+                                            ) : (
+                                                <button onClick={() => setTestResult(null)} className="w-full p-2 bg-green-500 text-white rounded-xl text-xs font-bold transition-colors shadow-sm">{new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 0 }).format(testResult)} TL <span className="text-[10px] font-normal block opacity-80">(Sıfırla)</span></button>
                                             )}
                                         </div>
                                     </div>

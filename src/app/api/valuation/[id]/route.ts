@@ -13,10 +13,17 @@ async function fetchGeo(query: string) {
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
     try {
-        const record = await prisma.valuationRequest.findUnique({
+        let record = await prisma.valuationRequest.findUnique({
             where: { id: params.id },
             include: { realtor: { select: { customLogoUrl: true, subscriptionTier: true } } }
         });
+
+        if (!record && !isNaN(Number(params.id))) {
+            record = await prisma.valuationRequest.findFirst({
+                where: { requestNumber: Number(params.id) },
+                include: { realtor: { select: { customLogoUrl: true, subscriptionTier: true } } }
+            });
+        }
 
         if (!record) {
             return NextResponse.json({ success: false, error: "Record not found" }, { status: 404 });

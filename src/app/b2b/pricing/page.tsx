@@ -216,7 +216,7 @@ export default function PricingPage() {
                                     </li>
                                     <li className="flex items-start gap-4 text-white font-bold border-l-2 border-amber-500 pl-4 py-1">
                                         <div className="p-1 bg-amber-500 rounded-md shrink-0"><UserPlus className="text-[#111] w-5 h-5" /></div>
-                                        <span>LEAD MARKET (Müşteri Pazarı): Sitede ev değerlemesi yapıp &quot;Satmak İstiyorum&quot; diyen ev sahiplerinin direkt telefon numarası ve mailine Özel Panelden erişin! Sıcak Müşteri Satın Alın.</span>
+                                        <span>Premium Lead Yönlendirme: Sitede ev değerlemesi yapıp &quot;Satmak İstiyorum&quot; diyen onaylı ev sahiplerine doğrudan teklif getiren ilk profesyonel ofis olun. (Exclusive Lead Yönlendirme Ağı)</span>
                                     </li>
                                 </ul>
                             </div>

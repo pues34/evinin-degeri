@@ -585,7 +585,7 @@ export default function ResultDashboard({ id }: { id: string }) {
                         <div className="flex-1">
                             <h3 className="text-3xl font-extrabold text-appleDark mb-3">Evinizi hemen bu degere yakin bir fiyattan satmak ister misiniz?</h3>
                             <p className="text-gray-500 text-lg">
-                                Onayladiginiz an, bolgenizdeki en iyi <strong>Premium Emlak Danismanlarimiz</strong> (Sadece PRO PLUS) size ozel tekliflerle ulassin. Ucretsizdir.
+                                Onayladiginiz an, bolgenizdeki <strong>Premium Kurumsal Emlak Ofisleri</strong> size ozel tekliflerle ulassin. (Tümüyle Ucretsizdir)
                             </p>
                         </div>
                         <div className="w-full md:w-auto flex-shrink-0">

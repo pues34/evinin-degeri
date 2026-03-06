@@ -137,8 +137,8 @@ export default function B2BLandingPage() {
                             <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-amber-500 mb-8 shadow-sm group-hover:scale-110 transition-transform relative z-10">
                                 <Zap size={32} />
                             </div>
-                            <h3 className="text-2xl font-bold text-amber-900 mb-4 relative z-10">Sıcak Lead (Müşteri) Yakalama</h3>
-                            <p className="text-amber-800/80 leading-relaxed relative z-10">&quot;Evimi Satmak İstiyorum&quot; diyen ev sahiplerinin doğrudan iletişim bilgilerine PRO PLUS ayrıcalığıyla ilk siz ulaşın.</p>
+                            <h3 className="text-2xl font-bold text-amber-900 mb-4 relative z-10">Premium Lead Yönlendirme</h3>
+                            <p className="text-amber-800/80 leading-relaxed relative z-10">&quot;Evimi Satmak İstiyorum&quot; diyen onaylı ev sahiplerine doğrudan teklif getiren ilk şirket olun. (Exclusive Lead Akışı)</p>
                         </div>
 
                         <div className="bg-gray-50/50 rounded-[32px] p-8 md:p-10 border border-gray-100 hover:border-purple-200 transition-all group">
@@ -219,7 +219,7 @@ export default function B2BLandingPage() {
                             <ul className="space-y-4 mb-8 flex-grow relative z-10">
                                 <li className="flex items-start gap-3 text-gray-800 font-medium text-sm">
                                     <UserPlus className="text-amber-500 w-5 h-5 shrink-0" />
-                                    <span><strong className="text-amber-700">Canlı Lead:</strong> Ev Satıcı İletişim Bilgilerine Erişim</span>
+                                    <span><strong className="text-amber-700">Premium Lead:</strong> Satılık Ev Taleplerine Öncelikli Yönlendirme</span>
                                 </li>
                                 <li className="flex items-start gap-3 text-gray-800 font-medium text-sm">
                                     <FileText className="text-amber-500 w-5 h-5 shrink-0" />
