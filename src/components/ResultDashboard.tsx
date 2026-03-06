@@ -327,28 +327,39 @@ export default function ResultDashboard({ id }: { id: string }) {
                             <TrendingUp size={20} className="mr-2 text-green-500" />
                             Kira Amortisman Analizi
                         </h3>
-                        <p className="text-xs text-gray-500 mb-4">Turkiye ortalamasi olan 200 ay uzerinden tahmini kira getirisi hesaplanmistir.</p>
-
-                        <div className="space-y-4">
-                            <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 flex justify-between items-center">
-                                <span className="text-sm text-gray-500 font-medium">Aylik Tahmini Kira</span>
-                                <span className="text-appleDark font-bold">
-                                    {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(displayValue / 200)}
-                                </span>
-                            </div>
-                            <div className="bg-green-50 rounded-xl p-4 border border-green-100 flex justify-between items-center">
-                                <span className="text-sm text-green-700 font-medium">Yillik Getiri</span>
-                                <span className="text-green-800 font-bold">
-                                    {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format((displayValue / 200) * 12)}
-                                </span>
-                            </div>
-                            <div className="bg-blue-50 rounded-xl p-4 border border-blue-100 flex justify-between items-center">
-                                <span className="text-sm text-blue-700 font-medium">Amortisman Suresi</span>
-                                <span className="text-blue-800 font-bold">
-                                    ~16.6 Yil (200 Ay)
-                                </span>
-                            </div>
-                        </div>
+                        {(() => {
+                            // Dynamic amortisman: sehir merkezleri 240 ay, dis bolgeler 170 ay, ortalama 200 ay
+                            const amortMonths = data.city === 'Istanbul' || data.city === 'Ankara' || data.city === 'Izmir' ? 240 : data.city ? 200 : 170;
+                            const monthlyRent = displayValue / amortMonths;
+                            const yearlyRent = monthlyRent * 12;
+                            const amortYears = (amortMonths / 12).toFixed(1);
+                            const yieldPercent = ((yearlyRent / displayValue) * 100).toFixed(1);
+                            return (
+                                <>
+                                    <p className="text-xs text-gray-500 mb-4">Bolgesel piyasa verilerine gore {amortMonths} ay amortisman suresi ile hesaplanmistir.</p>
+                                    <div className="space-y-4">
+                                        <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 flex justify-between items-center">
+                                            <span className="text-sm text-gray-500 font-medium">Aylik Tahmini Kira</span>
+                                            <span className="text-appleDark font-bold">
+                                                {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(monthlyRent)}
+                                            </span>
+                                        </div>
+                                        <div className="bg-green-50 rounded-xl p-4 border border-green-100 flex justify-between items-center">
+                                            <span className="text-sm text-green-700 font-medium">Yillik Getiri</span>
+                                            <span className="text-green-800 font-bold">
+                                                {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(yearlyRent)} <span className="text-xs font-normal">(%{yieldPercent})</span>
+                                            </span>
+                                        </div>
+                                        <div className="bg-blue-50 rounded-xl p-4 border border-blue-100 flex justify-between items-center">
+                                            <span className="text-sm text-blue-700 font-medium">Amortisman Suresi</span>
+                                            <span className="text-blue-800 font-bold">
+                                                ~{amortYears} Yil ({amortMonths} Ay)
+                                            </span>
+                                        </div>
+                                    </div>
+                                </>
+                            );
+                        })()}
                     </div>
 
                     {data.demographics && (
@@ -512,7 +523,22 @@ export default function ResultDashboard({ id }: { id: string }) {
                 </div>
             </div>
 
-            <div className="mt-12 flex justify-center pb-12">
+            <div className="mt-8 flex flex-wrap justify-center gap-3 pb-4">
+                <a href={`https://wa.me/?text=${encodeURIComponent(`Evimin degeri: ${formattedValue} - Detayli rapor: https://evindegeri.com/result/${id}`)}`} target="_blank" rel="noopener" className="flex items-center gap-2 px-5 py-3 bg-green-500 text-white rounded-xl font-medium hover:bg-green-600 transition-colors text-sm">
+                    WhatsApp
+                </a>
+                <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Evimin degeri ${formattedValue} olarak hesaplandi! Ucretsiz degerleme: evindegeri.com`)}&url=${encodeURIComponent(`https://evindegeri.com/result/${id}`)}`} target="_blank" rel="noopener" className="flex items-center gap-2 px-5 py-3 bg-black text-white rounded-xl font-medium hover:bg-gray-800 transition-colors text-sm">
+                    X (Twitter)
+                </a>
+                <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://evindegeri.com/result/${id}`)}`} target="_blank" rel="noopener" className="flex items-center gap-2 px-5 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors text-sm">
+                    Facebook
+                </a>
+                <button onClick={() => { navigator.clipboard.writeText(`https://evindegeri.com/result/${id}`); }} className="flex items-center gap-2 px-5 py-3 bg-gray-200 text-appleDark rounded-xl font-medium hover:bg-gray-300 transition-colors text-sm">
+                    Link Kopyala
+                </button>
+            </div>
+
+            <div className="mt-4 flex justify-center pb-12">
                 <Link href="/">
                     <button className="flex items-center px-8 py-4 bg-appleDark text-white rounded-2xl hover:bg-black transition-colors shadow-apple text-lg font-medium">
                         <MapPin size={20} className="mr-2" /> Yeni Degerleme Yap

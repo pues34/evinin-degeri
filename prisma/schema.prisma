@@ -68,6 +68,9 @@ model ValuationRequest {
 
   // İlişkili İletişim Bilgileri (Lead)
   contactInfo     ContactInfo?
+
+  @@index([createdAt])
+  @@index([ipAddress])
 }
 
 model ContactInfo {

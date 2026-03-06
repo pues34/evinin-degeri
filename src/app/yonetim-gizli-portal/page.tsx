@@ -83,6 +83,8 @@ export default function AdminDashboard() {
         b2bMonthlyPrice: "",
         b2bDiscountPercentage: "",
         b2bProPlusPrice: "",
+        dailyRateLimit: "3",
+        dailyBlogCount: "5",
 
         // V22: New Multipliers
         mHeatingDogalgaz: "",
@@ -784,6 +786,37 @@ export default function AdminDashboard() {
                                                 </label>
                                                 <input type="number" value={settings.b2bProPlusPrice || ""} onChange={e => setSettings({ ...settings, b2bProPlusPrice: e.target.value })} className="w-full p-2 rounded-xl border border-purple-200 focus:ring-2 focus:ring-purple-500 outline-none bg-purple-50/30 text-sm font-medium" placeholder="750" />
                                                 <p className="text-xs text-gray-400 mt-1">PRO PLUS paketi icin aylik ucret. Bos birakilirsa 750 TL kullanilir.</p>
+                                            </div>
+                                            <div className="col-span-2 border-t border-gray-100 pt-4 mt-2">
+                                                <h5 className="text-xs font-semibold text-gray-500 uppercase mb-3">Guvenlik ve Blog Otomasyonu</h5>
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label className="block text-sm text-gray-600 mb-1 flex justify-between">
+                                                            <span>Gunluk Degerleme Limiti</span>
+                                                            <span className="text-xs text-orange-500 font-medium bg-orange-50 px-2 py-0.5 rounded">Guvenlik</span>
+                                                        </label>
+                                                        <input type="number" value={settings.dailyRateLimit || "3"} onChange={e => setSettings({ ...settings, dailyRateLimit: e.target.value })} className="w-full p-2 rounded-xl border border-orange-200 focus:ring-2 focus:ring-orange-500 outline-none bg-orange-50/30 text-sm font-medium" />
+                                                        <p className="text-xs text-gray-400 mt-1">Her IP/telefon icin gunluk maks degerleme sayisi</p>
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm text-gray-600 mb-1 flex justify-between">
+                                                            <span>Gunluk Otomatik Blog Sayisi</span>
+                                                            <span className="text-xs text-indigo-500 font-medium bg-indigo-50 px-2 py-0.5 rounded">CRON</span>
+                                                        </label>
+                                                        <input type="number" value={settings.dailyBlogCount || "5"} onChange={e => setSettings({ ...settings, dailyBlogCount: e.target.value })} className="w-full p-2 rounded-xl border border-indigo-200 focus:ring-2 focus:ring-indigo-500 outline-none bg-indigo-50/30 text-sm font-medium" />
+                                                        <p className="text-xs text-gray-400 mt-1">Her gun otomatik uretilecek blog sayisi (1-10)</p>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    onClick={async () => {
+                                                        const res = await fetch('/api/cron/auto-blog');
+                                                        const data = await res.json();
+                                                        alert(data.message || 'Blog uretimi tamamlandi');
+                                                    }}
+                                                    className="mt-4 w-full px-4 py-3 bg-indigo-500 text-white rounded-xl font-medium hover:bg-indigo-600 transition-colors text-sm"
+                                                >
+                                                    Simdi Otomatik Blog Uret (Manuel Tetikle)
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

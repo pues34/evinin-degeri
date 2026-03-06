@@ -94,14 +94,13 @@ export default function AboutPage() {
                     </div>
                 </div>
 
-                {/* Fake As Seen On Media Logos */}
+                {/* Medya Referanslari */}
                 <div className="max-w-6xl mx-auto border-t border-gray-200 pt-16 mb-20 text-center">
-                    <p className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-8">Basında Biz / As Seen On</p>
-                    <div className="flex flex-wrap justify-center gap-10 md:gap-20 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Forbes_Logo.svg" alt="Forbes" className="h-6" />
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/TechCrunch_logo.svg" alt="TechCrunch" className="h-6" />
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Bloomberg_Television_logo.svg" alt="Bloomberg" className="h-6" />
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/H%C3%BCrriyet_logo.svg" alt="Hurriyet" className="h-6" />
+                    <p className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-8">Guvenilir Teknoloji Altyapisi</p>
+                    <div className="flex flex-wrap justify-center gap-10 md:gap-16 opacity-50">
+                        {["OpenAI", "Vercel", "PostgreSQL", "Next.js", "Prisma"].map(tech => (
+                            <span key={tech} className="text-lg font-bold text-gray-400 tracking-wider">{tech}</span>
+                        ))}
                     </div>
                 </div>
 

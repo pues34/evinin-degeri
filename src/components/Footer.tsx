@@ -45,6 +45,7 @@ export default async function Footer() {
                             <li><Link href="/hakkimizda" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Hakkimizda</Link></li>
                             <li><Link href="/iletisim" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Iletisim</Link></li>
                             <li><Link href="/blog" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Emlak Guncesi</Link></li>
+                            <li><Link href="/sss" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Sikca Sorulan Sorular</Link></li>
                             <li><Link href="/nasil-hesapliyoruz" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Nasil Hesapliyoruz?</Link></li>
                         </ul>
                     </div>
@@ -54,9 +55,10 @@ export default async function Footer() {
                         <h4 className="font-semibold text-appleDark text-sm mb-4">Cozumler</h4>
                         <ul className="space-y-2.5">
                             <li><Link href="/" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Ev Degerleme</Link></li>
+                            <li><Link href="/karsilastirma" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Degerleme Karsilastir</Link></li>
+                            <li><Link href="/gecmis" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Degerleme Gecmisim</Link></li>
                             <li><Link href="/yatirim-haritasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Yatirim Haritasi</Link></li>
                             <li><Link href="/b2b" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Kurumsal (B2B)</Link></li>
-                            <li><Link href="/b2b/pricing" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">PRO Paketler</Link></li>
                         </ul>
                     </div>
 
