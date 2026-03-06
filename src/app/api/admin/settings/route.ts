@@ -59,7 +59,8 @@ export async function POST(req: NextRequest) {
             "mYenilenmis", "mMasrafli", "b2bMonthlyPrice", "b2bDiscountPercentage",
             "mHeatingDogalgaz", "mHeatingYerden", "mHeatingSoba",
             "mViewDeniz", "mViewDoga", "mViewSehir", "mPropertyDubleks", "dampeningFactor",
-            "dailyRateLimit", "dailyBlogCount", "blogCategories", "blogAutoPublish"
+            "dailyRateLimit", "dailyBlogCount", "blogCategories", "blogAutoPublish",
+            "enableEarthquake", "enableMarketIndex", "enableVision", "enableRLHF"
         ];
 
         for (const key of algoKeys) {

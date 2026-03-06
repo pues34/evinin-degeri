@@ -101,6 +101,12 @@ export async function POST(req: NextRequest) {
     let mPropertyDubleks = 1.08;
     let dampeningFactor = 0.55;
 
+    // V3 Toggles
+    let enableEarthquake = true;
+    let enableMarketIndex = true;
+    let enableVision = true;
+    let enableRLHF = true;
+
     try {
       const settings = await prisma.algorithmSettings.findMany();
       settings.forEach((s: any) => {
@@ -134,6 +140,11 @@ export async function POST(req: NextRequest) {
         if (s.key === "mViewSehir") mViewSehir = Number(s.value);
         if (s.key === "mPropertyDubleks") mPropertyDubleks = Number(s.value);
         if (s.key === "dampeningFactor") dampeningFactor = Number(s.value);
+        // V3
+        if (s.key === "enableEarthquake") enableEarthquake = s.value === "true";
+        if (s.key === "enableMarketIndex") enableMarketIndex = s.value === "true";
+        if (s.key === "enableVision") enableVision = s.value === "true";
+        if (s.key === "enableRLHF") enableRLHF = s.value === "true";
       });
     } catch (err) {
       console.warn("Could not load dynamic settings:", err);
@@ -272,18 +283,24 @@ export async function POST(req: NextRequest) {
     estimatedValue *= macroMultiplier;
 
     // === EARTHQUAKE & SOIL RISK INTEGRATION ===
-    const earthquakeData = getEarthquakeRiskForDistrict(propertyData.city, propertyData.district);
-    estimatedValue *= earthquakeData.multiplier;
+    let earthquakeData: any = null;
+    if (enableEarthquake) {
+      earthquakeData = getEarthquakeRiskForDistrict(propertyData.city, propertyData.district);
+      estimatedValue *= earthquakeData.multiplier;
+    }
 
     // === LIVE MARKET INDEX INTEGRATION ===
-    const marketData = getLiveMarketIndex(propertyData.city, propertyData.district);
-    estimatedValue *= marketData.suggestedMultiplier;
+    let marketData: any = null;
+    if (enableMarketIndex) {
+      marketData = getLiveMarketIndex(propertyData.city, propertyData.district);
+      estimatedValue *= marketData.suggestedMultiplier;
+    }
 
     // === VISION AI INTEGRATION ===
     let visionMultiplier = 1.0;
     let visionAnalysisText = "Fotoğraf yüklenmediği için standart analiz yapıldı.";
 
-    if (aiPhotosBase64 && Array.isArray(aiPhotosBase64) && aiPhotosBase64.length > 0 && process.env.OPENAI_API_KEY) {
+    if (enableVision && aiPhotosBase64 && Array.isArray(aiPhotosBase64) && aiPhotosBase64.length > 0 && process.env.OPENAI_API_KEY) {
       try {
         const contentPayload: any[] = [
           {

@@ -13,10 +13,17 @@ async function fetchGeo(query: string) {
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
     try {
-        let record = await prisma.valuationRequest.findUnique({
-            where: { id: params.id },
-            include: { realtor: { select: { customLogoUrl: true, subscriptionTier: true } } }
-        });
+        let record = null;
+
+        // Handle UUID formats safely
+        const isUUID = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(params.id);
+
+        if (isUUID) {
+            record = await prisma.valuationRequest.findUnique({
+                where: { id: params.id },
+                include: { realtor: { select: { customLogoUrl: true, subscriptionTier: true } } }
+            });
+        }
 
         if (!record && !isNaN(Number(params.id))) {
             record = await prisma.valuationRequest.findFirst({

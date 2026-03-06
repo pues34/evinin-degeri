@@ -1,6 +1,5 @@
 "use client";
 
-import Footer from "@/components/Footer";
 import { HelpCircle, ChevronDown, Home, TrendingUp, Shield, Users, CheckCircle, Zap, MapPin, BarChart } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -309,8 +308,6 @@ export default function SSSPage() {
                     </div>
                 </motion.div>
             </div>
-
-            <Footer />
         </div>
     );
 }

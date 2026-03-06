@@ -117,19 +117,19 @@ export default function NasilHesapliyoruzPage() {
                     <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
                         <li className="flex items-start gap-2">
                             <CheckCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
-                            Bu degerleme, yapay zeka algoritmasi ve guncel piyasa verileri kullanilarak uretilen <strong>tahmini bir degerdir</strong>. Resmi bir ekspertiz raporu yerine gecmez.
+                            <span>Bu degerleme, yapay zeka algoritmasi ve guncel piyasa verileri kullanilarak uretilen <strong>tahmini bir degerdir</strong>. Resmi bir ekspertiz raporu yerine gecmez.</span>
                         </li>
                         <li className="flex items-start gap-2">
                             <CheckCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
-                            Sonuclar <strong>yatirim tavsiyesi niteliginde degildir</strong> ve yatirim kararlari icin bagimsiz mali danismanlik alinmasi tavsiye edilir.
+                            <span>Sonuclar <strong>yatirim tavsiyesi niteliginde degildir</strong> ve yatirim kararlari icin bagimsiz mali danismanlik alinmasi tavsiye edilir.</span>
                         </li>
                         <li className="flex items-start gap-2">
                             <CheckCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
-                            Kesin alim-satim kararlari icin SPK lisansli gayrimenkul degerleme uzmanlariyla calisilmasi onerilir.
+                            <span>Kesin alim-satim kararlari icin SPK lisansli gayrimenkul degerleme uzmanlariyla calisilmasi onerilir.</span>
                         </li>
                         <li className="flex items-start gap-2">
                             <CheckCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
-                            Degerlemeler enflasyon oranlari, bolgesel veriler ve yapay zeka analizi temelinde yapilmaktadir. Gercek piyasa fiyatlari farklilik gosterebilir.
+                            <span>Degerlemeler enflasyon oranlari, bolgesel veriler ve yapay zeka analizi temelinde yapilmaktadir. Gercek piyasa fiyatlari farklilik gosterebilir.</span>
                         </li>
                     </ul>
                 </div>

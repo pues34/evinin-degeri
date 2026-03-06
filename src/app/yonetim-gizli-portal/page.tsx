@@ -104,6 +104,12 @@ export default function AdminDashboard() {
         instagramUrl: "",
         twitterUrl: "",
         linkedinUrl: "",
+
+        // V3: AI & Data Enrichments
+        enableEarthquake: "true",
+        enableMarketIndex: "true",
+        enableVision: "true",
+        enableRLHF: "true",
         showSocialMedia: true,
         valuationCounter: 0,
     });
@@ -979,6 +985,26 @@ export default function AdminDashboard() {
                                                 <p className="text-xs text-gray-400 mt-1">PRO PLUS paketi icin aylik ucret. Bos birakilirsa 750 TL kullanilir.</p>
                                             </div>
                                             <div className="col-span-2 border-t border-gray-100 pt-4 mt-2">
+                                                <h5 className="text-xs font-semibold text-gray-500 uppercase mb-3">AI & Veri Entegrasyonlari (V3)</h5>
+                                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                                                    <label className="flex items-center gap-2 text-sm text-gray-700 bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-sm hover:border-appleBlue transition-colors">
+                                                        <input type="checkbox" checked={settings.enableEarthquake === "true"} onChange={e => setSettings({ ...settings, enableEarthquake: e.target.checked ? "true" : "false" })} className="rounded text-appleBlue focus:ring-appleBlue w-4 h-4 cursor-pointer" />
+                                                        <span className="font-medium whitespace-nowrap">Deprem & Zemin</span>
+                                                    </label>
+                                                    <label className="flex items-center gap-2 text-sm text-gray-700 bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-sm hover:border-appleBlue transition-colors">
+                                                        <input type="checkbox" checked={settings.enableMarketIndex === "true"} onChange={e => setSettings({ ...settings, enableMarketIndex: e.target.checked ? "true" : "false" })} className="rounded text-appleBlue focus:ring-appleBlue w-4 h-4 cursor-pointer" />
+                                                        <span className="font-medium whitespace-nowrap">Canli Turkiye Endeksi</span>
+                                                    </label>
+                                                    <label className="flex items-center gap-2 text-sm text-gray-700 bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-sm hover:border-appleBlue transition-colors">
+                                                        <input type="checkbox" checked={settings.enableVision === "true"} onChange={e => setSettings({ ...settings, enableVision: e.target.checked ? "true" : "false" })} className="rounded text-appleBlue focus:ring-appleBlue w-4 h-4 cursor-pointer" />
+                                                        <span className="font-medium whitespace-nowrap">Resim Analizi (Vision AI)</span>
+                                                    </label>
+                                                    <label className="flex items-center gap-2 text-sm text-gray-700 bg-white p-3 rounded-xl border border-gray-100 cursor-pointer shadow-sm hover:border-appleBlue transition-colors">
+                                                        <input type="checkbox" checked={settings.enableRLHF === "true"} onChange={e => setSettings({ ...settings, enableRLHF: e.target.checked ? "true" : "false" })} className="rounded text-appleBlue focus:ring-appleBlue w-4 h-4 cursor-pointer" />
+                                                        <span className="font-medium whitespace-nowrap">Makine Ogrenmesi (M.O.)</span>
+                                                    </label>
+                                                </div>
+
                                                 <h5 className="text-xs font-semibold text-gray-500 uppercase mb-3">Guvenlik ve Blog Otomasyonu</h5>
                                                 <div className="grid grid-cols-2 gap-4">
                                                     <div>

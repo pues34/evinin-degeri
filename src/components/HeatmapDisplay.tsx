@@ -91,9 +91,21 @@ export default function HeatmapDisplay() {
                                 <p className="text-sm font-medium text-appleBlue">
                                     {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(item.avgSqmPrice)} / M²
                                 </p>
-                                <p className="text-xs text-gray-400 mt-1">
+                                <p className="text-xs text-gray-400 mt-1 mb-2">
                                     {item.count} Analiz Yapıldı
                                 </p>
+                                {item.recent && item.recent.length > 0 && (
+                                    <div className="border-t border-gray-100 pt-2 text-left">
+                                        <p className="text-[10px] font-semibold text-gray-500 uppercase mb-1">Son Değerlemeler</p>
+                                        <ul className="space-y-1">
+                                            {item.recent.map((r: any, i: number) => (
+                                                <li key={i} className="text-[11px] text-gray-600 bg-gray-50 rounded p-1">
+                                                    <span className="font-medium text-appleDark">{r.rooms}</span>, {r.floor}, {r.facade}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
                             </div>
                         </Popup>
                     </CircleMarker>

@@ -51,11 +51,18 @@ export async function GET(req: Request) {
                 district: true,
                 estimatedValue: true,
                 netSqm: true,
+                rooms: true,
+                floor: true,
+                facade: true,
+                buildingAge: true
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         });
 
         // İlçe bazlı metrekare ortalamalarını hesaplama
-        const heatMapData: Record<string, { totalSqmPrice: number, count: number }> = {};
+        const heatMapData: Record<string, { totalSqmPrice: number, count: number, recent: any[] }> = {};
 
         valuations.forEach(val => {
             const district = val.district.toUpperCase().trim();
@@ -64,17 +71,19 @@ export async function GET(req: Request) {
             if (heatMapData[district]) {
                 heatMapData[district].totalSqmPrice += sqmPrice;
                 heatMapData[district].count += 1;
+                // Keep the latest 3 records to display on map pins
+                if (heatMapData[district].recent.length < 3) {
+                    heatMapData[district].recent.push(val);
+                }
             } else {
-                heatMapData[district] = { totalSqmPrice: sqmPrice, count: 1 };
+                heatMapData[district] = { totalSqmPrice: sqmPrice, count: 1, recent: [val] };
             }
         });
 
         const result = Object.keys(heatMapData).map(district => {
             const avgPrice = heatMapData[district].totalSqmPrice / heatMapData[district].count;
-            const coords = districtCoords[district] || [41.0082, 28.9784]; // Default to Istanbul center if unknown
+            const coords = districtCoords[district] || [41.0082 + (Math.random() * 0.1), 28.9784 + (Math.random() * 0.1)];
 
-            // Renk paleti belirleme (Kırmızı: Çok Pahalı, Sarı: Orta, Yeşil: Ucuz)
-            // Ortalama: 100K üstü Kırmızı, 50K üstü Sarı, Altı Yeşil
             let color = "red";
             if (avgPrice < 40000) color = "green";
             else if (avgPrice < 70000) color = "orange";
@@ -84,7 +93,8 @@ export async function GET(req: Request) {
                 avgSqmPrice: avgPrice,
                 count: heatMapData[district].count,
                 coords,
-                color
+                color,
+                recent: heatMapData[district].recent
             };
         });
 
