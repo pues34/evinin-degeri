@@ -37,7 +37,7 @@ export default async function Footer() {
                             </div>
                             <div className="flex items-start gap-2">
                                 <MapPin size={12} className="text-appleBlue shrink-0 mt-0.5" />
-                                <span>Evinin Değeri Gayrimenkul Teknolojileri<br />Muratpaşa Mah. Cemiyet Cad. No:28<br />Bayrampaşa / İstanbul<br /><br /><span className="text-[10px] text-gray-400">Vergi Dairesi: Bayrampaşa VD<br />Vergi No: 3820000000</span></span>
+                                <span>Evinin Değeri Gayrimenkul Teknolojileri<br />Muratpaşa Mah. Cemiyet Cad. No:28<br />Bayrampaşa / İstanbul<br /><br /><span className="text-[10px] text-gray-400">Vergi Dairesi: Tuna<br />Vergi No: 1310852802</span></span>
                             </div>
                         </div>
                     </div>
