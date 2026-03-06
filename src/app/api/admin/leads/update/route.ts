@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 import { Resend } from "resend";
 import { render } from "@react-email/render";
 import ReportEmail from "@/emails/ReportEmail";
@@ -11,8 +12,8 @@ const resend = new Resend(process.env.RESEND_API_KEY || "dummy_key_for_build");
 
 export async function POST(req: Request) {
     try {
-        const session = await getServerSession();
-        if (!session) {
+        const session = await getServerSession(authOptions) as any;
+        if (!session || session.user.role !== "admin") {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
 

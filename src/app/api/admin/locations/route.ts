@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 
 import prisma from "@/lib/prisma";
 
@@ -8,8 +9,8 @@ export const dynamic = 'force-dynamic';
 // POST: Add new City, District, or Neighborhood
 export async function POST(req: Request) {
     try {
-        const session = await getServerSession();
-        if (!session) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+        const session = await getServerSession(authOptions) as any;
+        if (!session || session.user.role !== "admin") return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
         const body = await req.json();
         const { type, name, parentId, multiplier } = body;
@@ -35,8 +36,8 @@ export async function POST(req: Request) {
 // DELETE: Remove a Location entity
 export async function DELETE(req: Request) {
     try {
-        const session = await getServerSession();
-        if (!session) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+        const session = await getServerSession(authOptions) as any;
+        if (!session || session.user.role !== "admin") return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
         const url = new URL(req.url || 'http://localhost');
         const searchParams = url.searchParams;
