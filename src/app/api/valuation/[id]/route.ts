@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-
 import prisma from "@/lib/prisma";
+import { getEarthquakeRiskForDistrict } from "@/lib/earthquakeData";
+import { getLiveMarketIndex } from "@/lib/marketIndex";
 
 export const dynamic = 'force-dynamic';
 
@@ -136,6 +137,9 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
             avgSqmPrice: Math.round(data.totalValue / data.totalSqm)
         }));
 
+        const earthquakeData = getEarthquakeRiskForDistrict(record.city, record.district);
+        const marketData = getLiveMarketIndex(record.city, record.district);
+
         return NextResponse.json({
             success: true,
             data: {
@@ -143,7 +147,9 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
                 factors: factors.length > 0 ? factors : [{ name: "Standart Plan", effect: "-" }],
                 location,
                 districtAvgSqm,
-                neighborhoodTrend
+                neighborhoodTrend,
+                earthquakeData,
+                marketData
             }
         });
     } catch (error: any) {

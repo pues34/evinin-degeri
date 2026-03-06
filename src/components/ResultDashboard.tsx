@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { Copy, CheckCircle, BrainCircuit, TrendingUp, MapPin, Users, Hexagon, Shield, GraduationCap, TreePine, ShoppingBag, Train, ThumbsUp, ThumbsDown, Minus } from "lucide-react";
+import { Copy, CheckCircle, BrainCircuit, TrendingUp, MapPin, Users, Hexagon, Shield, GraduationCap, TreePine, ShoppingBag, Train, ThumbsUp, ThumbsDown, Minus, Activity, Clock, ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import PdfButton from "./PdfButton";
 import AdBanner from "./AdBanner";
@@ -204,7 +204,9 @@ export default function ResultDashboard({ id }: { id: string }) {
                     <h1 className="text-3xl md:text-4xl font-semibold text-appleDark mb-2">Degerleme Sonucu</h1>
                     <p className="text-appleLightGray">Talep Numaraniz: <span className="font-mono text-appleDark">#{data.requestNumber || id.split("-")[1] || id}</span></p>
                 </div>
-                <div className="flex gap-3 w-full md:w-auto">
+                <div className="flex flex-wrap gap-3 w-full md:w-auto">
+                    <PdfButton targetId="pdf-content" fileName={`Degerleme_Raporu_${data.requestNumber || id.split("-")[1] || id}.pdf`} />
+
                     <button onClick={copyLink} className="flex-1 md:flex-none flex justify-center items-center px-4 py-2 bg-white rounded-xl shadow-sm border border-gray-100 hover:bg-gray-50 transition-colors text-sm font-medium text-appleDark">
                         {copied ? <CheckCircle size={16} className="mr-2 text-green-500" /> : <Copy size={16} className="mr-2 text-gray-500" />}
                         {copied ? "Kopyalandi" : "Paylas"}
@@ -459,6 +461,52 @@ export default function ResultDashboard({ id }: { id: string }) {
                                         </div>
                                     </div>
                                 </>
+                            );
+                        })()}
+                    </div>
+
+                    {/* V30: Yatirim ve Risk Analizi */}
+                    <div className="md:col-span-3 glass-card p-6">
+                        <h3 className="font-semibold text-lg text-appleDark mb-6 flex items-center">
+                            <Activity size={20} className="mr-2 text-indigo-500" />
+                            Yatirim ve Risk Analizi
+                        </h3>
+                        {(() => {
+                            // Calculate Investment Score based on yield
+                            const amortMonths = data.city === 'Istanbul' || data.city === 'Ankara' || data.city === 'Izmir' ? 200 : data.city ? 170 : 150;
+                            const yieldPercent = (((displayValue / amortMonths) * 12) / displayValue) * 100;
+
+                            // Map yield 3% -> 4, 5% -> 7, 7% -> 10
+                            const rawScore = (yieldPercent / 6.5) * 10;
+                            const investmentScore = Math.min(10, Math.max(1, rawScore)).toFixed(1);
+
+                            // Calculate Sales Velocity based on Market Data
+                            let salesVelocityDays = "45-60 Gun";
+                            let velocityColor = "text-amber-600";
+                            let velocityBg = "bg-amber-50";
+                            if (data.marketData) {
+                                if (data.marketData.condition === "HIZLI") { salesVelocityDays = "15-30 Gun"; velocityColor = "text-green-600"; velocityBg = "bg-green-50"; }
+                                else if (data.marketData.condition === "YAVAŞ") { salesVelocityDays = "60-90+ Gun"; velocityColor = "text-red-600"; velocityBg = "bg-red-50"; }
+                            }
+
+                            return (
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div className={`p-4 rounded-2xl border border-gray-100 flex flex-col justify-center items-center text-center ${Number(investmentScore) >= 8 ? 'bg-green-50' : Number(investmentScore) >= 6 ? 'bg-amber-50' : 'bg-red-50'}`}>
+                                        <TrendingUp size={24} className={`mb-2 ${Number(investmentScore) >= 8 ? 'text-green-600' : Number(investmentScore) >= 6 ? 'text-amber-600' : 'text-red-600'}`} />
+                                        <span className="text-gray-500 text-sm mb-1">Yatirim Skoru</span>
+                                        <span className={`font-bold text-2xl ${Number(investmentScore) >= 8 ? 'text-green-700' : Number(investmentScore) >= 6 ? 'text-amber-700' : 'text-red-700'}`}>{investmentScore} / 10</span>
+                                    </div>
+                                    <div className={`p-4 rounded-2xl border border-gray-100 flex flex-col justify-center items-center text-center ${velocityBg}`}>
+                                        <Clock size={24} className={`mb-2 ${velocityColor}`} />
+                                        <span className="text-gray-500 text-sm mb-1">Tahmini Satis Suresi</span>
+                                        <span className={`font-bold text-xl ${velocityColor}`}>{salesVelocityDays}</span>
+                                    </div>
+                                    <div className={`p-4 rounded-2xl border border-gray-100 flex flex-col justify-center items-center text-center ${data.earthquakeData?.riskLevel === 'DÜŞÜK' ? 'bg-green-50' : data.earthquakeData?.riskLevel === 'ORTA' ? 'bg-amber-50' : 'bg-red-50'}`}>
+                                        <ShieldAlert size={24} className={`mb-2 ${data.earthquakeData?.riskLevel === 'DÜŞÜK' ? 'text-green-600' : data.earthquakeData?.riskLevel === 'ORTA' ? 'text-amber-600' : 'text-red-600'}`} />
+                                        <span className="text-gray-500 text-sm mb-1">Bolge Deprem Riski</span>
+                                        <span className={`font-bold text-xl ${data.earthquakeData?.riskLevel === 'DÜŞÜK' ? 'text-green-700' : data.earthquakeData?.riskLevel === 'ORTA' ? 'text-amber-700' : 'text-red-700'}`}>{data.earthquakeData?.riskLevel || "Bilinmiyor"}</span>
+                                    </div>
+                                </div>
                             );
                         })()}
                     </div>

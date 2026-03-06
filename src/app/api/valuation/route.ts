@@ -363,9 +363,9 @@ export async function POST(req: NextRequest) {
       try {
         const prmt = `Sen uzman bir emlak ekspertiz uzmanısın.${propertyData.city} ili, ${propertyData.district} ilçesi, ${propertyData.neighborhood} mahallesinde bulunan, ${age} yaşında, ${propertyData.rooms} oda sayılı, net ${propertyData.netSqm} m2, ${floorType} bir konutu değerlendiriyorsun.Konutun ısıtma tipi: ${propertyData.heatingType || "Bilinmiyor"}, cephesi: ${propertyData.facade || "Bilinmiyor"}, manzarası: ${propertyData.view || "Yok"}. Lokasyon çarpanı ${regionMultiplier}x olarak belirlenmiş.Algoritmik tahmini piyasa değeri: ${new Intl.NumberFormat('tr-TR').format(estimatedValue)} TL.Fotoğraf Analitiği Sonucu(Eğer varsa): ${visionAnalysisText}.
 
-    ÖNEMLİ: Lütfen SADECE geçerli bir JSON formatında cevap ver.Başka hiçbir açıklama yazma.JSON formatı tam olarak şöyle olmalı:
+    ÖNEMLİ: Lütfen SADECE geçerli bir JSON formatında cevap ver. Başka hiçbir açıklama yazma. JSON formatı tam olarak şöyle olmalı:
     {
-      "aiComment": "Evin özelliklerine, yaşına, konum avantajlarına (örn: ulaşım, sahile yakınlık vb.) ve mahallenin gayrimenkul yatırım potansiyeline değinen, amortisman değerlendirmesi de içeren 4-5 cümlelik kapsamlı ve profesyonel bir analiz yorumu yaz. Yapay zeka olduğunu belli etme, direkt analiz yap.",
+      "aiComment": "Evin özelliklerine, yaşına ve konumuna göre 3 paragraflık profesyonel bir Zillow tarzı yatırımcı/değerleme uzmanı raporu yaz.\n1. Paragraf (Lokasyon ve Mevcut Durum Analizi): Evin ve mahallenin şu anki piyasa durumu, ulaşım avantajları.\n2. Paragraf (Talep Seviyesi ve Kira/Satış Hızı): Mülkün bulunduğu bölgedeki kira/satılık talebi ve satış hızı (likidite).\n3. Paragraf (Gelecek Vizyonu ve Yatırım Potansiyeli): Kentsel dönüşüm, olası değer artışı veya yatırım avantajları.\nYapay zeka olduğunu belli etme, direkt kurumsal ağızla analiz raporu formatında yaz.",
         "demographics": {
         "populationDensity": "Örn: Yoğun Dağılım / Orta / Seyrek",
           "socioEconomicStatus": "Örn: A+ seviye elit / B sınıfı gelişen / C sınıfı vb.",
