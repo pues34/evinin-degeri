@@ -1,36 +1,66 @@
-import Footer from "@/components/Footer";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
+export const metadata: Metadata = {
+    title: 'Kullanım Koşulları | Evinin Değeri',
+    description: 'Evinin Değeri Gayrimenkul Teknolojileri kullanım şartları, lisans sınırları ve B2B kurumsal kullanım hakları.',
+};
 
-export default function TermsOfUse() {
+export default function KullanimKosullari() {
     return (
-        <div className="min-h-screen flex flex-col bg-white">
-            <div className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
-                <Link href="/" className="inline-flex items-center text-appleBlue hover:underline mb-8 font-medium">
-                    <ArrowLeft size={16} className="mr-2" /> Ana Sayfaya Dön
-                </Link>
+        <div className="min-h-screen bg-gray-50 py-20 px-4">
+            <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-xl border border-gray-100 shadow-sm content-page text-gray-700 leading-relaxed">
+                <h1 className="text-3xl font-bold text-appleDark mb-8">Kullanım Koşulları</h1>
 
-                <h1 className="text-4xl font-bold text-appleDark mb-8">Kullanım Koşulları</h1>
+                <div className="space-y-6">
+                    <section>
+                        <h2 className="text-xl font-semibold text-appleDark mb-3">1. Giriş ve Taraflar</h2>
+                        <p>
+                            www.evinindegeri.com (bundan böyle &quot;Platform&quot; olarak anılacaktır) sitesine erişiminiz ve kullanımınız işbu Kullanım Koşulları&apos;na tabidir. Platformu kullanarak bu şartları tamamen okuduğunuzu, anladığınızı ve kabul ettiğinizi beyan edersiniz.
+                        </p>
+                        <p className="mt-2">
+                            Platform&apos;un işletmecisi: <strong>Evinin Değeri Gayrimenkul Teknolojileri</strong> (Muratpaşa Mah. Sokullu Sk. No:9/4 Bayrampaşa / İstanbul)
+                        </p>
+                    </section>
 
-                <div className="prose prose-blue max-w-none text-gray-600 space-y-6">
-                    <p>Son Güncelleme Tarihi: {new Date().toLocaleDateString('tr-TR')}</p>
+                    <section>
+                        <h2 className="text-xl font-semibold text-appleDark mb-3">2. Hizmetin Niteliği (SaaS)</h2>
+                        <p>
+                            Platform, gayrimenkul piyasası verilerini işleyerek tahmini değer hesaplamaları, geçmiş rapor analizleri ve Alıcı/Satıcı (Lead) müşteri eşleştirmeleri sunan bulut tabanlı bir B2B ve B2C teknoloji hizmetidir. Yazılım, &quot;olduğu gibi&quot; sunulur ve mülkiyeti satılmaz, sadece kullanım lisansı kiralanır.
+                        </p>
+                    </section>
 
-                    <h2 className="text-2xl font-semibold text-appleDark mt-8 mb-4">1. Hizmetin Kapsamı</h2>
-                    <p>Evinin Değeri platformu (bundan böyle &quot;Platform&quot; olarak anılacaktır), kullanıcının girdiği gayrimenkul özelliklerine dayanarak yapay zeka destekli, istatistiksel bir tahmini değerleme hizmeti sunar. Sunulan fiyatlar ve raporlar kesin birer ekspertiz belgesi niteliği taşımaz, yalnızca piyasa tahmini olarak bilgi amaçlıdır.</p>
+                    <section>
+                        <h2 className="text-xl font-semibold text-appleDark mb-3">3. B2B (Kurumsal) Üyelik ve Kısıtlamalar</h2>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li>Kurumsal emlak ofisleri, PRO veya PRO PLUS aboneliği satın alarak sınırsız sorgu gibi avantajlar kazanır. Hesap paylaşımı kesinlikle yasaktır ve tespit edildiğinde hesabın iptali ile sonuçlanır.</li>
+                            <li>Lead (Müşteri) ekranı sadece PRO PLUS üyeleri içindir. Gelen datanın doğruluğu kullanıcının veri girişine bağlıdır, platform %100 doğruluğu garanti edemez.</li>
+                            <li>Yapay zeka ile sunulan konut değerleme fiyatları bir &quot;yatırım tavsiyesi&quot; veya &quot;resmi ekspertiz raporu&quot; yerine geçmez. Rakamlar istatistiksel algoritmalarla hesaplanır.</li>
+                        </ul>
+                    </section>
 
-                    <h2 className="text-2xl font-semibold text-appleDark mt-8 mb-4">2. Yükümlülük Reddi</h2>
-                    <p>Sistem üzerinden oluşturulan veri, fiyat ve yorum grafikleri, finansal veya yasal bağlayıcılığa sahip değildir. Gerçek alım-satım veya resmi kurumsal işlemlerde doğabilecek maddi kayıplardan Platform sorumlu tutulamaz. Resmi işlemler için bir Sermaye Piyasası Kurulu (SPK) lisanslı gayrimenkul değerleme uzmanından (Eksper) bağımsız değerlendirme alınması önerilir.</p>
+                    <section>
+                        <h2 className="text-xl font-semibold text-appleDark mb-3">4. Ücretlendirme ve Abonelik Yenileme</h2>
+                        <p>
+                            Satın alınan abonelikler, kredi kartı veya havale/EFT seçenekleriyle yapılabilir. Sistemde aktif olan paketler süresi dolduğunda, manuel uzatma yapılmadığı takdirde durdurulur (Şu an için otomatik yenileme (recurring) yoktur).
+                            Ödeme altyapısı güvenli sanal POS (256-Bit SSL) şirketleri tarafından sağlanmaktadır.
+                        </p>
+                    </section>
 
-                    <h2 className="text-2xl font-semibold text-appleDark mt-8 mb-4">3. Kullanıcı Beyanları</h2>
-                    <p>Forma girdiğiniz verilerin gerçeği yansıtması kendi sorumluluğunuzdadır. Yanıltıcı veri girişi, hatalı piyasa değerlendirme sonuçlarına sebep olabilir.</p>
+                    <section>
+                        <h2 className="text-xl font-semibold text-appleDark mb-3">5. Fikri Mülkiyet</h2>
+                        <p>
+                            Platform içerisinde yer alan tüm tasarım, algoritma, grafik, metin ve kaynak kodları Evinin Değeri Gayrimenkul Teknolojileri&apos;ne aittir. Kopyalanması, tersine mühendislik yapılması (reverse engineering) veya izinsiz başka bir sunucuda barındırılması yasa dışıdır.
+                        </p>
+                    </section>
 
-                    <h2 className="text-2xl font-semibold text-appleDark mt-8 mb-4">4. Fikri Mülkiyet</h2>
-                    <p>Site üzerinde yer alan algoritmalar, tasarım kodları ve marka logoları Evinin Değeri platformunun mülkiyetindedir, izinsiz kopyalanamaz veya ticari amaçlı kullanılamaz.</p>
+                    <section>
+                        <h2 className="text-xl font-semibold text-appleDark mb-3">6. Sorumluluğun Reddi</h2>
+                        <p>
+                            Platformu kullanımınızdan doğabilecek olan doğrudan ya da dolaylı zararlardan şahsımız/şirketimiz sorumlu tutulamaz. Sunulan analiz raporlarında kullanılan veriler üçüncü kurum kaynaklı olup salt bilgi amaçlıdır.
+                        </p>
+                    </section>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

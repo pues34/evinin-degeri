@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { CheckCircle2, ShieldCheck, Zap, Crown, UserPlus, FileText, X } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import Script from "next/script";
 
 export const dynamic = 'force-dynamic';
 
@@ -64,20 +65,28 @@ export default function PricingPage() {
 
     if (paytrToken) {
         return (
-            <div className="min-h-screen bg-appleGray pt-24 pb-12 px-4 flex justify-center items-center">
-                <div className="bg-white p-4 rounded-xl shadow-2xl w-full max-w-2xl min-h-[600px] relative">
-                    <button onClick={() => setPaytrToken(null)} className="absolute top-4 right-4 text-gray-400 hover:text-red-500">
-                        <X size={24} />
+            <div className="min-h-screen bg-appleGray flex-col justify-center items-center py-20 px-4">
+                <div className="max-w-4xl mx-auto bg-white p-4 md:p-8 rounded-xl shadow-2xl flex flex-col items-center min-h-[600px]">
+                    <ShieldCheck className="text-green-500 w-12 h-12 mb-4" />
+                    <h2 className="text-xl font-bold text-appleDark mb-6">256-Bit SSL Korumalı Güvenli Ödeme Arayüzü</h2>
+
+                    <div className="w-full relative min-h-[500px] border border-gray-100 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center">
+                        {/* We use standard HTML script integration for PayTR IFrame Resizer */}
+                        <iframe
+                            src={`https://www.paytr.com/odeme/guvenli/${paytrToken}`}
+                            id="paytriframe"
+                            frameBorder="0"
+                            scrolling="no"
+                            style={{ width: '100%', minHeight: '600px' }}
+                        ></iframe>
+                        <script dangerouslySetInnerHTML={{ __html: `iFrameResize({},'#paytriframe');` }}></script>
+                    </div>
+
+                    <button onClick={() => setPaytrToken(null)} className="mt-6 text-sm text-red-500 hover:text-red-700 font-medium">
+                        İptal ve Geri Dön
                     </button>
-                    <h2 className="text-xl font-bold text-center text-appleDark mb-4 mt-6">Güvenli Ödeme Ekranı</h2>
-                    <p className="text-center text-sm text-gray-500 mb-4">Kredi kartı bilgileriniz PayTR güvencesiyle işlenmektedir.</p>
-                    <iframe
-                        src={`https://www.paytr.com/odeme/guvenli/${paytrToken}`}
-                        id="paytriframe"
-                        frameBorder="0"
-                        scrolling="yes"
-                        style={{ width: "100%", height: "600px" }}
-                    />
+
+                    <Script src="https://www.paytr.com/js/iframeResizer.min.js" strategy="lazyOnload"></Script>
                 </div>
             </div>
         );
@@ -252,7 +261,7 @@ export default function PricingPage() {
 
                 <div className="mt-16 text-center text-sm text-gray-500">
                     <p className="flex justify-center items-center gap-2">
-                        <ShieldCheck size={18} /> Tüm ödemeler PayTR 3D Secure ile 256-bit AES üzerinden şifrelenir. Otomatik yenilenmez, taahhüt yok.
+                        <ShieldCheck size={18} /> Tüm ödemeler ParamPos 3D Secure güvencesi altındadır. Otomatik yenilenmez, taahhüt yok.
                     </p>
                 </div>
             </div>

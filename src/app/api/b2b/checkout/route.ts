@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import crypto from 'crypto-js';
+import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,13 +14,12 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: false, error: "Lütfen önce giriş yapın." }, { status: 401 });
         }
 
-        // PayTR Credentials from .env
         const merchant_id = process.env.PAYTR_MERCHANT_ID || "";
         const merchant_key = process.env.PAYTR_MERCHANT_KEY || "";
         const merchant_salt = process.env.PAYTR_MERCHANT_SALT || "";
 
         if (!merchant_id || !merchant_key || !merchant_salt) {
-            return NextResponse.json({ success: false, error: "Ödeme altyapısı (PayTR) henüz ayarlanmadı." }, { status: 500 });
+            return NextResponse.json({ success: false, error: "Ödeme altyapısı henüz ayarlanmadı." }, { status: 500 });
         }
 
         const body = await req.json().catch(() => ({}));
@@ -41,95 +40,83 @@ export async function POST(req: Request) {
         if (selectedTier === "PRO") {
             finalPrice = b2bDiscount > 0 ? b2bPrice * (1 - b2bDiscount / 100) : b2bPrice;
         } else if (selectedTier === "PRO_PLUS") {
-            const proPlusPrice = Number(settingsMap["b2bProPlusPrice"] || 750);
-            finalPrice = proPlusPrice;
+            finalPrice = Number(settingsMap["b2bProPlusPrice"] || 750);
             basketDescription = "PRO PLUS Paket (White-Label & Lead Market)";
         } else if (selectedTier === "UPGRADE") {
             finalPrice = 250;
             basketDescription = "PRO'dan PRO PLUS Pakete Yükseltme Bedeli";
         }
 
-        // PayTR uses kurus (cents) for the payment amount. 500 TL = 50000 kurus.
-        const payment_amount = Math.round(finalPrice * 100).toString();
+        const payment_amount = Math.round(finalPrice * 100).toString(); // Kuruş cinsinden
 
-        // Prepare User/Order Information
         const merchant_oid = `B2B_${selectedTier}_${session.user.id}_${Date.now()}`;
+        const user_name = session.user.name || "Kurumsal Kullanıcı";
+        const user_address = "Evinin Değeri B2B Kullanıcısı, İstanbul"; // Genel B2B Adresi
+        const user_phone = "05555555555";
+        const user_basket = JSON.stringify([[basketDescription, finalPrice.toString(), 1]]);
+        const user_ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "127.0.0.1";
         const email = session.user.email;
-        const user_name = session.user.name || "Kurumsal Emlakçı";
-        const user_address = "Türkiye";
-        const user_phone = "05320000000"; // Should be retrieved from Realtor DB if required.
-        const user_ip = req.headers.get("x-forwarded-for") || "85.105.101.12"; // PayTR Needs IP.
-        const currency = "TL";
-        const test_mode = "1"; // SET TO 0 FOR PRODUCTION (LIVE PAYMENTS)
+        const cur_val = "TL";
+        const default_installment = "0";
 
-        // Basket Array (Products) [["Product Name", "Price", "Quantity"]]
-        const user_basket = [
-            [basketDescription, finalPrice.toString(), 1]
-        ];
-        const user_basket_encoded = Buffer.from(JSON.stringify(user_basket)).toString("base64");
+        const domain = process.env.NEXTAUTH_URL || "https://evindegeri.com";
+        const success_url = `${domain}/b2b/pricing?status=success`;
+        const fail_url = `${domain}/b2b/pricing?status=error`;
 
-        // Allowed Installments & No-Installment Configs
-        const max_installment = "0";
-        const no_installment = "1";
+        // Hash Calculation
+        const hashStr = merchant_id + user_ip + merchant_oid + email + payment_amount + user_basket + "0" + "0" + cur_val + "0";
+        const paytr_token = crypto.createHmac('sha256', merchant_key).update(hashStr + merchant_salt).digest('base64');
 
-        // Redirect paths after payment completes in iframe
-        const merchant_ok_url = `${process.env.NEXTAUTH_URL}/b2b/dashboard?payment=success`;
-        const merchant_fail_url = `${process.env.NEXTAUTH_URL}/b2b/pricing?payment=failed`;
-
-        // Generate PayTR HMAC-SHA256 Token
-        const hash_str = merchant_id + user_ip + merchant_oid + email + payment_amount + user_basket_encoded + no_installment + max_installment + currency + test_mode;
-        const paytr_token = crypto.HmacSHA256(hash_str + merchant_salt, merchant_key).toString(crypto.enc.Base64);
-
-        // API Body Prep for PayTR Server
-        const formData = new URLSearchParams();
-        formData.append('merchant_id', merchant_id);
-        formData.append('user_ip', user_ip);
-        formData.append('merchant_oid', merchant_oid);
-        formData.append('email', email);
-        formData.append('payment_amount', payment_amount);
-        formData.append('paytr_token', paytr_token);
-        formData.append('user_basket', user_basket_encoded);
-        formData.append('debug_on', '1');
-        formData.append('no_installment', no_installment);
-        formData.append('max_installment', max_installment);
-        formData.append('user_name', user_name);
-        formData.append('user_address', user_address);
-        formData.append('user_phone', user_phone);
-        formData.append('merchant_ok_url', merchant_ok_url);
-        formData.append('merchant_fail_url', merchant_fail_url);
-        formData.append('timeout_limit', "30");
-        formData.append('currency', currency);
-        formData.append('test_mode', test_mode);
-
-        const paytrRes = await fetch('https://www.paytr.com/odeme/api/get-token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: formData
+        const params = new URLSearchParams({
+            merchant_id: merchant_id,
+            user_ip: user_ip,
+            merchant_oid: merchant_oid,
+            email: email,
+            payment_amount: payment_amount,
+            paytr_token: paytr_token,
+            user_basket: user_basket,
+            debug_on: "1", // Canlıda 0 yapılmalı
+            no_installment: "0",
+            max_installment: "12",
+            user_name: user_name,
+            user_address: user_address,
+            user_phone: user_phone,
+            merchant_ok_url: success_url,
+            merchant_fail_url: fail_url,
+            currency: cur_val,
+            test_mode: "1" // Başvuru onaylanana kadar test modu
         });
 
-        const paytrResponseText = await paytrRes.text();
-        let paytrResult;
-        try {
-            paytrResult = JSON.parse(paytrResponseText);
-        } catch (e) {
-            console.error("PayTR Parsing failed: ", paytrResponseText);
-            return NextResponse.json({ success: false, error: "Ödeme altyapısı geçici olarak çalışmıyor." }, { status: 500 });
+        // Veritabanına "PENDING" olarak Payment (satın alma) logunu düşelim
+        await prisma.payment.create({
+            data: {
+                amount: finalPrice,
+                status: "PENDING",
+                transactionId: merchant_oid,
+                tierPurchased: selectedTier === "UPGRADE" ? "PRO_PLUS" : selectedTier,
+                realtorId: session.user.id
+            }
+        });
+
+        const res = await fetch('https://www.paytr.com/odeme/api/get-token', {
+            method: 'POST',
+            body: params,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+
+        const resData = await res.json();
+
+        if (resData.status === "success") {
+            return NextResponse.json({ success: true, token: resData.token });
+        } else {
+            console.error("PayTR Error:", resData);
+            return NextResponse.json({ success: false, error: resData.reason || "PayTR token alınamadı." }, { status: 500 });
         }
 
-        if (paytrResult.status === "success") {
-            return NextResponse.json({
-                success: true,
-                token: paytrResult.token,
-                message: "PayTR iframe token generated."
-            });
-        } else {
-            console.error("PayTR Generation Failed:", paytrResult.reason);
-            return NextResponse.json({ success: false, error: "PayTR Hatası: " + paytrResult.reason }, { status: 500 });
-        }
     } catch (error: any) {
         console.error("Checkout Error:", error);
-        return NextResponse.json({ success: false, error: "Ödeme işlemi sırasında bir API hatası oluştu." }, { status: 500 });
+        return NextResponse.json({ success: false, error: "Ödeme işlemi sırasında bir sunucu hatası oluştu." }, { status: 500 });
     }
 }

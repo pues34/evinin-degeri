@@ -1,36 +1,53 @@
-import Footer from "@/components/Footer";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
+export const metadata: Metadata = {
+    title: 'Gizlilik Politikası | Evinin Değeri',
+    description: 'Evinin Değeri Gayrimenkul Teknolojileri olarak kişisel verilerinizi 256-bit SSL güvencesiyle koruyoruz.',
+};
 
-export default function PrivacyPolicy() {
+export default function GizlilikPolitikasi() {
     return (
-        <div className="min-h-screen flex flex-col bg-white">
-            <div className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
-                <Link href="/" className="inline-flex items-center text-appleBlue hover:underline mb-8 font-medium">
-                    <ArrowLeft size={16} className="mr-2" /> Ana Sayfaya Dön
-                </Link>
+        <div className="min-h-screen bg-gray-50 py-20 px-4">
+            <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-xl border border-gray-100 shadow-sm content-page text-gray-700 leading-relaxed">
+                <h1 className="text-3xl font-bold text-appleDark mb-8">Gizlilik ve Kişisel Verileri Koruma Politikası</h1>
 
-                <h1 className="text-4xl font-bold text-appleDark mb-8">Gizlilik Politikası</h1>
+                <div className="space-y-6">
+                    <section>
+                        <h2 className="text-xl font-semibold text-appleDark mb-3">1. Veri Sorumlusu ve Güvenlik Altyapısı</h2>
+                        <p>
+                            Evinin Değeri Gayrimenkul Teknolojileri (&quot;Platform&quot;) olarak, kullanıcılarımıza ait kişisel ve finansal verilerin maksimum seviyede korunmasına önem veriyoruz. Sitemiz üzerindeki tüm veri transferleri uçtan uca <strong>256-Bit SSL sertifikası</strong> ile şifrelenmektedir.
+                        </p>
+                    </section>
 
-                <div className="prose prose-blue max-w-none text-gray-600 space-y-6">
-                    <p>Son Güncelleme Tarihi: {new Date().toLocaleDateString('tr-TR')}</p>
+                    <section>
+                        <h2 className="text-xl font-semibold text-appleDark mb-3">2. Toplanan Veriler ve Kullanım Amacı</h2>
+                        <ul className="list-disc pl-5 space-y-2">
+                            <li><strong>Kimlik ve İletişim Bilgileri:</strong> İsim, e-posta, telefon ve firma (B2B) bilgileri, abonelik oluşturmak ve hizmet sunabilmek amacıyla işlenir.</li>
+                            <li><strong>Gayrimenkul Sorguları:</strong> Algoritmaya girilen konum ve özellikler, platformun fiyat tahmini modelini optimize etmek amacıyla (anonimleştirilerek) kullanılabilir. B2B kullanıcılarının yaptığı gizli sorgular diğer kullanıcılarla paylaşılmaz.</li>
+                            <li><strong>Ödeme Bilgileri:</strong> Kredi kartı tahsilat işlemleri global veri güvenliği standardı olan PCI-DSS sertifikalı lisanslı BDDK onaylı (Örn: PayTR vb.) Sanal POS kuruluşları üzerinden yapılmaktadır. <strong>Kredi kartı verileriniz sunucularımızda hiçbir şekilde tutulmaz ve barındırılmaz.</strong></li>
+                        </ul>
+                    </section>
 
-                    <h2 className="text-2xl font-semibold text-appleDark mt-8 mb-4">1. Veri Toplama ve Kullanım</h2>
-                    <p>Evinin Değeri platformu, kullanıcı deneyimini artırmak ve gayrimenkul değerleme hizmetini sunabilmek amacıyla, kullanıcıların form aracılığıyla girdiği konum, bina özellikleri ve iletişim bilgilerini geçici veya kalıcı olarak saklayabilir. Bu veriler yalnızca değerleme analizi raporunun oluşturulması ve kullanıcının talebi doğrultusunda iletişime geçilmesi amacıyla kullanılır.</p>
+                    <section>
+                        <h2 className="text-xl font-semibold text-appleDark mb-3">3. Çerezler (Cookies) ve Üçüncü Taraflar</h2>
+                        <p>
+                            Sistem performansını iyileştirmek ve üye giriş çıkış seanslarını (session) muhafaza etmek amacıyla zorunlu çerezler kullanılmaktadır. Sitemiz kesinlikle verilerinizi reklam şirketlerine satmamaktadır.
+                        </p>
+                    </section>
 
-                    <h2 className="text-2xl font-semibold text-appleDark mt-8 mb-4">2. Üçüncü Taraf Paylaşımları</h2>
-                    <p>Girilen kişisel veriler (Ad, Soyad, Telefon vb.) kesinlikle üçüncü taraf reklam şirketleriyle paylaşılmaz. Ancak mülk bilgileri (mahalle, m2, yaş vb.) değerleme algoritmasının eğitilmesi için anonimleştirilerek istatistiksel amaçlarla kullanılabilir.</p>
+                    <section>
+                        <h2 className="text-xl font-semibold text-appleDark mb-3">4. Haklarınız (KVKK Kapsamında)</h2>
+                        <p>
+                            Aydınlatma yükümlülüğümüz çerçevesinde, sistemimize kayıtlı bulunan kişisel verilerinize erişme, silinmesini (unutulma hakkı) veya düzeltilmesini talep etme hakkına sahipsiniz. Silme işlemleri için destek taleplerinizi <strong>info@evinindegeri.com</strong> adresinden iletişim merkezimize iletebilirsiniz.
+                        </p>
+                    </section>
 
-                    <h2 className="text-2xl font-semibold text-appleDark mt-8 mb-4">3. Çerezler (Cookies)</h2>
-                    <p>Web sitemiz, oturum yönetimi ve performans analizi için standart çerezleri kullanmaktadır. Tarayıcınız üzerinden çerezleri dilediğiniz zaman sınırlandırabilirsiniz.</p>
-
-                    <h2 className="text-2xl font-semibold text-appleDark mt-8 mb-4">4. İletişim</h2>
-                    <p>Gizlilik süreçleriyle alakalı soru ve talepleriniz için platformumuzun iletişim kanallarını kullanabilirsiniz.</p>
+                    <section className="pt-4 text-sm text-gray-500">
+                        <p><strong>Güncelleme Tarihi:</strong> {new Date().toLocaleDateString('tr-TR')}</p>
+                        <p>Evinin Değeri Gayrimenkul Teknolojileri - Muratpaşa Mah. Sokullu Sk. No:9/4 Bayrampaşa / İstanbul</p>
+                    </section>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

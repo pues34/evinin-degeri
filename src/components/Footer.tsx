@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, MapPin, Hexagon, Instagram, Twitter, Linkedin } from "lucide-react";
+import { Mail, MapPin, Hexagon, Instagram, Twitter, Linkedin, Phone, ShieldCheck, CreditCard } from "lucide-react";
 
 import prisma from "@/lib/prisma";
 
@@ -28,12 +28,16 @@ export default async function Footer() {
                         </p>
                         <div className="space-y-2 text-gray-500 text-xs">
                             <div className="flex items-center gap-2">
-                                <Mail size={12} className="text-appleBlue" />
-                                <a href="mailto:evindestek@gmail.com" className="hover:text-appleBlue transition-colors">evindestek@gmail.com</a>
+                                <Mail size={12} className="text-appleBlue shrink-0" />
+                                <a href="mailto:info@evinindegeri.com" className="hover:text-appleBlue transition-colors">info@evinindegeri.com</a>
                             </div>
                             <div className="flex items-center gap-2">
-                                <MapPin size={12} className="text-appleBlue" />
-                                <span>Istanbul, Turkiye</span>
+                                <Phone size={12} className="text-appleBlue shrink-0" />
+                                <a href="tel:+905305725377" className="hover:text-appleBlue transition-colors">0530 572 53 77</a>
+                            </div>
+                            <div className="flex items-start gap-2">
+                                <MapPin size={12} className="text-appleBlue shrink-0 mt-0.5" />
+                                <span>Evinin Değeri Gayrimenkul Teknolojileri<br />Muratpaşa Mah. Sokullu Sk. No:9/4<br />Bayrampaşa / İstanbul</span>
                             </div>
                         </div>
                     </div>
@@ -66,8 +70,8 @@ export default async function Footer() {
                     <div>
                         <h4 className="font-semibold text-appleDark text-sm mb-4">Yasal</h4>
                         <ul className="space-y-2.5">
-                            <li><Link href="/p/gizlilik-politikasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Gizlilik Politikasi</Link></li>
-                            <li><Link href="/p/kullanim-kosullari" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Kullanim Kosullari</Link></li>
+                            <li><Link href="/gizlilik-politikasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Gizlilik Politikasi</Link></li>
+                            <li><Link href="/kullanim-kosullari" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Kullanim Kosullari</Link></li>
                             <li><Link href="/mesafeli-satis-sozlesmesi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Mesafeli Satis Sozlesmesi</Link></li>
                             <li><Link href="/iptal-iade" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Iptal ve Iade Kosullari</Link></li>
                         </ul>
@@ -96,6 +100,24 @@ export default async function Footer() {
                         {(!settings?.instagramUrl && !settings?.twitterUrl && !settings?.linkedinUrl) && (
                             <p className="text-xs text-gray-400 mt-2">Yakinda!</p>
                         )}
+
+                        <h4 className="font-semibold text-appleDark text-sm mt-8 mb-4">Güvenli Ödeme</h4>
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-2 text-green-600 text-xs font-medium">
+                                <ShieldCheck size={16} /> 256-Bit SSL Koruması
+                            </div>
+                            <div className="flex gap-2">
+                                <div className="px-2 py-1 bg-gray-50 border border-gray-200 rounded text-[10px] font-bold text-blue-800 flex items-center gap-1">
+                                    <CreditCard size={12} /> VISA
+                                </div>
+                                <div className="px-2 py-1 bg-gray-50 border border-gray-200 rounded text-[10px] font-bold text-red-600 flex items-center gap-1">
+                                    <CreditCard size={12} /> MASTER
+                                </div>
+                                <div className="px-2 py-1 bg-gray-50 border border-gray-200 rounded text-[10px] font-bold text-orange-500 flex items-center gap-1">
+                                    <CreditCard size={12} /> TROY
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>

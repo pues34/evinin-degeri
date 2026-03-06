@@ -2,7 +2,7 @@
 
 import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { Users, Search, RefreshCw, BarChart2, Star, Calculator, Map, Mail, Bell, MessageSquare, LayoutDashboard, Settings, Activity, Clock, FileText, CheckCircle, Smartphone, Globe, Shield, Crown, Eye, X, ChevronRight, Share2, TrendingUp, Building2, Trash2, Edit2, Download, LogOut } from "lucide-react";
+import { Users, Search, RefreshCw, BarChart2, Star, Calculator, Map, Mail, Bell, MessageSquare, LayoutDashboard, Settings, Activity, Clock, FileText, CheckCircle, Smartphone, Globe, Shield, CreditCard, Crown, Eye, X, ChevronRight, Share2, TrendingUp, Building2, Trash2, Edit2, Download, LogOut } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 
 export const dynamic = 'force-dynamic';
@@ -16,6 +16,7 @@ export default function AdminDashboard() {
     const [contacts, setContacts] = useState<any[]>([]);
     const [realtors, setRealtors] = useState<any[]>([]);
     const [feedbacks, setFeedbacks] = useState<any[]>([]);
+    const [payments, setPayments] = useState<any[]>([]);
     const [stats, setStats] = useState<any>(null);
 
     // Location states
@@ -469,6 +470,11 @@ export default function AdminDashboard() {
             loadFeedbacks();
         } else if (session && activeTab === "testimonials") {
             loadTestimonials();
+        } else if (session && activeTab === "payments") {
+            fetch("/api/admin/payments")
+                .then(res => res.json())
+                .then(data => { if (data.success) setPayments(data.data); })
+                .catch(err => console.error("Payments fail:", err));
         } else if (session && activeTab === "overview") {
             fetch("/api/admin/stats")
                 .then(res => res.json())
@@ -574,6 +580,12 @@ export default function AdminDashboard() {
                         className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'site-settings' ? 'bg-appleBlue text-white' : 'text-gray-600 hover:bg-gray-50'}`}
                     >
                         <Settings size={18} className="mr-3" /> Reklam & Site Ayarları
+                    </button>
+                    <button
+                        onClick={() => setActiveTab("payments")}
+                        className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'payments' ? 'bg-appleBlue text-white' : 'text-gray-600 hover:bg-gray-50'}`}
+                    >
+                        <CreditCard size={18} className="mr-3" /> Ödemeler & Gelirler
                     </button>
                 </div>
                 <div className="p-4 border-t border-gray-100">
@@ -852,6 +864,71 @@ export default function AdminDashboard() {
                                                     </tr>
                                                 );
                                             })}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === "payments" && (
+                            <div className="p-8">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h3 className="font-semibold text-lg text-appleDark">B2B Ödemeler & Gelirler (ParamPos)</h3>
+                                    <p className="text-sm text-gray-500">Abonelik satın alımları ve iptalleri buradan takip edebilirsiniz.</p>
+                                </div>
+                                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                                    <table className="w-full text-left text-sm">
+                                        <thead className="bg-gray-50/50 text-gray-500 border-b border-gray-100">
+                                            <tr>
+                                                <th className="px-6 py-4 font-medium">İşlem Tarihi</th>
+                                                <th className="px-6 py-4 font-medium">Sipariş / İşlem No</th>
+                                                <th className="px-6 py-4 font-medium">Firma & İletişim</th>
+                                                <th className="px-6 py-4 font-medium">Paket</th>
+                                                <th className="px-6 py-4 font-medium">Tutar</th>
+                                                <th className="px-6 py-4 font-medium text-center">Durum</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-50">
+                                            {payments.length === 0 ? (
+                                                <tr><td colSpan={6} className="text-center py-8 text-gray-400">Herhangi bir ödeme kaydı bulunamadı.</td></tr>
+                                            ) : (
+                                                payments.map((p: any) => (
+                                                    <tr key={p.id} className="transition-colors hover:bg-gray-50 bg-white">
+                                                        <td className="px-6 py-4 text-gray-500 whitespace-nowrap">
+                                                            {new Date(p.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-gray-500 font-mono text-xs">
+                                                            {p.transactionId}
+                                                            {p.errorMessage && <div className="text-[10px] text-red-500 block mt-1 line-clamp-2 max-w-[200px]" title={p.errorMessage}>{p.errorMessage}</div>}
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            <div className="font-medium text-appleDark">{p.realtor?.companyName || "Anonim"}</div>
+                                                            <div className="text-gray-400 text-xs">{p.realtor?.phone || "-"}</div>
+                                                        </td>
+                                                        <td className="px-6 py-4">
+                                                            {p.tierPurchased === "PRO_PLUS" ? (
+                                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-200 shadow-sm"><Crown size={12} className="mr-1" /> PRO PLUS</span>
+                                                            ) : p.tierPurchased === "PRO" ? (
+                                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200">PRO</span>
+                                                            ) : (
+                                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">{p.tierPurchased || "-"}</span>
+                                                            )}
+                                                        </td>
+                                                        <td className="px-6 py-4 font-bold text-green-600">
+                                                            {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(p.amount)}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-center">
+                                                            {p.status === "SUCCESS" ? (
+                                                                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"><CheckCircle size={14} className="mr-1" /> Başarılı</span>
+                                                            ) : p.status === "PENDING" ? (
+                                                                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"><Clock size={14} className="mr-1" /> Bekliyor</span>
+                                                            ) : (
+                                                                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"><X size={14} className="mr-1" /> Başarısız</span>
+                                                            )}
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            )}
                                         </tbody>
                                     </table>
                                 </div>
