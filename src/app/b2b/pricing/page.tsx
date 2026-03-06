@@ -16,6 +16,7 @@ export default function PricingPage() {
     const [loading, setLoading] = useState(false);
     const [pricing, setPricing] = useState({ b2bMonthlyPrice: 500, b2bDiscountPercentage: 0 });
     const [paytrToken, setPaytrToken] = useState<string | null>(null);
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
 
     // V19 Logic: Check current subscription tier
     const isPro = session?.user?.isPro || session?.user?.subscriptionTier === "PRO";
@@ -38,6 +39,11 @@ export default function PricingPage() {
     const handleSubscribe = async (tier: "PRO" | "PRO_PLUS" | "UPGRADE") => {
         if (status === "unauthenticated") {
             router.push("/b2b/login");
+            return;
+        }
+
+        if (!acceptedTerms) {
+            alert("Lütfen işleme devam etmeden önce Mesafeli Satış Sözleşmesi ve Ön Bilgilendirme Koşullarını onaylayınız.");
             return;
         }
 
@@ -119,6 +125,19 @@ export default function PricingPage() {
                         Sıradan bir değerleme aracından, bölgenizdeki satıcı müşterileri avladığınız tam teşekküllü bir Lead Market (Müşteri Pazarı) ağına geçiş yapın.
                     </p>
                 </motion.div>
+
+                <div className="mb-8 bg-white/60 backdrop-blur-md p-5 flex items-start sm:items-center gap-3 rounded-2xl border border-gray-200 max-w-3xl mx-auto shadow-sm">
+                    <input
+                        type="checkbox"
+                        id="terms"
+                        checked={acceptedTerms}
+                        onChange={(e) => setAcceptedTerms(e.target.checked)}
+                        className="w-5 h-5 mt-0.5 sm:mt-0 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer shrink-0"
+                    />
+                    <label htmlFor="terms" className="text-sm text-gray-600 font-medium cursor-pointer leading-relaxed">
+                        Satın alma işlemine devam ederek <Link href="/mesafeli-satis-sozlesmesi" target="_blank" className="text-blue-600 hover:text-blue-800 underline">Mesafeli Satış Sözleşmesi</Link>&apos;ni, <Link href="/kullanim-kosullari" target="_blank" className="text-blue-600 hover:text-blue-800 underline">Kullanım Koşulları</Link>&apos;nı ve <Link href="/iptal-iade" target="_blank" className="text-blue-600 hover:text-blue-800 underline">İptal/İade Politikası</Link>&apos;nı okuduğumu ve kabul ettiğimi beyan ederim.
+                    </label>
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 relative items-end">
 
@@ -261,7 +280,7 @@ export default function PricingPage() {
 
                 <div className="mt-16 text-center text-sm text-gray-500">
                     <p className="flex justify-center items-center gap-2">
-                        <ShieldCheck size={18} /> Tüm ödemeler ParamPos 3D Secure güvencesi altındadır. Otomatik yenilenmez, taahhüt yok.
+                        <ShieldCheck size={18} /> Tüm ödemeler PayTR 256-Bit SSL güvencesi altındadır. Otomatik yenilenmez, taahhüt yok.
                     </p>
                 </div>
             </div>
