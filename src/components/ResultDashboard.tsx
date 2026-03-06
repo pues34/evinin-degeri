@@ -429,8 +429,8 @@ export default function ResultDashboard({ id }: { id: string }) {
                             Kira Amortisman Analizi
                         </h3>
                         {(() => {
-                            // Dynamic amortisman: sehir merkezleri 240 ay, dis bolgeler 170 ay, ortalama 200 ay
-                            const amortMonths = data.city === 'Istanbul' || data.city === 'Ankara' || data.city === 'Izmir' ? 240 : data.city ? 200 : 170;
+                            // Dynamic amortisman: sehir merkezleri 200 ay, dis bolgeler 170/150 ay. (Kiralar yukseldi, amortisman dustu)
+                            const amortMonths = data.city === 'Istanbul' || data.city === 'Ankara' || data.city === 'Izmir' ? 200 : data.city ? 170 : 150;
                             const monthlyRent = displayValue / amortMonths;
                             const yearlyRent = monthlyRent * 12;
                             const amortYears = (amortMonths / 12).toFixed(1);

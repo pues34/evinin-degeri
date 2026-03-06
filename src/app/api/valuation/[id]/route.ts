@@ -47,6 +47,10 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         if (record.parking === "Yok") factors.push({ name: "Otopark Yok", effect: "%0" });
         if (record.bathrooms > 1) factors.push({ name: "Çift Banyo / Ebeveyn", effect: "+7%" });
 
+        // 1. Dynamic Index For Base Price (Simulating TCMB / Endeksa)
+        let baseAnchorPrice = 26500;
+        let monthlyInflationRate = 0.035;
+
         // Geocoding with Nominatim (OpenStreetMap)
         // Kadikoy center fallback
         let location = { lat: 40.985, lng: 29.025 };
@@ -74,8 +78,9 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
         }
 
         // V27: m2 fiyat bolge karsilastirmasi ve Gecmis degerleme trendi
+        // Filtre: 500 milyondan buyuk (test/hatali) outlier verileri haric tut
         const districtValuations = await prisma.valuationRequest.findMany({
-            where: { district: record.district, city: record.city },
+            where: { district: record.district, city: record.city, estimatedValue: { lt: 500000000 } },
             select: { estimatedValue: true, netSqm: true }
         });
 
@@ -97,6 +102,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
                 neighborhood: record.neighborhood,
                 district: record.district,
                 city: record.city,
+                estimatedValue: { lt: 500000000 },
                 createdAt: {
                     gte: threeMonthsAgo
                 }
