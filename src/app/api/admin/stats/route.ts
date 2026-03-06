@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 import prisma from "@/lib/prisma";
 
@@ -6,6 +8,11 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
     try {
+        const session = await getServerSession(authOptions) as any;
+        if (!session || session.user.role !== "admin") {
+            return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+        }
+
         const totalRequests = await prisma.valuationRequest.count();
 
         const allRequests = await prisma.valuationRequest.findMany({
