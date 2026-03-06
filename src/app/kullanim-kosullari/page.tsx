@@ -18,7 +18,7 @@ export default function KullanimKosullari() {
                             www.evinindegeri.com (bundan böyle &quot;Platform&quot; olarak anılacaktır) sitesine erişiminiz ve kullanımınız işbu Kullanım Koşulları&apos;na tabidir. Platformu kullanarak bu şartları tamamen okuduğunuzu, anladığınızı ve kabul ettiğinizi beyan edersiniz.
                         </p>
                         <p className="mt-2">
-                            Platform&apos;un işletmecisi: <strong>Evinin Değeri Gayrimenkul Teknolojileri</strong> (Muratpaşa Mah. Sokullu Sk. No:9/4 Bayrampaşa / İstanbul)
+                            Platform&apos;un işletmecisi: <strong>Evinin Değeri Gayrimenkul Teknolojileri</strong> (Muratpaşa Mah. Cemiyet Cad. No:28 Bayrampaşa / İstanbul)
                         </p>
                     </section>
 

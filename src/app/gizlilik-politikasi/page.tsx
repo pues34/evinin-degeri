@@ -38,13 +38,13 @@ export default function GizlilikPolitikasi() {
                     <section>
                         <h2 className="text-xl font-semibold text-appleDark mb-3">4. Haklarınız (KVKK Kapsamında)</h2>
                         <p>
-                            Aydınlatma yükümlülüğümüz çerçevesinde, sistemimize kayıtlı bulunan kişisel verilerinize erişme, silinmesini (unutulma hakkı) veya düzeltilmesini talep etme hakkına sahipsiniz. Silme işlemleri için destek taleplerinizi <strong>info@evinindegeri.com</strong> adresinden iletişim merkezimize iletebilirsiniz.
+                            Aydınlatma yükümlülüğümüz çerçevesinde, sistemimize kayıtlı bulunan kişisel verilerinize erişme, silinmesini (unutulma hakkı) veya düzeltilmesini talep etme hakkına sahipsiniz. Silme işlemleri için destek taleplerinizi <strong>evindestek@gmail.com</strong> adresinden iletişim merkezimize iletebilirsiniz.
                         </p>
                     </section>
 
                     <section className="pt-4 text-sm text-gray-500">
                         <p><strong>Güncelleme Tarihi:</strong> {new Date().toLocaleDateString('tr-TR')}</p>
-                        <p>Evinin Değeri Gayrimenkul Teknolojileri - Muratpaşa Mah. Sokullu Sk. No:9/4 Bayrampaşa / İstanbul</p>
+                        <p>Evinin Değeri Gayrimenkul Teknolojileri - Muratpaşa Mah. Cemiyet Cad. No:28 Bayrampaşa / İstanbul</p>
                     </section>
                 </div>
             </div>

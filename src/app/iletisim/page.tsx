@@ -36,11 +36,11 @@ export default function IletisimPage() {
                         <h3 className="font-semibold text-appleDark text-lg mb-2">Telefon & E-Posta</h3>
                         <p className="text-gray-500 text-sm mb-3">Genel destek ve işbirlikleri</p>
                         <div className="flex flex-col gap-2">
-                            <a href="tel:+905305725377" className="text-appleBlue font-medium text-sm hover:underline flex items-center justify-center gap-2">
-                                <Phone size={14} /> 0530 572 53 77
+                            <a href="tel:+905337253171" className="text-appleBlue font-medium text-sm hover:underline flex items-center justify-center gap-2">
+                                <Phone size={14} /> 0533 725 3171
                             </a>
-                            <a href="mailto:info@evinindegeri.com" className="text-appleBlue font-medium text-sm hover:underline">
-                                info@evinindegeri.com
+                            <a href="mailto:evindestek@gmail.com" className="text-appleBlue font-medium text-sm hover:underline">
+                                evindestek@gmail.com
                             </a>
                         </div>
                     </div>
@@ -83,7 +83,7 @@ export default function IletisimPage() {
                         <h2 className="text-2xl font-bold text-appleDark">Genel Merkez</h2>
                     </div>
                     <p className="text-gray-500 font-medium mb-1">Evinin Değeri Gayrimenkul Teknolojileri</p>
-                    <p className="text-gray-500 mb-2">Muratpaşa Mah. Sokullu Sk. No:9 D:4 Bayrampaşa / İstanbul</p>
+                    <p className="text-gray-500 mb-2">Muratpaşa Mah. Cemiyet Cad. No:28 Bayrampaşa / İstanbul</p>
                     <p className="text-gray-400 text-sm max-w-lg mx-auto mt-4">
                         Evinin Değeri, tamamen dijital bir B2B SaaS platformu olarak hizmet vermektedir.
                         Tüm abonelik ve destek işlemlerinizi online olarak gerçekleştirebilirsiniz.

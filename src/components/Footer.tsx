@@ -29,15 +29,15 @@ export default async function Footer() {
                         <div className="space-y-2 text-gray-500 text-xs">
                             <div className="flex items-center gap-2">
                                 <Mail size={12} className="text-appleBlue shrink-0" />
-                                <a href="mailto:info@evinindegeri.com" className="hover:text-appleBlue transition-colors">info@evinindegeri.com</a>
+                                <a href="mailto:evindestek@gmail.com" className="hover:text-appleBlue transition-colors">evindestek@gmail.com</a>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Phone size={12} className="text-appleBlue shrink-0" />
-                                <a href="tel:+905305725377" className="hover:text-appleBlue transition-colors">0530 572 53 77</a>
+                                <a href="tel:+905337253171" className="hover:text-appleBlue transition-colors">0533 725 3171</a>
                             </div>
                             <div className="flex items-start gap-2">
                                 <MapPin size={12} className="text-appleBlue shrink-0 mt-0.5" />
-                                <span>Evinin Değeri Gayrimenkul Teknolojileri<br />Muratpaşa Mah. Sokullu Sk. No:9/4<br />Bayrampaşa / İstanbul</span>
+                                <span>Evinin Değeri Gayrimenkul Teknolojileri<br />Muratpaşa Mah. Cemiyet Cad. No:28<br />Bayrampaşa / İstanbul</span>
                             </div>
                         </div>
                     </div>

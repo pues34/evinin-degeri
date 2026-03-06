@@ -39,7 +39,7 @@ export default function IptalIade() {
                     </section>
 
                     <section className="pt-4 text-sm text-gray-500">
-                        <p>İletişim ve Destek: <strong>info@evinindegeri.com</strong></p>
+                        <p>İletişim ve Destek: <strong>evindestek@gmail.com</strong></p>
                     </section>
                 </div>
             </div>

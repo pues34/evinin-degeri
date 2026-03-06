@@ -16,11 +16,11 @@ export default function MesafeliSatisSozlesmesi() {
                         <h2 className="text-xl font-semibold text-appleDark mb-3">1. Taraflar</h2>
                         <h3 className="font-medium mt-4 mb-1">1.1 Hizmet Veren (Satıcı):</h3>
                         <p><strong>Unvan:</strong> Evinin Değeri Gayrimenkul Teknolojileri</p>
-                        <p><strong>Adres:</strong> Muratpaşa Mah. Sokullu Sk. Kapı No:9 Daire No:4 Bayrampaşa / İstanbul</p>
+                        <p><strong>Adres:</strong> Muratpaşa Mah. Cemiyet Cad. No:28 Bayrampaşa / İstanbul</p>
                         <p><strong>Vergi Dairesi:</strong> Tuna Vergi Dairesi</p>
                         <p><strong>Vergi / T.C. Kimlik No:</strong> 1310852802</p>
-                        <p><strong>E-posta:</strong> info@evinindegeri.com</p>
-                        <p><strong>Telefon:</strong> 0530 572 53 77</p>
+                        <p><strong>E-posta:</strong> evindestek@gmail.com</p>
+                        <p><strong>Telefon:</strong> 0533 725 3171</p>
 
                         <h3 className="font-medium mt-4 mb-1">1.2 Alıcı:</h3>
                         <p>www.evinindegeri.com (&quot;Platform&quot; veya &quot;Site&quot;) üzerinden üyelik veya hizmet satın alımı gerçekleştiren B2B (Kurumsal) veya bireysel kullanıcı.</p>
