@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Mail, Phone, MapPin, Clock, Send, Building2 } from "lucide-react";
+import { Mail, Phone, MapPin, Clock, Building2 } from "lucide-react";
+import ContactFormClient from "@/components/ContactFormClient";
 
 export const metadata: Metadata = {
     title: "Iletisim | Evinin Degeri",
@@ -65,44 +66,7 @@ export default function IletisimPage() {
             <section className="max-w-3xl mx-auto px-4 pb-20">
                 <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
                     <h2 className="text-2xl font-bold text-appleDark mb-6">Mesaj Gonderin</h2>
-                    <form action="/api/contact" method="POST" className="space-y-5">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Adiniz Soyadiniz <span className="text-red-500">*</span></label>
-                                <input type="text" name="name" required className="w-full p-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-appleBlue transition-all" placeholder="Ornek: Ahmet Yilmaz" />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">E-Posta <span className="text-red-500">*</span></label>
-                                <input type="email" name="email" required className="w-full p-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-appleBlue transition-all" placeholder="ornek@email.com" />
-                            </div>
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Telefon</label>
-                            <input type="tel" name="phone" className="w-full p-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-appleBlue transition-all" placeholder="05XX XXX XX XX" />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Konu <span className="text-red-500">*</span></label>
-                            <select name="subject" required className="w-full p-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-appleBlue transition-all">
-                                <option value="">Konu Seciniz</option>
-                                <option value="Genel Soru">Genel Soru</option>
-                                <option value="Teknik Destek">Teknik Destek</option>
-                                <option value="Kurumsal Isbirligi">Kurumsal Isbirligi</option>
-                                <option value="Oneri / Sikayet">Oneri / Sikayet</option>
-                                <option value="Diger">Diger</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Mesajiniz <span className="text-red-500">*</span></label>
-                            <textarea name="message" rows={5} required className="w-full p-3 rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-appleBlue transition-all resize-none" placeholder="Mesajinizi buraya yazin..." />
-                        </div>
-                        <p className="text-xs text-gray-400">
-                            * Bilgileriniz KVKK kapsaminda korunmaktadir ve ucuncu taraflarla paylasilmaz.
-                        </p>
-                        <button type="submit" className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-appleDark text-white rounded-xl font-medium hover:bg-black transition-all shadow-apple">
-                            <Send size={18} />
-                            Mesaj Gonder
-                        </button>
-                    </form>
+                    <ContactFormClient />
                 </div>
             </section>
 

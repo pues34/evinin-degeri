@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Footer from "@/components/Footer";
 import { History, Search, ArrowRight, Clock } from "lucide-react";
 import Link from "next/link";
 
@@ -114,8 +113,6 @@ export default function GecmisPage() {
                     </div>
                 )}
             </div>
-
-            <Footer />
         </div>
     );
 }

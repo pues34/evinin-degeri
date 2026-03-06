@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Footer from "@/components/Footer";
 import { Search, ArrowRight, Scale, MapPin, Home } from "lucide-react";
 import Link from "next/link";
 
@@ -129,8 +128,6 @@ export default function KarsilastirmaPage() {
                     </div>
                 )}
             </div>
-
-            <Footer />
         </div>
     );
 }
