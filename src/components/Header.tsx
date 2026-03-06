@@ -16,11 +16,19 @@ export default function Header() {
         <header className="sticky top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
             <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16 gap-4 lg:gap-8">
-                    <Link href="/" className="flex items-center gap-2 group shrink-0">
-                        <span className="p-1.5 bg-appleDark text-white rounded-lg group-hover:bg-appleBlue transition-colors">
-                            <Hexagon size={20} className="fill-current" />
-                        </span>
-                        <span className="font-bold text-lg text-appleDark tracking-tight">Evinin Değeri</span>
+                    <Link href="/" className="flex items-center gap-2.5 group shrink-0 py-1 transition-all">
+                        <div className="relative">
+                            <div className="absolute inset-0 bg-appleBlue blur-[8px] opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                            <span className="relative flex items-center justify-center p-2 bg-gradient-to-br from-appleDark to-indigo-900 text-white rounded-[14px] shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300 border border-white/20">
+                                <Hexagon size={22} className="fill-current" />
+                            </span>
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="font-extrabold text-[1.35rem] leading-none tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-appleDark to-indigo-800">
+                                Evinin Değeri
+                            </span>
+                            <span className="text-[10px] uppercase font-bold text-gray-400 tracking-widest mt-0.5 ml-0.5">Yapay Zeka</span>
+                        </div>
                     </Link>
 
                     <nav className="hidden lg:flex items-center gap-4 xl:gap-8 flex-1 justify-center">

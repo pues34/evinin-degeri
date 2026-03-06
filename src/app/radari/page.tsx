@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { Search, MapPin, Tag, TrendingDown, Target, Zap, AlertCircle, Hexagon, Loader2, UserPlus, LogIn } from "lucide-react";
+import { Search, MapPin, Tag, TrendingDown, Target, Zap, AlertCircle, Hexagon, Loader2, UserPlus, LogIn, ArrowRight, Database, BarChart3, Building2 } from "lucide-react";
 import Link from "next/link";
 
 export default function FirsatRadariPage() {
@@ -34,43 +34,68 @@ export default function FirsatRadariPage() {
 
             <main className="flex-grow container mx-auto px-4 py-8 max-w-6xl relative">
 
-                {/* Premium Blocker Overlay for non-logged or free users */}
+                {/* Premium / Guest Blocker Overlay (Landing Page) */}
                 {!isPremium && (
-                    <div className="absolute inset-0 z-20 bg-white/70 backdrop-blur-md flex flex-col items-center justify-center p-4">
-                        <div className="bg-white p-10 rounded-[32px] shadow-2xl max-w-xl text-center border border-indigo-100">
-                            <div className="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <Target size={40} />
-                            </div>
+                    <div className="absolute inset-0 z-20 bg-white/70 backdrop-blur-xl flex flex-col items-center justify-center p-4 rounded-3xl overflow-y-auto">
+                        <div className="bg-white p-8 md:p-12 rounded-[32px] shadow-2xl max-w-4xl w-full text-center border border-gray-100 my-auto relative overflow-hidden">
+                            {/* Decorative Background Elements */}
+                            <div className="absolute top-0 right-0 w-80 h-80 bg-orange-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 translate-x-1/2 -translate-y-1/2"></div>
+                            <div className="absolute bottom-0 left-0 w-80 h-80 bg-red-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 -translate-x-1/2 translate-y-1/2"></div>
 
-                            {!session ? (
-                                <>
-                                    <h2 className="text-3xl font-extrabold text-appleDark mb-4">Fırsat Radarına Hoş Geldiniz!</h2>
-                                    <p className="text-gray-500 mb-8 text-lg">Yapay Zeka algoritmamız her gün sahibinden.com vb. portallardaki ilanları tarar ve <strong>değerinin %10 altında satılan</strong> kelepir evleri bulur. İlanları görmek için lüfen giriş yapın.</p>
+                            <div className="relative z-10">
+                                <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-red-100 text-orange-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner border border-white">
+                                    <Target size={48} />
+                                </div>
+                                <h2 className="text-4xl md:text-5xl font-extrabold text-appleDark mb-6 tracking-tight">Emlak Piyasasının<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-600">Gizli Fırsatları Artık Elinizde</span></h2>
+                                <p className="text-gray-500 mb-10 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+                                    Fırsat Radarı, piyasa değerinin <strong>en az %10 altında</strong> satılan gayrimenkulleri sizin için saniyeler içinde tespit eder ve listeler. Kelepir ilanları başkalarından önce yakalayın.
+                                </p>
 
-                                    <div className="flex flex-col sm:flex-row gap-4">
-                                        <Link href="/kayit" className="flex-1 bg-appleDark text-white py-4 rounded-xl font-bold text-lg hover:bg-appleBlue transition shadow-sm flex items-center justify-center gap-2">
+                                {/* How it works section */}
+                                <div className="bg-gray-50 rounded-2xl p-8 mb-10 border border-gray-100 text-left">
+                                    <h3 className="font-bold text-appleDark text-xl mb-6 text-center">Bu İlanlar Nereden Geliyor?</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="flex gap-4">
+                                            <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-gray-200 flex items-center justify-center shrink-0">
+                                                <Database className="text-indigo-500" size={24} />
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold text-appleDark mb-1">Yapay Zeka Taraması</h4>
+                                                <p className="text-gray-500 text-sm">Algoritmamız her gün milyonlarca ilanı tarar. Kendi hesapladığı gerçek değerin (Evinin Değeri) altına düşen ilanları otomatik yakalar.</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-4">
+                                            <div className="w-12 h-12 bg-white rounded-xl shadow-sm border border-gray-200 flex items-center justify-center shrink-0">
+                                                <Building2 className="text-orange-500" size={24} />
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold text-appleDark mb-1">Kurumsal B2B Ağı</h4>
+                                                <p className="text-gray-500 text-sm">Sistemimizi kullanan yüzlerce emlak ofisi ve değerleme uzmanının girdiği &quot;Acil Satılık&quot; veya &quot;Kelepir&quot; özel portföyler anında radara düşer.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="bg-gradient-to-r from-orange-400 to-red-500 text-white p-6 rounded-2xl mb-10 flex items-center justify-center shadow-md max-w-2xl mx-auto">
+                                    <Zap className="mr-4 shrink-0" size={32} />
+                                    <p className="text-sm md:text-base font-medium text-left">Her 100 ilandan sadece 2 tanesi piyasa değerinin altında oluyor. Fırsatları kaçırmamak için hemen üye olun.</p>
+                                </div>
+
+                                {!session ? (
+                                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                        <Link href="/kayit" className="bg-appleDark text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-appleBlue hover:scale-105 transition-all shadow-lg flex items-center justify-center gap-2">
                                             <UserPlus size={20} /> Kayıt Ol
                                         </Link>
-                                        <Link href="/giris" className="flex-1 bg-white text-appleDark border border-gray-200 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition shadow-sm flex items-center justify-center gap-2">
+                                        <Link href="/giris" className="bg-white text-appleDark border border-gray-200 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition shadow-sm flex items-center justify-center gap-2">
                                             <LogIn size={20} /> Giriş Yap
                                         </Link>
                                     </div>
-                                </>
-                            ) : (
-                                <>
-                                    <h2 className="text-3xl font-extrabold text-appleDark mb-4">Bu Bölüm Sadece Premium Yatırımcılara Özeldir!</h2>
-                                    <p className="text-gray-500 mb-8 text-lg">Yapay Zeka algoritmamız her gün sahibinden.com vb. portallardaki binlerce ilanı tarar ve <strong>değerinin %10 altında satılan</strong> fırsat evlerini bulup bu radara taşır.</p>
-
-                                    <div className="bg-gradient-to-r from-orange-400 to-red-500 text-white p-6 rounded-2xl mb-8 flex items-center shadow-md">
-                                        <Zap className="mr-4 shrink-0" size={32} />
-                                        <p className="text-sm font-bold text-left">Her 100 ilandan sadece 2 tanesi piyasa değerinin altında oluyor. Fırsatları başkalarından önce yakalamak için Premium&apos;a geçin.</p>
-                                    </div>
-
-                                    <button className="w-full bg-appleDark text-white py-4 rounded-xl font-bold text-lg hover:bg-appleBlue transition shadow-sm">
-                                        Premium Üyeliğe Yükselt (Aylık 299 TL)
-                                    </button>
-                                </>
-                            )}
+                                ) : (
+                                    <Link href="/fiyatlandirma" className="inline-flex items-center justify-center gap-2 w-full md:w-auto bg-appleDark text-white px-12 py-4 rounded-xl font-bold text-lg hover:bg-appleBlue hover:scale-105 transition-all shadow-lg hover:shadow-xl">
+                                        Premium Paketleri İncele <ArrowRight size={20} />
+                                    </Link>
+                                )}
+                            </div>
                         </div>
                     </div>
                 )}

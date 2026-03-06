@@ -5,10 +5,30 @@ import bcrypt from "bcryptjs";
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { name, email, password, phone } = body;
+        const { name, email, password, phone, otpCode } = body;
 
-        if (!name || !email || !password) {
-            return NextResponse.json({ success: false, error: "Ad, e-posta ve şifre zorunludur." }, { status: 400 });
+        if (!name || !email || !password || !phone) {
+            return NextResponse.json({ success: false, error: "Ad, e-posta, telefon ve şifre zorunludur." }, { status: 400 });
+        }
+
+        if (!otpCode) {
+            return NextResponse.json({ success: false, error: "Doğrulama kodu gereklidir." }, { status: 400 });
+        }
+
+        // Check validation code
+        const validCodeRecord = await prisma.validationCode.findFirst({
+            where: {
+                identifier: email,
+                code: otpCode,
+            }
+        });
+
+        if (!validCodeRecord) {
+            return NextResponse.json({ success: false, error: "Doğrulama kodu hatalı." }, { status: 400 });
+        }
+
+        if (validCodeRecord.expiresAt < new Date()) {
+            return NextResponse.json({ success: false, error: "Doğrulama kodunun süresi dolmuş. Lütfen tekrar gönderin." }, { status: 400 });
         }
 
         // Check existing
@@ -28,11 +48,14 @@ export async function POST(req: Request) {
             data: {
                 name,
                 email,
-                phone: phone || null,
+                phone: phone,
                 password: hashedPassword,
                 isPremium: false
             }
         });
+
+        // Clean up code
+        await prisma.validationCode.delete({ where: { id: validCodeRecord.id } });
 
         return NextResponse.json({ success: true, message: "Hesap başarıyla oluşturuldu." });
 

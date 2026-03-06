@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { Bot, User, Send, Sparkles, AlertCircle, Loader2 } from "lucide-react";
+import { Bot, User, Send, Sparkles, AlertCircle, Loader2, TrendingUp, Clock, ShieldCheck, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function AIAssistantPage() {
     const { data: session } = useSession();
@@ -55,22 +56,50 @@ export default function AIAssistantPage() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col pt-24 bg-gray-50 h-screen overflow-hidden">
+        <div className="min-h-screen flex flex-col pt-24 bg-gray-50 h-screen overflow-hidden">
+
             <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl flex flex-col h-[calc(100vh-100px)] relative">
 
-                {/* Premium Blocker Overlay */}
+                {/* Premium Blocker Overlay (Landing Page) */}
                 {!isPremium && (
-                    <div className="absolute inset-0 z-20 bg-white/60 backdrop-blur-md flex flex-col items-center justify-center p-4 rounded-3xl">
-                        <div className="bg-white p-10 rounded-[32px] shadow-2xl max-w-xl text-center border border-indigo-100">
-                            <div className="w-20 h-20 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <Bot size={40} />
-                            </div>
-                            <h2 className="text-3xl font-extrabold text-appleDark mb-4">Size Özel AI Danışmanı</h2>
-                            <p className="text-gray-500 mb-8 text-lg">Bu özellik sadece <strong>Premium Yatırımcı</strong> paketine sahip üyelerimize özeldir. Milyonlarca gayrimenkul verisiyle eğitilmiş botumuzdan saniyeler içinde tavsiye alabilirsiniz.</p>
+                    <div className="absolute inset-0 z-20 bg-white/70 backdrop-blur-xl flex flex-col items-center justify-center p-4 rounded-3xl overflow-y-auto">
+                        <div className="bg-white p-8 md:p-12 rounded-[32px] shadow-2xl max-w-3xl w-full text-center border border-gray-100 my-auto relative overflow-hidden">
+                            {/* Decorative Background Elements */}
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 translate-x-1/2 -translate-y-1/2"></div>
+                            <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 -translate-x-1/2 translate-y-1/2"></div>
 
-                            <button className="w-full bg-appleDark text-white py-4 rounded-xl font-bold text-lg hover:bg-appleBlue transition shadow-sm">
-                                Premium Üyeliğe Yükselt (Aylık 299 TL)
-                            </button>
+                            <div className="relative z-10">
+                                <div className="w-24 h-24 bg-gradient-to-br from-indigo-100 to-purple-100 text-indigo-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-inner border border-white">
+                                    <Bot size={48} />
+                                </div>
+                                <h2 className="text-4xl md:text-5xl font-extrabold text-appleDark mb-6 tracking-tight">Kişisel Yapay Zeka<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-appleBlue to-purple-600">Emlak Danışmanınız</span></h2>
+                                <p className="text-gray-500 mb-10 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+                                    Milyonlarca satınalma verisi, kira rayiçleri ve bölgesel trendlerle eğitilmiş yapay zeka modelimiz, tüm emlak yatırımlarınızda saniyeler içinde size rehberlik eder.
+                                </p>
+
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 text-left">
+                                    <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 hover:border-indigo-100 hover:bg-indigo-50/50 transition-colors">
+                                        <TrendingUp className="text-appleBlue mb-4" size={28} />
+                                        <h3 className="font-bold text-appleDark mb-2 text-lg">Amortisman Analizi</h3>
+                                        <p className="text-gray-500 text-sm">Bölgelere göre geri dönüş sürelerini anında hesaplatın.</p>
+                                    </div>
+                                    <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 hover:border-purple-100 hover:bg-purple-50/50 transition-colors">
+                                        <Clock className="text-purple-500 mb-4" size={28} />
+                                        <h3 className="font-bold text-appleDark mb-2 text-lg">7/24 Kesintisiz</h3>
+                                        <p className="text-gray-500 text-sm">Pazar günü gece yarısı bile yatırım sorularınızı yanıtlar.</p>
+                                    </div>
+                                    <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 hover:border-appleBlue hover:bg-blue-50/50 transition-colors">
+                                        <ShieldCheck className="text-appleDark mb-4" size={28} />
+                                        <h3 className="font-bold text-appleDark mb-2 text-lg">Veriye Dayalı Karar</h3>
+                                        <p className="text-gray-500 text-sm">Duygularla değil, gerçek piyasa verileriyle hareket edin.</p>
+                                    </div>
+                                </div>
+
+                                <Link href="/fiyatlandirma" className="inline-flex items-center justify-center gap-2 w-full md:w-auto bg-appleDark text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-appleBlue hover:scale-105 transition-all shadow-lg hover:shadow-xl">
+                                    Premium Seçenekleri İncele <ArrowRight size={20} />
+                                </Link>
+                                <p className="text-sm text-gray-400 mt-6">Bu özellik Premium Yatırımcı ve Kurumsal üyelik paketlerine dahildir.</p>
+                            </div>
                         </div>
                     </div>
                 )}

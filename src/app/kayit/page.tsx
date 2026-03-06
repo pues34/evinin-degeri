@@ -16,6 +16,8 @@ export default function UserRegisterPage() {
         confirmPassword: ""
     });
 
+    const [otpCode, setOtpCode] = useState("");
+    const [step, setStep] = useState(1);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -24,10 +26,16 @@ export default function UserRegisterPage() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleInitialSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError("");
+
+        if (!formData.phone || formData.phone.length < 10) {
+            setError("Lütfen geçerli bir telefon numarası giriniz.");
+            setLoading(false);
+            return;
+        }
 
         if (formData.password !== formData.confirmPassword) {
             setError("Şifreler birbiriyle eşleşmiyor.");
@@ -43,6 +51,38 @@ export default function UserRegisterPage() {
         }
 
         try {
+            const res = await fetch("/api/auth/send-register-otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: formData.email }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || "Kod gönderilemedi.");
+            }
+
+            setStep(2);
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleFinalSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setError("");
+
+        if (!otpCode || otpCode.length !== 6) {
+            setError("Lütfen 6 haneli doğrulama kodunu giriniz.");
+            setLoading(false);
+            return;
+        }
+
+        try {
             const res = await fetch("/api/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -50,7 +90,8 @@ export default function UserRegisterPage() {
                     name: formData.name,
                     email: formData.email,
                     phone: formData.phone,
-                    password: formData.password
+                    password: formData.password,
+                    otpCode: otpCode
                 }),
             });
 
@@ -107,122 +148,175 @@ export default function UserRegisterPage() {
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-4 shadow sm:rounded-2xl sm:px-10 border border-gray-100">
-                    <form className="space-y-5" onSubmit={handleSubmit}>
-                        {error && (
-                            <div className="bg-red-50 p-4 rounded-xl flex items-start">
-                                <AlertCircle className="text-red-500 mr-3 shrink-0 mt-0.5" size={18} />
-                                <p className="text-sm text-red-800 font-medium">{error}</p>
-                            </div>
-                        )}
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Ad Soyad</label>
-                            <div className="mt-1 relative rounded-xl shadow-sm">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <User className="h-5 w-5 text-gray-400" />
+                    {step === 1 ? (
+                        <form className="space-y-5" onSubmit={handleInitialSubmit}>
+                            {error && (
+                                <div className="bg-red-50 p-4 rounded-xl flex items-start">
+                                    <AlertCircle className="text-red-500 mr-3 shrink-0 mt-0.5" size={18} />
+                                    <p className="text-sm text-red-800 font-medium">{error}</p>
                                 </div>
+                            )}
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Ad Soyad</label>
+                                <div className="mt-1 relative rounded-xl shadow-sm">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <User className="h-5 w-5 text-gray-400" />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        required
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
+                                        placeholder="Ad Soyad"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">E-posta Adresi</label>
+                                <div className="mt-1 relative rounded-xl shadow-sm">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <Mail className="h-5 w-5 text-gray-400" />
+                                    </div>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        required
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
+                                        placeholder="ornek@email.com"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">Telefon Numarası</label>
+                                <div className="mt-1 relative rounded-xl shadow-sm">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <Phone className="h-5 w-5 text-gray-400" />
+                                    </div>
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        required
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
+                                        placeholder="05xx xxx xx xx"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Şifre</label>
+                                    <div className="mt-1 relative rounded-xl shadow-sm">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <Lock className="h-5 w-5 text-gray-400" />
+                                        </div>
+                                        <input
+                                            type="password"
+                                            name="password"
+                                            required
+                                            value={formData.password}
+                                            onChange={handleChange}
+                                            className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
+                                            placeholder="••••••••"
+                                        />
+                                    </div>
+                                    <p className="text-[10px] text-gray-400 mt-1">En az 8 kark., 1 harf ve rakam.</p>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Şifre (Tekrar)</label>
+                                    <div className="mt-1 relative rounded-xl shadow-sm">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <Lock className="h-5 w-5 text-gray-400" />
+                                        </div>
+                                        <input
+                                            type="password"
+                                            name="confirmPassword"
+                                            required
+                                            value={formData.confirmPassword}
+                                            onChange={handleChange}
+                                            className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
+                                            placeholder="••••••••"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-appleDark hover:bg-appleBlue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-appleBlue transition-all disabled:opacity-70 mt-4"
+                                >
+                                    {loading ? (
+                                        <>
+                                            <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" />
+                                            Gönderiliyor...
+                                        </>
+                                    ) : (
+                                        "Kayıt Ol"
+                                    )}
+                                </button>
+                            </div>
+                        </form>
+                    ) : (
+                        <form className="space-y-6" onSubmit={handleFinalSubmit}>
+                            <div className="text-center mb-6">
+                                <div className="w-16 h-16 bg-blue-50 text-appleBlue rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <Mail size={32} />
+                                </div>
+                                <h3 className="text-lg font-bold text-gray-900">E-postanızı Doğrulayın</h3>
+                                <p className="text-sm text-gray-500 mt-2">
+                                    <span className="font-medium text-appleDark">{formData.email}</span> adresine gönderdiğimiz 6 haneli doğrulama kodunu aşağıya giriniz.
+                                </p>
+                            </div>
+
+                            {error && (
+                                <div className="bg-red-50 p-4 rounded-xl flex items-start">
+                                    <AlertCircle className="text-red-500 mr-3 shrink-0 mt-0.5" size={18} />
+                                    <p className="text-sm text-red-800 font-medium">{error}</p>
+                                </div>
+                            )}
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 text-center mb-2">Doğrulama Kodu</label>
                                 <input
                                     type="text"
-                                    name="name"
+                                    name="otpCode"
                                     required
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
-                                    placeholder="Ad Soyad"
+                                    maxLength={6}
+                                    value={otpCode}
+                                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                                    className="block w-full px-4 py-4 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue text-2xl text-center tracking-[0.5em] bg-gray-50 outline-none transition-colors font-mono font-bold text-appleDark"
+                                    placeholder="••••••"
                                 />
                             </div>
-                        </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">E-posta Adresi</label>
-                            <div className="mt-1 relative rounded-xl shadow-sm">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <Mail className="h-5 w-5 text-gray-400" />
-                                </div>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    required
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
-                                    placeholder="ornek@email.com"
-                                />
+                            <div className="flex flex-col gap-3">
+                                <button
+                                    type="submit"
+                                    disabled={loading || otpCode.length !== 6}
+                                    className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-appleDark hover:bg-appleBlue transition-all disabled:opacity-50"
+                                >
+                                    {loading ? <Loader2 className="animate-spin h-5 w-5" /> : "Hesabı Onayla"}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setStep(1)}
+                                    className="w-full text-sm font-medium text-gray-500 hover:text-appleDark transition-colors"
+                                >
+                                    Geri Dön
+                                </button>
                             </div>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Telefon Numarası (Opsiyonel)</label>
-                            <div className="mt-1 relative rounded-xl shadow-sm">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <Phone className="h-5 w-5 text-gray-400" />
-                                </div>
-                                <input
-                                    type="tel"
-                                    name="phone"
-                                    value={formData.phone}
-                                    onChange={handleChange}
-                                    className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
-                                    placeholder="05xx xxx xx xx"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Şifre</label>
-                                <div className="mt-1 relative rounded-xl shadow-sm">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <Lock className="h-5 w-5 text-gray-400" />
-                                    </div>
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        required
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                        className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
-                                        placeholder="••••••••"
-                                    />
-                                </div>
-                                <p className="text-[10px] text-gray-400 mt-1">En az 8 kark., 1 büyük, 1 küçük harf ve rakam.</p>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Şifre (Tekrar)</label>
-                                <div className="mt-1 relative rounded-xl shadow-sm">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <Lock className="h-5 w-5 text-gray-400" />
-                                    </div>
-                                    <input
-                                        type="password"
-                                        name="confirmPassword"
-                                        required
-                                        value={formData.confirmPassword}
-                                        onChange={handleChange}
-                                        className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
-                                        placeholder="••••••••"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-appleDark hover:bg-appleBlue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-appleBlue transition-all disabled:opacity-70 mt-4"
-                            >
-                                {loading ? (
-                                    <>
-                                        <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" />
-                                        Hesap Oluşturuluyor...
-                                    </>
-                                ) : (
-                                    "Kayıt Ol"
-                                )}
-                            </button>
-                        </div>
-                    </form>
+                        </form>
+                    )}
 
                     <div className="mt-6 text-center">
                         <Link href="/giris" className="text-sm font-medium text-appleBlue hover:text-appleDark transition-colors flex items-center justify-center gap-1">
