@@ -146,7 +146,31 @@ export async function POST(req: NextRequest) {
 
     // === STRUCTURAL MULTIPLIERS (applied directly, not dampened) ===
     const age = Number(propertyData.buildingAge) || 0;
-    estimatedValue = estimatedValue * (1 - (age * bAgeDepreciation));
+
+    // V30: Dynamic Age Depreciation (Progressive scale)
+    // Instead of a flat X% per year which kills prices for 30+ year old buildings.
+    let totalAgePenalty = 0;
+
+    // First 10 years (Standard drop)
+    const earlyAge = Math.min(age, 10);
+    totalAgePenalty += (earlyAge * bAgeDepreciation); // e.g. 10 * 0.013 = 13%
+
+    // 11 to 20 years (Slightly slower drop)
+    if (age > 10) {
+      const midAge = Math.min(age - 10, 10);
+      totalAgePenalty += (midAge * (bAgeDepreciation * 0.75)); // e.g. 10 * 0.00975 = ~9.7%
+    }
+
+    // > 20 years (Plateau drop, very slow)
+    if (age > 20) {
+      const lateAge = age - 20;
+      totalAgePenalty += (lateAge * (bAgeDepreciation * 0.40)); // e.g. 10 * 0.0052 = ~5.2%
+    }
+
+    // Max penalty capped at 45% (to prevent extremely cheap valuations for historic/solid buildings)
+    totalAgePenalty = Math.min(totalAgePenalty, 0.45);
+
+    estimatedValue = estimatedValue * (1 - totalAgePenalty);
 
     const floorType = propertyData.floor || "Ara Kat";
 

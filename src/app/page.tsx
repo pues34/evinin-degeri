@@ -58,45 +58,48 @@ export default async function Home() {
       <HowItWorksSection />
 
       {/* B2B Promo Section / Kurumsal Çözümler */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 py-24 border-t border-gray-100 relative z-10 overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400 rounded-full blur-[100px] opacity-10 pointer-events-none" />
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-appleDark py-24 relative z-10 overflow-hidden text-white">
+        {/* Glows */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-appleBlue rounded-full blur-[150px] opacity-20 pointer-events-none" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-80 h-80 bg-purple-600 rounded-full blur-[120px] opacity-20 pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-full text-sm font-bold text-appleBlue mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/20 rounded-full text-sm font-bold text-blue-300 mb-6 backdrop-blur-md">
                 <Crown size={16} /> B2B Kurumsal Çözümler
               </div>
-              <h2 className="text-3xl md:text-4xl font-semibold text-appleDark mb-6 leading-tight">
-                Emlak Ofisleri ve Danışmanlar İçin Sınırsız Güç
+              <h2 className="text-3xl md:text-5xl font-semibold mb-6 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+                Emlak Danışmanları İçin Sınırsız Güç
               </h2>
-              <p className="text-gray-600 text-lg leading-relaxed mb-8">
+              <p className="text-gray-300 text-lg leading-relaxed mb-8 font-light">
                 Günlük değerleme limitlerine takılmadan yüzlerce portföyünüzü saniyeler içinde analiz edin. AI destekli detaylı raporları kendi müşterilerinize sunarak güven inşa edin.
               </p>
 
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-center text-gray-700">
-                  <div className="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center mr-4"><ShieldCheck size={18} /></div>
-                  <span className="font-medium">Sınırsız aylık değerleme hakkı</span>
+              <ul className="space-y-4 mb-10">
+                <li className="flex items-center text-gray-200">
+                  <div className="w-10 h-10 rounded-xl bg-green-500/20 text-green-400 flex items-center justify-center mr-4 border border-green-500/30 shadow-[0_0_15px_rgba(34,197,94,0.2)]"><ShieldCheck size={20} /></div>
+                  <span className="font-medium text-lg">Sınırsız aylık değerleme hakkı</span>
                 </li>
-                <li className="flex items-center text-gray-700">
-                  <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mr-4"><TrendingUp size={18} /></div>
-                  <span className="font-medium">Gelişmiş kira ve amortisman analizleri</span>
+                <li className="flex items-center text-gray-200">
+                  <div className="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center mr-4 border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.2)]"><TrendingUp size={20} /></div>
+                  <span className="font-medium text-lg">Gelişmiş kira ve amortisman analizleri</span>
                 </li>
-                <li className="flex items-center text-gray-700">
-                  <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mr-4"><LineChart size={18} /></div>
-                  <span className="font-medium">B2B panelinden geçmiş sorgu takibi</span>
+                <li className="flex items-center text-gray-200">
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center mr-4 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.2)]"><LineChart size={20} /></div>
+                  <span className="font-medium text-lg">B2B panelinden geçmiş sorgu takibi</span>
                 </li>
               </ul>
 
-              <a href="/b2b" className="inline-flex items-center px-8 py-4 bg-appleBlue text-white rounded-xl shadow-apple hover:bg-blue-600 hover:-translate-y-1 transition-all font-medium">
+              <a href="/b2b" className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-appleBlue to-blue-600 text-white rounded-xl shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] hover:-translate-y-1 transition-all font-semibold text-lg">
                 Kurumsal Panel&apos;e Giriş Yap &rarr;
               </a>
             </div>
 
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-appleBlue/20 to-purple-500/20 transform rotate-3 rounded-3xl blur-md" />
-              <div className="bg-white p-2 rounded-2xl shadow-2xl relative z-10 border border-white/50 backdrop-blur-sm">
-                <img src="/b2b-dashboard-preview.png" alt="B2B Emlakçı Paneli" className="w-full h-auto rounded-xl object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-appleBlue/30 to-purple-500/30 transform rotate-6 rounded-3xl blur-xl" />
+              <div className="bg-white/5 p-2 rounded-2xl shadow-2xl relative z-10 border border-white/10 backdrop-blur-xl">
+                <img src="/b2b-dashboard-preview.png" alt="B2B Emlakçı Paneli" className="w-full h-auto rounded-xl object-cover ring-1 ring-white/20 shadow-2xl" />
               </div>
             </div>
           </div>
@@ -104,40 +107,43 @@ export default async function Home() {
       </div>
 
       {/* FAQ & Trust Section */}
-      <div className="bg-white py-24 border-t border-gray-100 relative z-10">
+      <div className="bg-gray-50 py-24 border-t border-gray-100 relative z-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* FAQ */}
             <div>
-              <h2 className="text-3xl font-semibold text-appleDark mb-8">Sıkça Sorulan Sorular</h2>
+              <div className="mb-10">
+                <h2 className="text-3xl md:text-4xl font-semibold text-appleDark mb-4 tracking-tight">Merak Edilenler</h2>
+                <div className="h-1 w-20 bg-appleBlue rounded-full"></div>
+              </div>
               <div className="space-y-4">
-                <details className="group bg-gray-50 border border-gray-100 rounded-2xl open:bg-white open:ring-2 open:ring-appleBlue/20 transition-all cursor-pointer">
+                <details className="group bg-white border border-gray-100 rounded-2xl shadow-sm open:shadow-md transition-all cursor-pointer">
                   <summary className="flex justify-between items-center font-medium hover:text-appleBlue text-appleDark p-6">
                     Evinin Değeri sistemi nasıl çalışır?
-                    <span className="transition group-open:rotate-180">
-                      <svg fill="none" height="24" shapeRendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                    <span className="transition-transform duration-300 group-open:rotate-180 text-appleBlue">
+                      <svg fill="none" height="24" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                     </span>
                   </summary>
-                  <p className="text-gray-500 mt-2 px-6 pb-6 leading-relaxed">Sistemimiz, belirttiğiniz lokasyon, bina yaşı, metrekare ve kat gibi fiziksel özellikleri alır. Ardından İstanbul&apos;un güncel piyasa verilerini, şerefiye çarpanlarını ve TCMB enflasyon endeksini analiz ederek yapay zeka destekli en olası satış değerini size saniyeler içinde sunar.</p>
+                  <p className="text-gray-500 mt-0 px-6 pb-6 leading-relaxed">Sistemimiz, belirttiğiniz lokasyon, bina yaşı, metrekare ve kat gibi fiziksel özellikleri alır. Ardından İstanbul&apos;un güncel piyasa verilerini, şerefiye çarpanlarını ve bölgesel endeksleri analiz ederek yapay zeka destekli en olası satış değerini size saniyeler içinde sunar.</p>
                 </details>
-                <details className="group bg-gray-50 border border-gray-100 rounded-2xl open:bg-white open:ring-2 open:ring-appleBlue/20 transition-all cursor-pointer">
+                <details className="group bg-white border border-gray-100 rounded-2xl shadow-sm open:shadow-md transition-all cursor-pointer">
                   <summary className="flex justify-between items-center font-medium hover:text-appleBlue text-appleDark p-6">
                     Bilgilerim güvende mi?
-                    <span className="transition group-open:rotate-180">
-                      <svg fill="none" height="24" shapeRendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                    <span className="transition-transform duration-300 group-open:rotate-180 text-appleBlue">
+                      <svg fill="none" height="24" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                     </span>
                   </summary>
-                  <p className="text-gray-500 mt-2 px-6 pb-6 leading-relaxed">Kesinlikle. 256-bit SSL sertifikası ile korunan altyapımızda hiçbir veriniz üçüncü şahıslarla paylaşılmaz. Tamamen KVKK uyumlu olarak sadece size özel raporlama amacıyla işlenir.</p>
+                  <p className="text-gray-500 mt-0 px-6 pb-6 leading-relaxed">Kesinlikle. 256-bit SSL sertifikası ile korunan altyapımızda hiçbir veriniz üçüncü şahıslarla paylaşılmaz. Tamamen KVKK uyumlu olarak sadece size özel raporlama amacıyla işlenir.</p>
                 </details>
-                <details className="group bg-gray-50 border border-gray-100 rounded-2xl open:bg-white open:ring-2 open:ring-appleBlue/20 transition-all cursor-pointer">
+                <details className="group bg-white border border-gray-100 rounded-2xl shadow-sm open:shadow-md transition-all cursor-pointer">
                   <summary className="flex justify-between items-center font-medium hover:text-appleBlue text-appleDark p-6">
                     Bu hizmet tamamen ücretsiz mi?
-                    <span className="transition group-open:rotate-180">
-                      <svg fill="none" height="24" shapeRendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                    <span className="transition-transform duration-300 group-open:rotate-180 text-appleBlue">
+                      <svg fill="none" height="24" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                     </span>
                   </summary>
-                  <p className="text-gray-500 mt-2 px-6 pb-6 leading-relaxed">Evet, bireysel kullanıcılarımız için anlık fiyat hesaplama ve detaylı gayrimenkul analiz raporu hizmetimiz tamamen ücretsizdir.</p>
+                  <p className="text-gray-500 mt-0 px-6 pb-6 leading-relaxed">Evet, bireysel kullanıcılarımız için anlık fiyat hesaplama ve detaylı gayrimenkul analiz raporu hizmetimiz tamamen ücretsizdir.</p>
                 </details>
               </div>
             </div>

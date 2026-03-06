@@ -32,30 +32,56 @@ export const authOptions: AuthOptions = {
             name: "Kurumsal Giriş",
             credentials: {
                 email: { label: "Email", type: "email", placeholder: "ornek@emlak.com" },
-                password: { label: "Şifre", type: "password" }
+                password: { label: "Şifre", type: "password" },
+                otpCode: { label: "Doğrulama Kodu", type: "text" }
             },
             async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password) return null;
+                if (!credentials?.email || !credentials?.password || !credentials?.otpCode) {
+                    throw new Error("E-posta, şifre veya doğrulama kodu eksik.");
+                }
 
                 const realtor = await prisma.realtor.findUnique({
                     where: { email: credentials.email }
                 });
-                if (!realtor) return null;
+
+                if (!realtor) {
+                    throw new Error("Kullanıcı bulunamadı.");
+                }
 
                 const isValid = await bcrypt.compare(credentials.password, realtor.password);
-                if (isValid) {
-                    return {
-                        id: realtor.id,
-                        name: realtor.companyName,
-                        email: realtor.email,
-                        role: "realtor",
-                        isPro: realtor.isPro,
-                        subscriptionTier: realtor.subscriptionTier,
-                        customLogoUrl: realtor.customLogoUrl,
-                        subscriptionEnd: realtor.subscriptionEnd
-                    } as any;
+                if (!isValid) {
+                    throw new Error("Şifre hatalı.");
                 }
-                return null;
+
+                // Validate OTP 
+                const validCodeRecord = await prisma.validationCode.findFirst({
+                    where: {
+                        identifier: credentials.email,
+                        code: credentials.otpCode,
+                    }
+                });
+
+                if (!validCodeRecord) {
+                    throw new Error("Doğrulama kodu hatalı.");
+                }
+
+                if (validCodeRecord.expiresAt < new Date()) {
+                    throw new Error("Doğrulama kodunun süresi dolmuş. Lütfen tekrar gönderin.");
+                }
+
+                // If OTP is valid, clean it up
+                await prisma.validationCode.delete({ where: { id: validCodeRecord.id } });
+
+                return {
+                    id: realtor.id,
+                    name: realtor.companyName,
+                    email: realtor.email,
+                    role: "realtor",
+                    isPro: realtor.isPro,
+                    subscriptionTier: realtor.subscriptionTier,
+                    customLogoUrl: realtor.customLogoUrl,
+                    subscriptionEnd: realtor.subscriptionEnd
+                } as any;
             }
         })
     ],

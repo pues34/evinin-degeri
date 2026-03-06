@@ -280,7 +280,7 @@ export default function ValuationForm() {
 
     return (
         <>
-            <div className="glass-card p-6 md:p-8 hover-3d transition-all duration-300">
+            <div className="bg-white/70 backdrop-blur-2xl border border-white p-6 md:p-8 rounded-[2rem] shadow-2xl hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] transition-all duration-500">
 
                 {/* Step Indicator */}
                 <div className="flex items-center justify-between mb-8 overflow-x-auto no-scrollbar pb-2">
@@ -295,26 +295,29 @@ export default function ValuationForm() {
                 </div>
 
                 {/* Form Content */}
-                <div className="min-h-[250px] relative">
+                <div className="min-h-[280px] relative mt-4">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={currentStep}
-                            initial={{ x: 20, opacity: 0 }}
+                            initial={{ x: 30, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
-                            exit={{ x: -20, opacity: 0 }}
-                            transition={{ duration: 0.2 }}
+                            exit={{ x: -30, opacity: 0 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
                         >
-                            <h2 className="text-xl font-semibold mb-6 text-appleDark">{steps[currentStep - 1].title} Bilgileri</h2>
+                            <h2 className="text-2xl font-bold mb-6 text-appleDark flex items-center gap-3">
+                                <span className="w-8 h-8 rounded-full bg-appleBlue/10 text-appleBlue flex items-center justify-center text-sm">{currentStep}</span>
+                                {steps[currentStep - 1].title} Bilgileri
+                            </h2>
                             {renderStep()}
                         </motion.div>
                     </AnimatePresence>
                 </div>
 
                 {/* Footer Navigation */}
-                <div className="flex justify-between mt-8 pt-6 border-t border-gray-100">
+                <div className="flex justify-between mt-8 pt-6 border-t border-gray-100/50">
                     <button
                         onClick={prevStep}
-                        className={`flex items-center px-4 py-2 rounded-xl text-sm font-medium transition-all ${currentStep === 1 ? 'opacity-0 pointer-events-none' : 'text-gray-600 hover:bg-gray-100'}`}
+                        className={`flex items-center px-5 py-3 rounded-2xl text-sm font-semibold transition-all ${currentStep === 1 ? 'opacity-0 pointer-events-none' : 'text-gray-500 bg-white hover:bg-gray-50 hover:text-appleDark shadow-sm'}`}
                     >
                         <ArrowLeft size={16} className="mr-2" />
                         Geri
@@ -323,18 +326,18 @@ export default function ValuationForm() {
                     {currentStep < 4 ? (
                         <button
                             onClick={nextStep}
-                            className="flex items-center px-6 py-2 bg-appleDark text-white rounded-xl text-sm font-medium hover:bg-black transition-all shadow-apple transform hover:-translate-y-0.5"
+                            className="flex items-center px-8 py-3 bg-appleDark text-white rounded-2xl text-sm font-semibold hover:bg-black transition-all shadow-lg shadow-black/10 transform hover:-translate-y-1"
                         >
-                            İleri
+                            İleri Seçimler
                             <ArrowRight size={16} className="ml-2" />
                         </button>
                     ) : (
                         <button
                             onClick={handleSubmit}
-                            className="flex items-center px-6 py-2 bg-appleBlue text-white rounded-xl text-sm font-medium hover:bg-blue-600 transition-all shadow-apple transform hover:-translate-y-0.5"
+                            className="flex items-center px-8 py-3 bg-gradient-to-r from-appleBlue to-blue-600 text-white rounded-2xl text-sm font-semibold hover:from-blue-600 hover:to-blue-700 transition-all shadow-xl shadow-blue-500/20 transform hover:-translate-y-1"
                         >
                             Değeri Hesapla
-                            <Calculator size={16} className="ml-2" />
+                            <Calculator size={18} className="ml-2" />
                         </button>
                     )}
                 </div>

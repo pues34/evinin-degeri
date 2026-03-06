@@ -11,16 +11,35 @@ export const dynamic = 'force-dynamic';
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { companyName, email, password, phone } = body;
+        const { companyName, email, password, phone, otpCode } = body;
 
-        if (!companyName || !email || !password) {
-            return NextResponse.json({ success: false, error: "Gerekli alanları doldurunuz." }, { status: 400 });
+        if (!companyName || !email || !password || !otpCode) {
+            return NextResponse.json({ success: false, error: "Tüm alanları doldurunuz ve doğrulama kodunu giriniz." }, { status: 400 });
         }
 
         const existing = await prisma.realtor.findUnique({ where: { email } });
         if (existing) {
             return NextResponse.json({ success: false, error: "Bu e-posta adresi zaten kullanımda." }, { status: 400 });
         }
+
+        // Validate OTP
+        const validCodeRecord = await prisma.validationCode.findFirst({
+            where: {
+                identifier: email,
+                code: otpCode,
+            }
+        });
+
+        if (!validCodeRecord) {
+            return NextResponse.json({ success: false, error: "Doğrulama kodu hatalı." }, { status: 400 });
+        }
+
+        if (validCodeRecord.expiresAt < new Date()) {
+            return NextResponse.json({ success: false, error: "Doğrulama kodunun süresi dolmuş. Lütfen tekrar gönderin." }, { status: 400 });
+        }
+
+        // Code is valid, delete it so it cannot be reused
+        await prisma.validationCode.delete({ where: { id: validCodeRecord.id } });
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
