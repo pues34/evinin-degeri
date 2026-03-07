@@ -17,6 +17,7 @@ export default function PricingPage() {
     const [pricing, setPricing] = useState({ b2bMonthlyPrice: 500, b2bDiscountPercentage: 0 });
     const [paytrToken, setPaytrToken] = useState<string | null>(null);
     const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const [selectedTier, setSelectedTier] = useState<"PRO" | "PRO_PLUS" | "UPGRADE" | null>(null);
 
     // V19 Logic: Check current subscription tier
     const isPro = session?.user?.isPro || session?.user?.subscriptionTier === "PRO";
@@ -48,6 +49,7 @@ export default function PricingPage() {
         }
 
         setLoading(true);
+        setSelectedTier(tier);
         try {
             // Pass the selected tier to the checkout endpoint for dynamic pricing calculations
             const res = await fetch("/api/b2b/checkout", {
@@ -69,12 +71,57 @@ export default function PricingPage() {
         }
     };
 
+    // Dynamic Pricing Calculation
+    const activePrice = Math.round(pricing.b2bMonthlyPrice * (1 - pricing.b2bDiscountPercentage / 100));
+    const proPlusPrice = 750; // Hardcoded or fetchable
+    const upgradePrice = 250;
+
     if (paytrToken) {
+        let productName = "";
+        let productPrice = 0;
+
+        if (selectedTier === "PRO") {
+            productName = "PRO B2B Paketi (Aylık)";
+            productPrice = activePrice;
+        } else if (selectedTier === "PRO_PLUS") {
+            productName = "PRO PLUS (Lead Market) Paketi (Aylık)";
+            productPrice = proPlusPrice;
+        } else if (selectedTier === "UPGRADE") {
+            productName = "PRO PLUS Paket Yükseltme";
+            productPrice = upgradePrice;
+        }
+
         return (
             <div className="min-h-screen bg-appleGray flex-col justify-center items-center py-20 px-4">
                 <div className="max-w-4xl mx-auto bg-white p-4 md:p-8 rounded-xl shadow-2xl flex flex-col items-center min-h-[600px]">
                     <ShieldCheck className="text-green-500 w-12 h-12 mb-4" />
                     <h2 className="text-xl font-bold text-appleDark mb-6">256-Bit SSL Korumalı Güvenli Ödeme Arayüzü</h2>
+
+                    {/* V15: Sipariş Özeti (PayTR İstenen Özellik) */}
+                    <div className="w-full bg-blue-50/50 border border-blue-100 rounded-xl p-6 mb-8 text-left">
+                        <h3 className="text-lg font-bold text-appleDark border-b border-blue-200 pb-3 mb-4">Ödeme Öncesi Sipariş Özeti</h3>
+                        <div className="space-y-3 text-sm">
+                            <div className="flex justify-between items-center">
+                                <span className="text-gray-600 font-medium">Seçilen Hizmet:</span>
+                                <span className="font-bold text-appleDark">{productName}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="text-gray-600 font-medium">Hizmet Türü:</span>
+                                <span>Dijital Abonelik (Bulut Tabanlı Yazılım)</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="text-gray-600 font-medium">Teslimat Süresi:</span>
+                                <span className="text-green-600 font-bold bg-green-100 px-2 py-1 rounded">Anında Dijital Teslimat</span>
+                            </div>
+                            <div className="flex justify-between items-center border-t border-blue-100 pt-3 mt-3">
+                                <span className="text-gray-800 font-bold text-base">Ödenecek Toplam Tutar:</span>
+                                <span className="font-extrabold text-blue-700 text-lg">₺{productPrice} /ay</span>
+                            </div>
+                        </div>
+                        <p className="mt-4 text-[11px] text-gray-500 bg-white p-3 rounded-lg border border-gray-100">
+                            <strong>Önemli Bilgilendirme:</strong> Bu ürün tamamen dijital bir hizmet olup, ödeme onayı alındığı anda kullanımınıza açılacaktır (Anında İfa). Mesafeli Sözleşmeler Yönetmeliği gereği elektronik ortamda anında ifa edilen hizmetlerde <strong className="text-appleDark">iptal ve iade hakkı (cayma hakkı) bulunmamaktadır.</strong>
+                        </p>
+                    </div>
 
                     <div className="w-full relative min-h-[500px] border border-gray-100 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center">
                         {/* We use standard HTML script integration for PayTR IFrame Resizer */}
@@ -98,10 +145,6 @@ export default function PricingPage() {
         );
     }
 
-    // Dynamic Pricing Calculation
-    const activePrice = Math.round(pricing.b2bMonthlyPrice * (1 - pricing.b2bDiscountPercentage / 100));
-    const proPlusPrice = 750; // Hardcoded or fetchable
-    const upgradePrice = 250;
 
     return (
         <div className="min-h-screen bg-[#F5F5F7] pt-28 pb-24 px-4 overflow-hidden relative">
@@ -125,6 +168,12 @@ export default function PricingPage() {
                         Sıradan bir değerleme aracından, bölgenizdeki satıcı müşterileri avladığınız tam teşekküllü bir Lead Market (Müşteri Pazarı) ağına geçiş yapın.
                     </p>
                 </motion.div>
+
+                <div className="mb-4 bg-red-50/80 backdrop-blur-md p-4 rounded-2xl border border-red-100 max-w-3xl mx-auto shadow-sm">
+                    <p className="text-sm text-red-600 font-medium text-center">
+                        <strong>Yasal Uyarı / SPK Bilgilendirmesi:</strong> Sunulan tüm hizmetler ve üretilen raporlar algoritmik yapay zeka analizine dayalı tahminlerden ibaret olup, asla &quot;Yatırım Tavsiyesi&quot; veya lisanslı bir &quot;Gayrimenkul Ekspertiz Raporu&quot; niteliği taşımaz.
+                    </p>
+                </div>
 
                 <div className="mb-8 bg-white/60 backdrop-blur-md p-5 flex items-start sm:items-center gap-3 rounded-2xl border border-gray-200 max-w-3xl mx-auto shadow-sm">
                     <input

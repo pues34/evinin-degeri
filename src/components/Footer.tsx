@@ -37,7 +37,7 @@ export default async function Footer() {
                             </div>
                             <div className="flex items-start gap-2">
                                 <MapPin size={12} className="text-appleBlue shrink-0 mt-0.5" />
-                                <span>Evinin Değeri Gayrimenkul Teknolojileri<br />Muratpaşa Mah. Cemiyet Cad. No:28<br />Bayrampaşa / İstanbul<br /><br /><span className="text-[10px] text-gray-400">Vergi Dairesi: Tuna<br />Vergi No: 1310852802</span></span>
+                                <span><strong className="text-appleDark block mb-1">Evinin Değeri Gayrimenkul Teknolojileri Danışmanlık A.Ş.</strong>Muratpaşa Mah. Cemiyet Cad. No:28<br />Bayrampaşa / İstanbul<br /><div className="mt-3 bg-gray-50 p-2 rounded-lg border border-gray-100 text-[11px] text-gray-600 leading-relaxed font-medium"><strong>VD:</strong> Tuna Vergi Dairesi<br /><strong>VN:</strong> 1310852802<br /><strong>Mersis:</strong> 0131085280200001<br /><strong>Kep:</strong> evindegeri@hs01.kep.tr</div></span>
                             </div>
                         </div>
                     </div>
@@ -88,25 +88,16 @@ export default async function Footer() {
                     <div>
                         <h4 className="font-semibold text-appleDark text-sm mb-4">Bizi Takip Edin</h4>
                         <div className="flex flex-wrap gap-2">
-                            {settings?.instagramUrl && (
-                                <a href={settings.instagramUrl} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-50 rounded-full hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500 hover:text-white transition-all text-gray-400 flex items-center justify-center">
-                                    <Instagram size={16} />
-                                </a>
-                            )}
-                            {settings?.twitterUrl && (
-                                <a href={settings.twitterUrl} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all text-gray-400 flex items-center justify-center">
-                                    <Twitter size={16} />
-                                </a>
-                            )}
-                            {settings?.linkedinUrl && (
-                                <a href={settings.linkedinUrl} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-50 rounded-full hover:bg-blue-700 hover:text-white transition-all text-gray-400 flex items-center justify-center">
-                                    <Linkedin size={16} />
-                                </a>
-                            )}
+                            <a href={settings?.instagramUrl || "https://instagram.com/evindegeri"} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-50 rounded-full hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500 hover:text-white transition-all text-gray-400 flex items-center justify-center">
+                                <Instagram size={16} />
+                            </a>
+                            <a href={settings?.twitterUrl || "https://twitter.com/evindegeri"} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all text-gray-400 flex items-center justify-center">
+                                <Twitter size={16} />
+                            </a>
+                            <a href={settings?.linkedinUrl || "https://linkedin.com/company/evindegeri"} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-50 rounded-full hover:bg-blue-700 hover:text-white transition-all text-gray-400 flex items-center justify-center">
+                                <Linkedin size={16} />
+                            </a>
                         </div>
-                        {(!settings?.instagramUrl && !settings?.twitterUrl && !settings?.linkedinUrl) && (
-                            <p className="text-xs text-gray-400 mt-2">Yakinda!</p>
-                        )}
 
                         <h4 className="font-semibold text-appleDark text-sm mt-8 mb-4">Güvenli Ödeme</h4>
                         <div className="space-y-3">

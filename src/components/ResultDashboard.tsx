@@ -675,7 +675,14 @@ export default function ResultDashboard({ id }: { id: string }) {
                 </div>
             </div>
 
-            <div className="mt-8 flex flex-wrap justify-center gap-3 pb-4">
+            <div className="mt-8 bg-red-50 p-4 md:p-6 rounded-2xl border border-red-100 flex items-start gap-4">
+                <ShieldAlert size={28} className="text-red-500 shrink-0 mt-1" />
+                <p className="text-sm text-red-700 leading-relaxed font-medium">
+                    <strong>Yasal Uyarı (SPK Bilgilendirmesi):</strong> Bu ekranda gördüğünüz değerleme sonuçları, fiyat değişiklik yönleri ve kira analizleri tamamen yapay zeka tarafından hesaplanan <strong className="font-bold underline dark:text-red-800">tahminlerden ibarettir</strong>. Lisanslı bir Gayrimenkul Ekspertiz Raporu belgesi yerine kesinlikle geçmez ve ticari işlemlerinizde doğrudan <strong>Yatırım Tavsiyesi olarak değerlendirilemez.</strong>
+                </p>
+            </div>
+
+            <div className="mt-6 flex flex-wrap justify-center gap-3 pb-4">
                 <a href={`https://wa.me/?text=${encodeURIComponent(`Evimin degeri: ${formattedValue} - Detayli rapor: https://evindegeri.com/result/${id}`)}`} target="_blank" rel="noopener" className="flex items-center gap-2 px-5 py-3 bg-green-500 text-white rounded-xl font-medium hover:bg-green-600 transition-colors text-sm">
                     WhatsApp
                 </a>

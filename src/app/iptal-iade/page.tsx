@@ -20,6 +20,11 @@ export default function IptalIade() {
                         <p className="mt-2 text-red-600 font-medium">
                             Bu sebeple, T.C. Mesafeli Sözleşmeler Yönetmeliği’nin 15. maddesi &quot;Elektronik ortamda anında ifa edilen hizmetler veya tüketiciye anında teslim edilen gayrimaddi mallara ilişkin sözleşmeler&quot; gereğince KURAL OLARAK CAYMA HAKKI (İADE) BULUNMAMAKTADIR. Kullanıcı satın alma işlemini yaparak aboneliği aktif ettiği anda iade hakkından feragat ettiğini peşinen kabul eder.
                         </p>
+                        <div className="mt-4 bg-red-50 p-4 border border-red-200 rounded-xl">
+                            <p className="text-red-700 font-bold text-center">
+                                ÖNEMLİ: Sistemimizde satılan tüm ürünler (raporlar ve abonelikler) dijital rapor/hizmet kapsamındadır. Anında ve elektronik ortamda teslim edildiği için İADE (CAYMA HAKKI) YOKTUR.
+                            </p>
+                        </div>
                     </section>
 
                     <section>
