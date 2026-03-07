@@ -37,7 +37,7 @@ export default async function Footer() {
                             </div>
                             <div className="flex items-start gap-2">
                                 <MapPin size={12} className="text-appleBlue shrink-0 mt-0.5" />
-                                <span><strong className="text-appleDark block mb-1">Evinin Değeri Gayrimenkul Teknolojileri Danışmanlık A.Ş.</strong>Muratpaşa Mah. Cemiyet Cad. No:28<br />Bayrampaşa / İstanbul<br /><div className="mt-3 bg-gray-50 p-2 rounded-lg border border-gray-100 text-[11px] text-gray-600 leading-relaxed font-medium"><strong>VD:</strong> Tuna Vergi Dairesi<br /><strong>VN:</strong> 1310852802<br /><strong>Mersis:</strong> 0131085280200001<br /><strong>Kep:</strong> evindegeri@hs01.kep.tr</div></span>
+                                <span><strong className="text-appleDark block mb-1">Evinin Değeri Gayrimenkul Teknolojileri</strong>Muratpaşa Mah. Cemiyet Cad. No:28<br />Bayrampaşa / İstanbul<br /><div className="mt-3 bg-gray-50 p-2 rounded-lg border border-gray-100 text-[11px] text-gray-600 leading-relaxed font-medium"><strong>VD:</strong> Tuna Vergi Dairesi<br /><strong>VN:</strong> 1310852802</div></span>
                             </div>
                         </div>
                     </div>

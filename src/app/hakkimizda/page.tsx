@@ -45,7 +45,7 @@ export default function AboutPage() {
                     <div className="relative group">
                         <div className="absolute inset-0 bg-blue-500/10 rounded-[2rem] transform rotate-3 scale-105 group-hover:rotate-6 transition-transform duration-500"></div>
                         <div className="relative h-[500px] w-full rounded-[2rem] shadow-2xl overflow-hidden">
-                            <Image src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Evinin Değeri Ofisi" layout="fill" objectFit="cover" className="relative object-cover" />
+                            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Evinin Değeri Ofisi" className="w-full h-full object-cover" />
                         </div>
                     </div>
 

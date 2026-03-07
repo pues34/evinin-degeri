@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function AIAssistantPage() {
     const { data: session } = useSession();
-    const isPremium = session?.user?.isPremium;
+    const isPremium = session?.user?.isPremium || session?.user?.isPro;
 
     const [messages, setMessages] = useState([
         { role: "assistant", content: "Merhaba! Ben Evinin Değeri Yapay Zeka Danışmanınız. İstanbul, Ankara veya İzmir'deki kira getirileri, amortisman süreleri veya yatırım fırsatları hakkında bana her şeyi sorabilirsiniz." }

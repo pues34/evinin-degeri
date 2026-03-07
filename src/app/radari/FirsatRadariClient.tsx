@@ -11,7 +11,7 @@ export default function FirsatRadariClient() {
     const [listings, setListings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const isPremium = session?.user?.isPremium;
+    const isPremium = session?.user?.isPremium || session?.user?.isPro;
 
     useEffect(() => {
         if (isPremium) {

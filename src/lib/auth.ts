@@ -130,6 +130,7 @@ export const authOptions: AuthOptions = {
                 token.subscriptionTier = user.subscriptionTier;
                 token.customLogoUrl = user.customLogoUrl;
                 token.subscriptionEnd = user.subscriptionEnd;
+                token.isPremium = user.isPremium;
             }
             if (trigger === "update" && session) {
                 if (session.isPro !== undefined) token.isPro = session.isPro;
