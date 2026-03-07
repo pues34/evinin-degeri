@@ -47,10 +47,12 @@ export default async function Footer() {
                         <h4 className="font-semibold text-appleDark text-sm mb-4">Kurumsal</h4>
                         <ul className="space-y-2.5">
                             <li><Link href="/hakkimizda" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Hakkımızda</Link></li>
+                            <li><Link href="/nasil-hesapliyoruz" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Nasıl Çalışır</Link></li>
+                            <li><Link href="/ornek-rapor" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Örnek Rapor</Link></li>
+                            <li><Link href="/fiyatlandirma" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Fiyatlandırma</Link></li>
+                            <li><Link href="/sss" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">S.S.S.</Link></li>
                             <li><Link href="/iletisim" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">İletişim</Link></li>
                             <li><Link href="/blog" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Emlak Güncesi</Link></li>
-                            <li><Link href="/sss" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Sıkça Sorulan Sorular</Link></li>
-                            <li><Link href="/nasil-hesapliyoruz" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Nasıl Hesaplıyoruz?</Link></li>
                         </ul>
                     </div>
 
@@ -73,10 +75,12 @@ export default async function Footer() {
                     <div>
                         <h4 className="font-semibold text-appleDark text-sm mb-4">Yasal</h4>
                         <ul className="space-y-2.5">
-                            <li><Link href="/gizlilik-politikasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Gizlilik Politikası</Link></li>
-                            <li><Link href="/kullanim-kosullari" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Kullanım Koşulları</Link></li>
                             <li><Link href="/mesafeli-satis-sozlesmesi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Mesafeli Satış Sözleşmesi</Link></li>
-                            <li><Link href="/iptal-iade" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">İptal ve İade Koşulları</Link></li>
+                            <li><Link href="/gizlilik-politikasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Gizlilik Politikası</Link></li>
+                            <li><Link href="/kvkk" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">KVKK Aydınlatma Metni</Link></li>
+                            <li><Link href="/iptal-iade" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">İade Politikası</Link></li>
+                            <li><Link href="/teslimat-sartlari" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Teslimat Şartları</Link></li>
+                            <li><Link href="/cerez-politikasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Çerez Politikası</Link></li>
                         </ul>
                     </div>
 
@@ -125,11 +129,19 @@ export default async function Footer() {
 
                 </div>
 
-                <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between text-xs text-gray-400">
-                    <div className="flex flex-col md:flex-row gap-4 items-center">
-                        <p>&copy; {new Date().getFullYear()} Evinin Değeri. Tum haklari saklidir.</p>
+                <div className="mt-12 pt-8 border-t border-gray-100">
+                    <p className="text-[10.5px] text-gray-400 leading-relaxed mb-6 text-justify">
+                        <strong>Yasal Uyarı: </strong> Evinin Değeri tarafından sunulan fiyat raporları; güncel piyasa verileri, yapay zeka ve matematiksel modellemelere dayanarak hesaplanan &quot;tahmini&quot; gayrimenkul değerleridir.
+                        Sunulan bu raporlar, Sermaye Piyasası Kurulu (SPK) mevzuatı uyarınca yetkilendirilmiş resmi değerleme kuruluşları tarafından hazırlanan raporların yerine geçmez.
+                        SPK mevzuatınca değerleme gerektiren resmi işlemlerde lisanslı eksperlerden hizmet alınması zorunludur. Platformumuzda yer alan veriler tamamen bilgi amaçlı olup, bu raporlara dayanılarak
+                        alınan doğrudan veya dolaylı yatırım kararlarından Şirketimiz (Evinin Değeri Gayrimenkul Teknolojileri) hukuki ve cezai olarak sorumlu tutulamaz.
+                    </p>
+                    <div className="flex flex-col md:flex-row items-center justify-between text-xs text-gray-400">
+                        <div className="flex flex-col md:flex-row gap-4 items-center">
+                            <p>&copy; {new Date().getFullYear()} Evinin Değeri. Tum haklari saklidir.</p>
+                        </div>
+                        <p className="mt-4 md:mt-0 text-center md:text-right">Yapay Zeka Destekli Gayrimenkul Degerleme Platformu</p>
                     </div>
-                    <p className="mt-4 md:mt-0 text-center md:text-right">Yapay Zeka Destekli Gayrimenkul Degerleme Platformu</p>
                 </div>
             </div>
         </footer>
