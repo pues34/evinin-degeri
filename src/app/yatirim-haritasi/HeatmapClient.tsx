@@ -17,7 +17,7 @@ const HeatmapDisplay = nextDynamic(() => import('@/components/HeatmapDisplay'), 
 
 export default function HeatmapClient() {
     const { data: session } = useSession();
-    const isPremium = session?.user?.isPremium || session?.user?.isPro;
+    const isPremium = session?.user?.isPremium === true || session?.user?.isPro === true;
 
     return (
         <div className="min-h-screen bg-appleGray pt-24 pb-12 px-4">

@@ -8,26 +8,15 @@ import FastSupportForm from "@/components/FastSupportForm";
 import SocialMediaGenerator from "@/components/SocialMediaGenerator";
 import { useState, useEffect } from "react";
 
-export default function B2BClientInterface({ user, valuations, leads, isActivePro }: { user: any, valuations: any[], leads: any[], isActivePro: boolean }) {
+export default function B2BClientInterface({ user, valuations, leads, isActivePro, initialListings }: { user: any, valuations: any[], leads: any[], isActivePro: boolean, initialListings?: any[] }) {
     const [downloading, setDownloading] = useState(false);
     const [activeTab, setActiveTab] = useState<'PORTFOLIO' | 'LEAD_MARKET' | 'HEATMAP' | 'MY_BRAND' | 'MY_LISTINGS' | 'SETTINGS'>('PORTFOLIO');
     const [logoUrl, setLogoUrl] = useState(user?.customLogoUrl || "");
     const [savingLogo, setSavingLogo] = useState(false);
 
     // Phase 18
-    const [listings, setListings] = useState<any[]>([]);
+    const [listings, setListings] = useState<any[]>(initialListings || []);
     const [loadingListings, setLoadingListings] = useState(false);
-
-    useEffect(() => {
-        if (activeTab === 'MY_LISTINGS' && listings.length === 0) {
-            setLoadingListings(true);
-            fetch("/api/listings?mode=my-listings")
-                .then(res => res.json())
-                .then(data => setListings(data))
-                .catch(console.error)
-                .finally(() => setLoadingListings(false));
-        }
-    }, [activeTab]);
 
     // Settings State
     const [settings, setSettings] = useState({

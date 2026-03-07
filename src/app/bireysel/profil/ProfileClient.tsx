@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { User, Lock, Mail, Phone, Crown, CheckCircle } from "lucide-react";
 
-export default function ProfileClient({ user }: { user: any }) {
+export default function ProfileClient({ user, initialListings }: { user: any, initialListings?: any[] }) {
     const [settings, setSettings] = useState({
         name: user?.name || "",
         phone: user?.phone || "",
@@ -13,8 +13,8 @@ export default function ProfileClient({ user }: { user: any }) {
     const [saving, setSaving] = useState(false);
 
     // Phase 18: Listings
-    const [listings, setListings] = useState<any[]>([]);
-    const [loadingListings, setLoadingListings] = useState(true);
+    const [listings, setListings] = useState<any[]>(initialListings || []);
+    const [loadingListings, setLoadingListings] = useState(false);
 
     useEffect(() => {
         const fetchListings = async () => {

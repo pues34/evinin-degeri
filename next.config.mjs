@@ -24,6 +24,18 @@ const nextConfig = {
             },
         ];
     },
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'images.unsplash.com',
+            },
+            {
+                protocol: 'https',
+                hostname: '**', // Allow any domain for user-uploaded listings if needed, or specific supabase host
+            }
+        ],
+    },
 };
 
 export default withSentryConfig(

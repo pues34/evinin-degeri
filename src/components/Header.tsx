@@ -31,68 +31,68 @@ export default function Header() {
                         </div>
                     </Link>
 
-                    <nav className="hidden lg:flex items-center gap-4 xl:gap-8 flex-1 justify-center">
-                        <Link href="/" className={`text-sm font-medium transition-colors ${pathname === '/' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
-                            Ev Değerleme
+                    <nav className="hidden xl:flex items-center gap-2 2xl:gap-6 flex-1 justify-center overflow-x-auto no-scrollbar whitespace-nowrap">
+                        <Link href="/" className={`text-xs xl:text-sm font-medium transition-colors ${pathname === '/' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
+                            Değerleme
                         </Link>
-                        <Link href="/kira-hesaplama" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/kira-hesaplama' || pathname === '/amortisman-hesaplama' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
-                            <Calculator size={16} /> Hesaplamalar
+                        <Link href="/kira-hesaplama" className={`text-xs xl:text-sm font-medium flex items-center gap-1 transition-colors ${pathname === '/kira-hesaplama' || pathname === '/amortisman-hesaplama' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
+                            <Calculator size={14} /> Hesaplamalar
                         </Link>
-                        <Link href="/konut-fiyat-endeksi" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/konut-fiyat-endeksi' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
-                            <LineChart size={16} /> Fiyat Endeksi
+                        <Link href="/konut-fiyat-endeksi" className={`text-xs xl:text-sm font-medium flex items-center gap-1 transition-colors ${pathname === '/konut-fiyat-endeksi' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
+                            <LineChart size={14} /> Endeks
                         </Link>
-                        <Link href="/radari" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/radari' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
-                            <Target size={16} className="text-indigo-500" /> Fırsat Radarı
+                        <Link href="/radari" className={`text-xs xl:text-sm font-medium flex items-center gap-1 transition-colors ${pathname === '/radari' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
+                            <Target size={14} className="text-indigo-500" /> Radar
                         </Link>
-                        <Link href="/fiyatlandirma" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/fiyatlandirma' ? 'text-appleBlue' : 'text-gray-500 hover:text-orange-500'}`}>
-                            <CreditCard size={16} /> Paketler
+                        <Link href="/fiyatlandirma" className={`text-xs xl:text-sm font-medium flex items-center gap-1 transition-colors ${pathname === '/fiyatlandirma' ? 'text-appleBlue' : 'text-gray-500 hover:text-orange-500'}`}>
+                            <CreditCard size={14} /> Paketler
                         </Link>
-                        <Link href="/yatirim-haritasi" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/yatirim-haritasi' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
-                            <Map size={16} /> Isı Haritası
+                        <Link href="/yatirim-haritasi" className={`text-xs xl:text-sm font-medium flex items-center gap-1 transition-colors ${pathname === '/yatirim-haritasi' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
+                            <Map size={14} /> Harita
                         </Link>
-                        <Link href="/ilanlar" className={`text-sm font-bold flex items-center px-3 py-1.5 bg-blue-50 rounded-xl gap-1.5 transition-colors ${pathname === '/ilanlar' ? 'text-appleBlue' : 'text-appleDark hover:text-appleBlue'}`}>
-                            <Building2 size={16} /> Ayrıcalıklı İlanlar
+                        <Link href="/ilanlar" className={`text-xs xl:text-sm font-bold flex items-center px-2 py-1.5 bg-blue-50 rounded-lg gap-1 transition-colors ${pathname === '/ilanlar' ? 'text-appleBlue' : 'text-appleDark hover:text-appleBlue'}`}>
+                            <Building2 size={14} /> İlanlar
                         </Link>
-                        <Link href="/blog" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname.startsWith('/blog') ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
-                            <BookOpen size={16} /> Emlak Blog
+                        <Link href="/blog" className={`text-xs xl:text-sm font-medium flex items-center gap-1 transition-colors ${pathname.startsWith('/blog') ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
+                            <BookOpen size={14} /> Blog
                         </Link>
                         {session ? (
-                            <div className="flex items-center gap-2 shrink-0">
+                            <div className="flex items-center gap-1.5 shrink-0 ml-2">
                                 {session.user?.role === "realtor" || session.user?.role === "admin" ? (
-                                    <Link href="/b2b/dashboard" className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all flex items-center gap-1.5 whitespace-nowrap">
-                                        <Building2 size={16} /> B2B Panel
+                                    <Link href="/b2b/dashboard" className="px-3 xl:px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full text-xs font-medium shadow-sm hover:shadow-md transition-all flex items-center gap-1.5 whitespace-nowrap">
+                                        <Building2 size={14} /> B2B Panel
                                     </Link>
                                 ) : (
                                     <>
-                                        <Link href="/portfoy" className="px-4 py-2 bg-appleDark text-white rounded-full text-sm font-medium shadow-sm hover:bg-appleBlue transition-all flex items-center gap-1.5 whitespace-nowrap">
-                                            <User size={16} /> Portföyüm
+                                        <Link href="/portfoy" className="px-3 py-1.5 bg-appleDark text-white rounded-full text-xs font-medium shadow-sm hover:bg-appleBlue transition-all flex items-center gap-1 whitespace-nowrap">
+                                            <User size={14} /> Portföyüm
                                         </Link>
-                                        <Link href="/bireysel/profil" className="px-4 py-2 bg-white text-appleDark border border-gray-200 rounded-full text-sm font-medium shadow-sm hover:bg-gray-50 transition-all flex items-center gap-1.5 whitespace-nowrap">
+                                        <Link href="/bireysel/profil" className="px-3 py-1.5 bg-white text-appleDark border border-gray-200 rounded-full text-xs font-medium shadow-sm hover:bg-gray-50 transition-all flex items-center gap-1 whitespace-nowrap">
                                             Profilim
                                         </Link>
-                                        <Link href="/ai-danisman" className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 whitespace-nowrap">
-                                            <Bot size={16} /> AI Danışman
+                                        <Link href="/ai-danisman" className="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full text-xs font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-1 whitespace-nowrap">
+                                            <Bot size={14} /> Danışman
                                         </Link>
                                     </>
                                 )}
                             </div>
                         ) : (
-                            <div className="flex items-center gap-2 shrink-0">
-                                <Link href="/giris" className="text-sm font-medium text-gray-600 hover:text-appleDark transition-colors px-2">
+                            <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                                <Link href="/giris" className="text-xs font-medium text-gray-600 hover:text-appleDark transition-colors px-2">
                                     Giriş Yap
                                 </Link>
-                                <Link href="/kayit" className="px-4 py-2 border border-gray-200 text-gray-700 bg-white rounded-full text-sm font-medium shadow-sm hover:bg-gray-50 transition-all flex items-center gap-1.5 whitespace-nowrap">
+                                <Link href="/kayit" className="px-3 py-1.5 border border-gray-200 text-gray-700 bg-white rounded-full text-xs font-medium shadow-sm hover:bg-gray-50 transition-all flex items-center gap-1 whitespace-nowrap">
                                     Kayıt Ol
                                 </Link>
-                                <Link href="/b2b" className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all flex items-center gap-1.5 whitespace-nowrap">
+                                <Link href="/b2b" className="px-3 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full text-xs font-medium shadow-sm hover:shadow-md transition-all flex items-center gap-1 whitespace-nowrap">
                                     Kurumsal
                                 </Link>
                             </div>
                         )}
                     </nav>
 
-                    {/* Mobile Menu Button - Temporarily just showing auth directly or panel */}
-                    <div className="lg:hidden flex items-center gap-3 shrink-0">
+                    {/* Mobile/Tablet Menu Button - Shows when width < xl */}
+                    <div className="xl:hidden flex items-center gap-2 shrink-0">
                         {session ? (
                             <Link href={session.user?.role === 'user' ? '/portfoy' : '/b2b/dashboard'} className="px-3 py-1.5 bg-gray-50 text-appleDark rounded-lg text-xs font-bold border border-gray-200">Panel</Link>
                         ) : (

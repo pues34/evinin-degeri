@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default async function BireyselProfilPage() {
     const session = await getServerSession(authOptions);
 
-    if (!session || session.user?.role !== "user") {
+    if (!session || (!["user", "realtor"].includes(session.user?.role))) {
         redirect("/giris?callbackUrl=/bireysel/profil");
     }
 
@@ -32,9 +32,15 @@ export default async function BireyselProfilPage() {
         redirect("/giris");
     }
 
+    // Pass listings as props
+    const listings = await prisma.listing.findMany({
+        where: { userId: session.user.id },
+        orderBy: { createdAt: "desc" }
+    });
+
     return (
         <div className="min-h-screen bg-gray-50 pt-24 pb-12">
-            <ProfileClient user={user} />
+            <ProfileClient user={user} initialListings={listings} />
         </div>
     );
 }

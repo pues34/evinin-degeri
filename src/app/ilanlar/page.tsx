@@ -1,18 +1,21 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Maximize, Bed, Map, ShieldCheck, ChevronRight } from "lucide-react";
+import prisma from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
 export default async function PublicListingsPage() {
-    // Fetch approved listings from our API (Server Side Fetch)
-    let listings = [];
+    let listings: any[] = [];
     try {
-        const HOST = process.env.NEXTAUTH_URL || "http://localhost:3000";
-        const res = await fetch(`${HOST}/api/listings?mode=public`, { cache: 'no-store' });
-        if (res.ok) {
-            listings = await res.json();
-        }
+        listings = await prisma.listing.findMany({
+            where: { status: "APPROVED" },
+            orderBy: { createdAt: "desc" },
+            include: {
+                user: { select: { name: true, phone: true } },
+                realtor: { select: { companyName: true, phone: true, customLogoUrl: true } }
+            }
+        });
     } catch (e) {
         console.error("Failed to fetch public listings", e);
     }

@@ -11,7 +11,7 @@ export default function FirsatRadariClient() {
     const [listings, setListings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const isPremium = session?.user?.isPremium || session?.user?.isPro;
+    const isPremium = session?.user?.isPremium === true || session?.user?.isPro === true;
 
     useEffect(() => {
         if (isPremium) {
@@ -139,7 +139,7 @@ export default function FirsatRadariClient() {
                         {listings.map((listing) => (
                             <div key={listing.id} className="bg-white rounded-[24px] border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition group flex flex-col">
                                 <div className="h-48 bg-gray-200 relative overflow-hidden">
-                                    <Image src={listing.imageUrl || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80"} alt="Emlak Görseli" layout="fill" objectFit="cover" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                                    <Image src={listing.imageUrl || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80"} alt="Emlak Görseli" fill className="object-cover group-hover:scale-105 transition duration-500" />
                                     <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1.5 rounded-lg font-bold text-sm flex items-center shadow-md">
                                         <TrendingDown size={16} className="mr-1" /> %{Number(listing.discount).toFixed(1)} İskontolu
                                     </div>

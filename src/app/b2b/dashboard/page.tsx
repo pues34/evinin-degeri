@@ -49,6 +49,12 @@ export default async function B2BDashboard() {
         take: 50 // Sadece son 50 sıcak müşteriyi göster
     });
 
+    // Fetch Listings
+    const listings = await prisma.listing.findMany({
+        where: { realtorId: id },
+        orderBy: { createdAt: 'desc' }
+    });
+
     return (
         <div className="min-h-screen bg-appleGray pt-24 pb-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
@@ -57,6 +63,7 @@ export default async function B2BDashboard() {
                     valuations={recentValuations}
                     leads={leadMarket}
                     isActivePro={isActivePro}
+                    initialListings={listings}
                 />
             </div>
         </div>
