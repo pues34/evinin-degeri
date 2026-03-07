@@ -160,7 +160,7 @@ CIKTI FORMATI (STRICT JSON):
   "summary": "1-2 cumlelik meta description (150 karakter)",
   "content": "Yazinin tamami HTML formatinda (yukaridaki kurallara uygun)",
   "category": "${cat.category}",
-  "imageUrl": ""
+  "imageUrl": "https://source.unsplash.com/1200x800/?real-estate,apartment,house" // BURASI ONEMLI: Mutlaka gecerli bir gorsel URL'si koy, yoksa yukaridaki source.unsplash formatini birebir kullan.
 }`
                         },
                         {
@@ -193,7 +193,14 @@ CIKTI FORMATI (STRICT JSON):
             const finalContent = aiOutput.content + ctaHtml;
             const slug = generateSlug(aiOutput.title);
 
-            const imageUrl = aiOutput.imageUrl || `https://images.unsplash.com/photo-${['1560518883-ce09059eeffa', '1582407947304-fd86f028f716', '1560185127-6a5a5e3c2b43', '1512917774080-9991f1c4c750', '1600596542815-ffad4c1539a6'][i % 5]}?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80`;
+            // Generate a more random fallback to avoid exact identical images if source.unsplash fails
+            const fallbackKeywords = ["real-estate", "architecture", "interior", "city-view", "living-room", "modern-house", "apartment-building"];
+            const randomKeyword = fallbackKeywords[Math.floor(Math.random() * fallbackKeywords.length)];
+
+            // source.unsplash API is deprecated, use the specific random endpoint
+            const imageUrl = aiOutput.imageUrl && aiOutput.imageUrl.length > 10 && aiOutput.imageUrl.includes("http") ?
+                aiOutput.imageUrl :
+                `https://images.unsplash.com/photo-${['1560518883-ce09059eeffa', '1582407947304-fd86f028f716', '1560185127-6a5a5e3c2b43', '1512917774080-9991f1c4c750', '1600596542815-ffad4c1539a6', '1613977257363-707ba9348227', '1512917774080-9991f1c4c750', '1449844908441-8829872d2607', '1503177119275-0aa32b3a9368'][Math.floor(Math.random() * 9)]}?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80`;
 
             await prisma.blogPost.create({
                 data: {

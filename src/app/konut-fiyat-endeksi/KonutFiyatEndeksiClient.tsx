@@ -65,7 +65,7 @@ export default function KonutFiyatEndeksiClient() {
 
             {/* Hero Section */}
             <div className="bg-gradient-to-br from-appleDark via-appleDark to-gray-900 pt-32 pb-24 text-white relative overflow-hidden">
-                <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 blur-[1px]"></div>
+                <div className="absolute inset-0 opacity-10 blur-[1px]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z' fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E")` }}></div>
                 <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-500 rounded-full blur-[120px] opacity-20 pointer-events-none" />
 
                 <div className="container mx-auto px-4 max-w-6xl relative z-10">
@@ -115,7 +115,7 @@ export default function KonutFiyatEndeksiClient() {
                         </div>
                     </div>
 
-                    <div className="h-[400px] w-full">
+                    <div className="h-[400px] w-full min-h-[400px] min-w-[300px]">
                         {loading ? (
                             <div className="w-full h-full flex flex-col items-center justify-center text-gray-400">
                                 <Activity size={40} className="animate-spin mb-4" />
@@ -171,7 +171,7 @@ export default function KonutFiyatEndeksiClient() {
                             <h2 className="text-2xl font-bold text-appleDark">Değerleme Hacmi</h2>
                         </div>
 
-                        <div className="h-[250px] w-full">
+                        <div className="h-[250px] w-full min-h-[250px] min-w-[200px]">
                             {!loading && (
                                 <ResponsiveContainer width="100%" height="100%">
                                     <BarChart data={indexData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
