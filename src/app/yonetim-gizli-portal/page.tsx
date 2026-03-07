@@ -19,6 +19,7 @@ export default function AdminDashboard() {
     const [feedbacks, setFeedbacks] = useState<any[]>([]);
     const [payments, setPayments] = useState<any[]>([]);
     const [stats, setStats] = useState<any>(null);
+    const [trendRange, setTrendRange] = useState("7");
 
     // Phase 3 States
     const [b2cUsers, setB2cUsers] = useState<any[]>([]);
@@ -673,31 +674,62 @@ export default function AdminDashboard() {
                                 </div>
 
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-                                    <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-80">
-                                        <h4 className="text-sm font-medium text-gray-500 mb-6 text-center">Son 7 Günlük Sorgu Trendi</h4>
-                                        <div style={{ width: '100%', height: 250 }}>
+                                    <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-[380px] flex flex-col">
+                                        <div className="flex justify-between items-center mb-6">
+                                            <h4 className="text-sm font-medium text-gray-500">Sorgu Trendi (Değerlemeler)</h4>
+                                            <div className="flex bg-gray-100 rounded-lg p-1">
+                                                <button onClick={() => setTrendRange?.("7")} className={`px-3 py-1 text-xs font-bold rounded-md ${(!trendRange || trendRange === '7') ? 'bg-white shadow-sm text-appleDark' : 'text-gray-500'}`}>7 Gün</button>
+                                                <button onClick={() => setTrendRange?.("30")} className={`px-3 py-1 text-xs font-bold rounded-md ${trendRange === '30' ? 'bg-white shadow-sm text-appleDark' : 'text-gray-500'}`}>30 Gün</button>
+                                            </div>
+                                        </div>
+                                        <div className="flex-1 w-full relative">
                                             <ResponsiveContainer width="100%" height="100%">
-                                                <BarChart data={stats.trend}>
-                                                    <XAxis dataKey="date" stroke="#8884d8" fontSize={12} tickLine={false} axisLine={false} />
+                                                <BarChart data={trendRange === '30' ? stats.trend30 : stats.trend}>
+                                                    <XAxis dataKey="date" stroke="#8884d8" fontSize={11} tickLine={false} axisLine={false} tickMargin={8} minTickGap={15} />
                                                     <YAxis stroke="#8884d8" fontSize={12} tickLine={false} axisLine={false} />
                                                     <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }} />
-                                                    <Bar dataKey="count" fill="#0071E3" radius={[4, 4, 0, 0]} />
+                                                    <Bar dataKey="count" fill="#0071E3" radius={[4, 4, 0, 0]} maxBarSize={40} />
                                                 </BarChart>
                                             </ResponsiveContainer>
                                         </div>
                                     </div>
 
-                                    <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-80">
-                                        <h4 className="text-sm font-medium text-gray-500 mb-6 text-center">En Çok Sorgulanan 5 İlçe</h4>
-                                        <div style={{ width: '100%', height: 250 }}>
+                                    <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-[380px] flex flex-col">
+                                        <h4 className="text-sm font-medium text-gray-500 mb-6 text-center">Fiyat Dağılımı (Değerleme Aralıkları)</h4>
+                                        <div className="flex-1 w-full">
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <PieChart>
+                                                    <Pie
+                                                        data={stats.priceDistribution || []}
+                                                        cx="50%"
+                                                        cy="50%"
+                                                        innerRadius={60}
+                                                        outerRadius={100}
+                                                        paddingAngle={4}
+                                                        dataKey="count"
+                                                    >
+                                                        {(stats.priceDistribution || []).map((entry: any, index: number) => (
+                                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                                        ))}
+                                                    </Pie>
+                                                    <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }} />
+                                                    <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+                                                </PieChart>
+                                            </ResponsiveContainer>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm h-[380px] flex flex-col lg:col-span-2">
+                                        <h4 className="text-sm font-medium text-gray-500 mb-6 text-center">En Çok Sorgulanan 5 İlçe (Tüm Zamanlar)</h4>
+                                        <div className="flex-1 w-full flex justify-center items-center">
                                             <ResponsiveContainer width="100%" height="100%">
                                                 <PieChart>
                                                     <Pie
                                                         data={stats.topDistricts}
                                                         cx="50%"
                                                         cy="50%"
-                                                        innerRadius={60}
-                                                        outerRadius={80}
+                                                        innerRadius={70}
+                                                        outerRadius={110}
                                                         paddingAngle={5}
                                                         dataKey="count"
                                                     >

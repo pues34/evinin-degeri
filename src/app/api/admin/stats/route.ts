@@ -61,6 +61,40 @@ export async function GET() {
             count
         }));
 
+        // Last 30 days trend
+        const dailyTrend30: Record<string, number> = {};
+        for (let i = 29; i >= 0; i--) {
+            const d = new Date(today);
+            d.setDate(d.getDate() - i);
+            dailyTrend30[d.toISOString().split('T')[0]] = 0;
+        }
+
+        allRequests.forEach((req: any) => {
+            const dateStr = req.createdAt.toISOString().split('T')[0];
+            if (dailyTrend30[dateStr] !== undefined) {
+                dailyTrend30[dateStr]++;
+            }
+        });
+
+        const trend30Params = Object.entries(dailyTrend30).map(([date, count]) => ({
+            date: date.split('-').slice(1).join('/'),
+            count
+        }));
+
+        // Price Distribution
+        const priceBrackets = [
+            { label: "< 2M", min: 0, max: 2000000, count: 0 },
+            { label: "2M - 4M", min: 2000000, max: 4000000, count: 0 },
+            { label: "4M - 7M", min: 4000000, max: 7000000, count: 0 },
+            { label: "7M - 12M", min: 7000000, max: 12000000, count: 0 },
+            { label: "> 12M", min: 12000000, max: 9999999999, count: 0 },
+        ];
+        allRequests.forEach((req: any) => {
+            const val = req.estimatedValue || 0;
+            const bracket = priceBrackets.find(b => val >= b.min && val < b.max);
+            if (bracket) bracket.count++;
+        });
+
         // V24: Today's requests
         const todayStart = new Date();
         todayStart.setHours(0, 0, 0, 0);
@@ -96,6 +130,8 @@ export async function GET() {
                 avgValue,
                 topDistricts,
                 trend: trendParams,
+                trend30: trend30Params,
+                priceDistribution: priceBrackets,
                 todayRequests,
                 weekRequests,
                 unreadContacts,
