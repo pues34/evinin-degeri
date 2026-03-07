@@ -39,8 +39,8 @@ export default function IletisimPage() {
                             <a href="tel:+905337253171" className="text-appleBlue font-medium text-sm hover:underline flex items-center justify-center gap-2">
                                 <Phone size={14} /> 0533 725 3171
                             </a>
-                            <a href="mailto:evindestek@gmail.com" className="text-appleBlue font-medium text-sm hover:underline">
-                                evindestek@gmail.com
+                            <a href="mailto:destek@evindegeri.com" className="text-appleBlue font-medium text-sm hover:underline">
+                                destek@evindegeri.com
                             </a>
                         </div>
                     </div>

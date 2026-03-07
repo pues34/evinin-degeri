@@ -51,7 +51,7 @@ export default function AdminDashboard() {
     const [editBlogContent, setEditBlogContent] = useState("");
 
     // V24: Contact info settings
-    const [contactEmail, setContactEmail] = useState("evindestek@gmail.com");
+    const [contactEmail, setContactEmail] = useState("destek@evindegeri.com");
     const [contactPhone, setContactPhone] = useState("");
     const [contactAddress, setContactAddress] = useState("Istanbul, Turkiye");
     const [workingHours, setWorkingHours] = useState("Hafta ici: 09:00 - 18:00, Hafta sonu: 10:00 - 15:00");

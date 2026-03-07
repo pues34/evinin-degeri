@@ -29,7 +29,7 @@ export default async function Footer() {
                         <div className="space-y-2 text-gray-500 text-xs">
                             <div className="flex items-center gap-2">
                                 <Mail size={12} className="text-appleBlue shrink-0" />
-                                <a href="mailto:evindestek@gmail.com" className="hover:text-appleBlue transition-colors">evindestek@gmail.com</a>
+                                <a href="mailto:destek@evindegeri.com" className="hover:text-appleBlue transition-colors">destek@evindegeri.com</a>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Phone size={12} className="text-appleBlue shrink-0" />

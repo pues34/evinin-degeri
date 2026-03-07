@@ -12,7 +12,7 @@ async function main() {
             <h3>Tarafımızca Toplanan Veriler</h3>
             <ul>
                 <li>Ev değerleme aşamasında girilen fiziksel özellikler (Kat, yaş, alan).</li>
-                <li>Haberleşme formunda paylaşılan e-posta adresi (<em>evindestek@gmail.com</em> üzerinden sağlanan erişimler dahil).</li>
+                <li>Haberleşme formunda paylaşılan e-posta adresi (<em>destek@evindegeri.com</em> üzerinden sağlanan erişimler dahil).</li>
             </ul>
             <p>KVKK çerçevesinde verileriniz şifreli sunucularda saklanmakta ve üçüncü kişilere satılmamaktadır. İstanbul bölgesine özel gayrimenkul fiyat hesaplama algoritmamız tamamen anonim konut verileriyle beslenir.</p>
             <h3>Çerez (Cookie) Kullanımı</h3>
@@ -29,7 +29,7 @@ async function main() {
             <p>Platformumuz üzerinden aldığınız <strong>Ev Değeri Hesaplama Yorumları</strong> ve "Bölge Analiz Raporları", güncel TCMB enflasyon metrikleri ve İstanbul ilçe-mahalle bazlı baz fiyat çarpanlarıyla OpenAI destekli gelişmiş bir algoritma tarafından üretilir. Ancak bu sonuçlar sadece tavsiye niteliğindedir. Alım-satım kararlarınızı tamamen sitemize dayandırarak yaşayabileceğiniz maddi kayıplardan platformumuz sorumlu tutulamaz.</p>
             <h3>Telif Hakları</h3>
             <p>Sitemizin tasarımı, yapay zeka tarafından oluşturulan dinamik içerikleri, blog makaleleri ve değerleme formül çarpanları Evinin Değeri ekibine aittir. Kopyalanması ve ticari amaçlarla başka bir sitede yayınlanması yasaktır.</p>
-            <p>İletişim, şikayet ve diğer talepleriniz için bize her zaman <strong>evindestek@gmail.com</strong> adresinden ulaşabilirsiniz.</p>
+            <p>İletişim, şikayet ve diğer talepleriniz için bize her zaman <strong>destek@evindegeri.com</strong> adresinden ulaşabilirsiniz.</p>
             `
         },
         {
@@ -40,7 +40,7 @@ async function main() {
             <p><strong>Evinin Değeri</strong>, ev alıp satmak veya emlak yatırımı yapmak isteyen kullanıcıları tahmini piyasa gerçekleriyle anında buluşturan bağımsız bir teknoloji girişimidir.</p>
             <h3>Vizyonumuz: Neden Bizi Tercih Etmelisiniz?</h3>
             <p>Geleneksel emlak yetkililerinin "Göz Kararı" yöntemi yerine, günümüzde veriye çok inanan yatırımcılar için bir yapay zeka analiz platformu tasarladık. İstanbul gibi gayrimenkul fiyat dinamiklerinin gün aşırı değiştiği metropollerde, bölge bazlı şerefiye algoritmamız (Asansör, Bina Yaşı, Otopark, Güvenlik çarpanları vb.) devreye girerek Türkiye'nin ilk tam otonom SEO ve emlak sonuç motorunu oluşturduk.</p>
-            <p>Sitemizin tamamen ücretsiz bireysel kullanımını bir devrim olarak görüyoruz. Bize ulaşmak, reklam veya iş birliği yapmak için: <strong>evindestek@gmail.com</strong></p>
+            <p>Sitemizin tamamen ücretsiz bireysel kullanımını bir devrim olarak görüyoruz. Bize ulaşmak, reklam veya iş birliği yapmak için: <strong>destek@evindegeri.com</strong></p>
             `
         }
     ];

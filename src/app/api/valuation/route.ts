@@ -479,7 +479,7 @@ export async function POST(req: NextRequest) {
 
                                     <p style="text-align: center; margin-top: 20px;">
                                       Geri bildirimleriniz ve sorularınız için bize ulaşın: <br/>
-                                        <a href="mailto:evindestek@gmail.com" style="color: #2563eb; text-decoration: none;"> evindestek@gmail.com</a>
+                                        <a href="mailto:destek@evindegeri.com" style="color: #2563eb; text-decoration: none;"> destek@evindegeri.com</a>
                                           </p>
         </div>
       </div>
@@ -489,7 +489,7 @@ export async function POST(req: NextRequest) {
         // Send Notification to Admin
         await resend.emails.send({
           from: "Evinin Değeri Sistem <bilgi@evindegeri.com>",
-          to: "evindestek@gmail.com", // Admin email
+          to: "destek@evindegeri.com", // Admin email
           subject: "Yeni Değerleme Talebi!",
           html: `
                                           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">

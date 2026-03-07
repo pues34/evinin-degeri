@@ -38,7 +38,7 @@ export default function GizlilikPolitikasi() {
                     <section>
                         <h2 className="text-xl font-semibold text-appleDark mb-3">4. Haklarınız (KVKK Kapsamında)</h2>
                         <p>
-                            Aydınlatma yükümlülüğümüz çerçevesinde, sistemimize kayıtlı bulunan kişisel verilerinize erişme, silinmesini (unutulma hakkı) veya düzeltilmesini talep etme hakkına sahipsiniz. Silme işlemleri için destek taleplerinizi <strong>evindestek@gmail.com</strong> adresinden iletişim merkezimize iletebilirsiniz.
+                            Aydınlatma yükümlülüğümüz çerçevesinde, sistemimize kayıtlı bulunan kişisel verilerinize erişme, silinmesini (unutulma hakkı) veya düzeltilmesini talep etme hakkına sahipsiniz. Silme işlemleri için destek taleplerinizi <strong>destek@evindegeri.com</strong> adresinden iletişim merkezimize iletebilirsiniz.
                         </p>
                     </section>
 

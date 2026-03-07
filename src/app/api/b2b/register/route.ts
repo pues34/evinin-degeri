@@ -58,7 +58,7 @@ export async function POST(req: Request) {
             try {
                 await resend.emails.send({
                     from: "Evinin Değeri Sistem <bilgi@evindegeri.com>",
-                    to: "evindestek@gmail.com", // Admin E-mail
+                    to: "destek@evindegeri.com", // Admin E-mail
                     subject: "Yeni B2B Emlakçı Kaydı!",
                     html: `
                       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">

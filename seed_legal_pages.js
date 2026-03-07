@@ -56,7 +56,7 @@ const pages = [
 <p>Platformumuz, kullanici deneyimini iyilestirmek ve site performansini analiz etmek amaciyla cerezler kullanmaktadir. Cerez tercihlerinizi tarayici ayarlarinizdan yonetebilirsiniz.</p>
 
 <h2>9. Iletisim</h2>
-<p>Gizlilik politikamiza iliskin sorulariniz icin <strong>evindestek@gmail.com</strong> adresinden bize ulasabilirsiniz.</p>
+<p>Gizlilik politikamiza iliskin sorulariniz icin <strong>destek@evindegeri.com</strong> adresinden bize ulasabilirsiniz.</p>
 
 <p><em>Son guncelleme: Mart 2026</em></p>`
     },
@@ -117,7 +117,7 @@ const pages = [
 <p>Bu kosullar Turkiye Cumhuriyeti hukukuna tabidir. Uyusmazliklarda Istanbul Mahkemeleri ve Icra Daireleri yetkilidir.</p>
 
 <h2>10. Iletisim</h2>
-<p>Kullanim kosullarina iliskin sorulariniz icin <strong>evindestek@gmail.com</strong> adresinden bize ulasabilirsiniz.</p>
+<p>Kullanim kosullarina iliskin sorulariniz icin <strong>destek@evindegeri.com</strong> adresinden bize ulasabilirsiniz.</p>
 
 <p><em>Son guncelleme: Mart 2026</em></p>`
     }

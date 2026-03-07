@@ -19,7 +19,7 @@ export default function MesafeliSatisSozlesmesi() {
                         <p><strong>Adres:</strong> Muratpaşa Mah. Cemiyet Cad. No:28 Bayrampaşa / İstanbul</p>
                         <p><strong>Vergi Dairesi:</strong> Tuna Vergi Dairesi</p>
                         <p><strong>Vergi / T.C. Kimlik No:</strong> 1310852802</p>
-                        <p><strong>E-posta:</strong> evindestek@gmail.com</p>
+                        <p><strong>E-posta:</strong> destek@evindegeri.com</p>
                         <p><strong>Telefon:</strong> 0533 725 3171</p>
 
                         <h3 className="font-medium mt-4 mb-1">1.2 Alıcı:</h3>
