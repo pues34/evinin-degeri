@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { appleDark: '#1d1d1f', appleBlue: '#2997ff' }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: #1d1d1f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 1080px;
+            width: 1080px;
+            margin: 0;
+            overflow: hidden;
+            color: white;
+        }
+
+        .glow-grid {
+            position: absolute;
+            inset: 0;
+            background-size: 50px 50px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #2997ff;
+        }
+    </style>
+</head>
+
+<body class="relative">
+    <div class="glow-grid"></div>
+    <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-appleBlue/20 blur-[150px] rounded-full point-events-none">
+    </div>
+
+    <div class="relative z-10 w-[92%] h-[92%] flex flex-col p-16">
+
+        <div class="mb-16 text-center">
+            <div
+                class="inline-block px-6 py-2 bg-white/10 text-blue-400 font-bold tracking-widest rounded-full mb-6 border border-white/20">
+                SİSTEM NASIL ÇALIŞIR?</div>
+            <h1 class="text-[4.5rem] font-black tracking-tight leading-tight">Yapay Zeka İle<br>3 Adımda Değerleme</h1>
+        </div>
+
+        <div class="flex-1 flex flex-col justify-center gap-10">
+            <!-- Step 1 -->
+            <div class="step-card rounded-3xl p-10 flex items-center gap-10 shadow-2xl">
+                <div
+                    class="w-24 h-24 bg-appleBlue rounded-full flex items-center justify-center text-4xl font-black text-white shrink-0 border-4 border-white/20">
+                    1</div>
+                <div>
+                    <h3 class="text-3xl font-bold mb-3">Bağımsız Bölüm Özellikleri</h3>
+                    <p class="text-xl text-gray-400 font-medium">Bina yaşı, metrekare, kat, oda sayısı ve ısınma tipi
+                        gibi fiziksel detayları girin.</p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-card rounded-3xl p-10 flex items-center gap-10 shadow-2xl"
+                style="border-left-color: #a855f7;">
+                <div
+                    class="w-24 h-24 bg-purple-500 rounded-full flex items-center justify-center text-4xl font-black text-white shrink-0 border-4 border-white/20">
+                    2</div>
+                <div>
+                    <h3 class="text-3xl font-bold mb-3">Bölgesel Şerefiye Analizi</h3>
+                    <p class="text-xl text-gray-400 font-medium">Algoritma, ilçe ve mahallenin son 2 yıllık satış
+                        trendlerini ve lokasyon çarpanlarını tarar.</p>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-card rounded-3xl p-10 flex items-center gap-10 shadow-2xl"
+                style="border-left-color: #22c55e;">
+                <div
+                    class="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center text-4xl font-black text-white shrink-0 border-4 border-white/20">
+                    3</div>
+                <div>
+                    <h3 class="text-3xl font-bold mb-3">En Olası Piyasa Değeri</h3>
+                    <p class="text-xl text-gray-400 font-medium">Satış rakamları rafine edilerek, evinizin bugün
+                        satılabileceği en doğru fiyat belirlenir.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-auto text-center pt-10">
+            <div class="text-2xl font-bold tracking-widest text-gray-500">EVINDEGERI.COM</div>
+        </div>
+    </div>
+</body>
+
+</html>

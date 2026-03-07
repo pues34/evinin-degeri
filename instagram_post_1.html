@@ -1,0 +1,114 @@
+    <!DOCTYPE html>
+    <html lang="tr">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ['Inter', 'sans-serif'],
+                        },
+                        colors: {
+                            appleDark: '#1d1d1f',
+                            appleBlue: '#2997ff',
+                            appleGray: '#f5f5f7'
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            body {
+                background: linear-gradient(135deg, #f5f5f7 0%, #e2e8f0 100%);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 1000px;
+                width: 1000px;
+                margin: 0;
+                overflow: hidden;
+            }
+            .glass-card {
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            }
+            .glow-blue {
+                position: absolute;
+                top: -100px;
+                right: -100px;
+                width: 600px;
+                height: 600px;
+                background: radial-gradient(circle, rgba(41, 151, 255, 0.2) 0%, rgba(255,255,255,0) 70%);
+                border-radius: 50%;
+                z-index: 0;
+            }
+             .glow-purple {
+                position: absolute;
+                bottom: -100px;
+                left: -100px;
+                width: 600px;
+                height: 600px;
+                background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(255,255,255,0) 70%);
+                border-radius: 50%;
+                z-index: 0;
+            }
+        </style>
+    </head>
+    <body class="relative text-appleDark">
+        <div class="glow-blue"></div>
+        <div class="glow-purple"></div>
+        
+        <div class="relative z-10 w-[95%] h-[95%] bg-white/20 backdrop-blur-3xl rounded-[3rem] border border-white/40 shadow-2xl flex flex-col justify-between p-16">
+            
+            <div class="flex items-center gap-4">
+                <div class="w-20 h-20 bg-appleDark rounded-2xl flex items-center justify-center shadow-2xl">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                </div>
+                <div>
+                   <h1 class="text-4xl font-extrabold tracking-tight">Evinin Değeri</h1>
+                   <p class="text-lg text-gray-500 font-bold tracking-[0.2em] mt-1">YAPAY ZEKA EMLAK ANALİZİ</p>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-[2.5rem] p-16 w-full shadow-xl">
+                <div class="inline-flex items-center gap-3 px-6 py-3 border border-blue-200 bg-blue-50/80 rounded-full text-appleBlue font-bold tracking-widest text-sm mb-10 shadow-sm">
+                    <span>✨</span> %98 DOĞRULUK PAYI İLE
+                </div>
+                <h2 class="text-[3.5rem] font-extrabold tracking-tight leading-[1.1] mb-8 text-appleDark">
+                    Evinizin gerçek piyasa değeri <span class="text-appleBlue drop-shadow-sm">ne kadar?</span>
+                </h2>
+                <p class="text-[1.7rem] text-gray-500 mb-14 font-medium leading-normal pr-10">
+                    Milyonlarca veriyi saniyeler içinde analiz eden algoritmamızla, yanılma payı olmadan anında hesaplayın.
+                </p>
+                
+                <div class="bg-gradient-to-r from-appleDark to-gray-900 rounded-3xl p-10 border border-gray-800 shadow-2xl flex items-center justify-between text-white transform hover:scale-[1.02] transition-transform">
+                    <div class="text-left">
+                        <p class="text-lg text-gray-400 font-bold uppercase tracking-widest mb-2">Tahmini Değer</p>
+                        <p class="text-5xl font-extrabold tracking-tight">14.250.000 <span class="text-3xl text-gray-400 font-semibold tracking-normal">TL</span></p>
+                    </div>
+                    <div class="w-20 h-20 rounded-full bg-appleBlue/20 border border-appleBlue/40 flex items-center justify-center">
+                        <svg class="w-10 h-10 text-appleBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between pl-4">
+                <div class="flex gap-4">
+                     <span class="px-4 py-2 bg-white/50 border border-white/60 text-gray-600 rounded-full text-sm font-bold shadow-sm">🎯 İstanbul</span>
+                     <span class="px-4 py-2 bg-white/50 border border-white/60 text-gray-600 rounded-full text-sm font-bold shadow-sm">🎯 Big Data</span>
+                </div>
+                <div class="text-appleBlue font-bold text-3xl tracking-wide flex items-center gap-2">
+                    evindegeri.com <span class="text-gray-300">/</span>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>

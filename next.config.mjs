@@ -1,3 +1,5 @@
+import { withSentryConfig } from '@sentry/nextjs';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     async headers() {
@@ -24,4 +26,18 @@ const nextConfig = {
     },
 };
 
-export default nextConfig;
+export default withSentryConfig(
+    nextConfig,
+    {
+        silent: true,
+        org: "evinin-degeri",
+        project: "evinin-degeri",
+    },
+    {
+        widenClientFileUpload: true,
+        transpileClientSDK: true,
+        hideSourceMaps: true,
+        disableLogger: true,
+        automaticVercelMonitors: true,
+    }
+);

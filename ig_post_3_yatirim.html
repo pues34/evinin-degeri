@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } }
+        }
+    </script>
+    <style>
+        body {
+            background: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 1080px;
+            width: 1080px;
+            margin: 0;
+            overflow: hidden;
+            color: white;
+        }
+
+        .map-bg {
+            position: absolute;
+            inset: -100px;
+            background-image:
+                radial-gradient(circle at 30% 30%, rgba(220, 38, 38, 0.4) 0%, transparent 20%),
+                radial-gradient(circle at 70% 60%, rgba(234, 88, 12, 0.4) 0%, transparent 25%),
+                radial-gradient(circle at 40% 70%, rgba(34, 197, 94, 0.3) 0%, transparent 20%),
+                radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 30%);
+            filter: blur(40px);
+            opacity: 0.8;
+            z-index: 0;
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body class="relative font-sans">
+    <div class="map-bg"></div>
+    <div
+        class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay">
+    </div>
+
+    <div class="relative z-10 w-full h-full flex flex-col p-16 justify-between">
+
+        <div class="flex items-center gap-4">
+            <div class="bg-red-500 text-white px-6 py-2 rounded-full font-bold tracking-widest text-sm uppercase">
+                Yatırım RadarI</div>
+            <div
+                class="bg-white/10 backdrop-blur-md px-6 py-2 rounded-full font-bold tracking-widest text-sm text-gray-300">
+                İSTANBUL</div>
+        </div>
+
+        <div class="mt-16">
+            <h1 class="text-[5.5rem] font-black tracking-tight leading-[1] mb-8">
+                Isı Haritası ile<br>
+                <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-orange-400 to-yellow-400">Yatırım
+                    Bölgeleri</span>
+            </h1>
+            <p class="text-[2.2rem] text-gray-300 font-medium leading-tight max-w-3xl">
+                Hangi ilçede ev fiyatları yükselişte? Nereye yatırım yapmalısınız? İstanbul'un gayrimenkul röntgenini
+                çekin.
+            </p>
+        </div>
+
+        <div class="flex gap-8 mt-16">
+            <div class="glass rounded-3xl p-10 flex-1 shadow-2xl border-t border-t-red-400/30">
+                <div class="text-red-400 font-black text-6xl mb-4">↑ %42</div>
+                <p class="text-xl text-gray-300 font-semibold uppercase tracking-wider">Yıllık Ortalama Artış</p>
+            </div>
+            <div class="glass rounded-3xl p-10 flex-1 shadow-2xl border-t border-t-green-400/30">
+                <div class="text-green-400 font-black text-6xl mb-4">12<span class="text-3xl">YIL</span></div>
+                <p class="text-xl text-gray-300 font-semibold uppercase tracking-wider">Kısa Amortisman Süresi</p>
+            </div>
+        </div>
+
+        <div
+            class="mt-auto glass rounded-full py-6 px-12 flex justify-between items-center w-max mx-auto border border-white/20">
+            <div class="flex items-center gap-4">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <span class="text-2xl font-bold tracking-wide">Yatırım Haritasını İncele</span>
+            </div>
+            <div class="w-px h-10 bg-white/20 mx-8"></div>
+            <div class="text-2xl font-black tracking-tighter text-blue-400">evindegeri.com</div>
+        </div>
+
+    </div>
+</body>
+
+</html>
