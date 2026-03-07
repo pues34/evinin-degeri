@@ -4,122 +4,67 @@ const prisma = new PrismaClient();
 const pages = [
     {
         slug: "gizlilik-politikasi",
-        title: "Gizlilik Politikasi",
-        content: `<h2>1. Genel Bilgilendirme</h2>
-<p>Evinin Degeri ("Platform"), kullanicilarin gizliligine onem vermektedir. Bu gizlilik politikasi, platformumuzu kullanmaniz sirasinda toplanan, islenen ve saklanan kisisel verilere iliskin uygulamalarimizi aciklamaktadir.</p>
-
-<h2>2. Toplanan Veriler</h2>
-<p>Platformumuz asagidaki verileri toplayabilir:</p>
+        title: "Gizlilik Politikası (KVKK Aydınlatma Metni)",
+        content: `<h2>1. Veri Sorumlusunun Kimliği</h2>
+<p>Evinin Değeri ("Şirket" veya "Platform"), 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca veri sorumlusu sıfatıyla hareket etmektedir. Amacımız, platform üzerinden paylaştığınız bilgilerin gizliliğini en üst düzeyde korumaktır.</p>
+<h2>2. Toplanan Kişisel Veriler</h2>
+<p>Hizmetlerimizi sunabilmek için aşağıdaki verileri işliyoruz:</p>
 <ul>
-<li><strong>Iletisim Bilgileri:</strong> Ad, soyad, e-posta adresi, telefon numarasi</li>
-<li><strong>Gayrimenkul Bilgileri:</strong> Il, ilce, mahalle, metrekare, kat bilgisi, bina yasi ve diger konut ozellikleri</li>
-<li><strong>Teknik Veriler:</strong> IP adresi, tarayici turu, erisim zamanlari</li>
-<li><strong>Cerez Verileri:</strong> Kullanici deneyimini iyilestirmek icin cerezler kullanilmaktadir</li>
+<li><strong>Kimlik ve İletişim:</strong> Ad, soyad, e-posta adresi, telefon numarası.</li>
+<li><strong>Lokasyon ve Mülk Bilgisi:</strong> Değerleme yapılan konutun il, ilçe, mahalle bilgileri, metrekare, kat, yaş gibi teknik donatıları.</li>
+<li><strong>İşlem Güvenliği:</strong> IP adresi, cihaz bilgileri, log kayıtları.</li>
 </ul>
-
-<h2>3. Verilerin Kullanim Amaci</h2>
-<p>Toplanan veriler asagidaki amaclarla kullanilmaktadir:</p>
-<ul>
-<li>Gayrimenkul degerleme hizmetinin sunulmasi</li>
-<li>Kullaniciya kisisellestirilmis degerleme raporu olusturulmasi ve e-posta ile iletilmesi</li>
-<li>Platform performansinin analizi ve iyilestirilmesi</li>
-<li>Yasal yukumluluklerin yerine getirilmesi</li>
-<li>Kurumsal (B2B) kullanicilara ozel hizmetlerin sunulmasi</li>
-</ul>
-
-<h2>4. Yapay Zeka ve Algoritmik Islem Uyarisi</h2>
-<p><strong>Onemli:</strong> Platformumuz, gayrimenkul degerleme islemlerinde yapay zeka algoritmasi ve istatistiksel modeller kullanmaktadir. Bu algoritmalar enflasyon oranlari, bolgesel piyasa verileri ve konut ozellikleri temelinde calismaktadir. Uretilen sonuclar <strong>tahmini niteliktedir</strong> ve kesin deger olarak kabul edilmemelidir. Sonuclar yatirim tavsiyesi icermemektedir.</p>
-
-<h2>5. Verilerin Paylasilmasi</h2>
-<p>Kisisel verileriniz ucuncu taraflarla paylasilmamaktadir. Ancak asagidaki durumlarda paylasim yapilabilir:</p>
-<ul>
-<li>Yasal zorunluluk halinde resmi makamlara</li>
-<li>Odeme islemleri icin PayTR gibi odeme altyapi saglayicilarina (yalnizca odeme bilgileri)</li>
-<li>E-posta gonderimi icin Resend altyapisina (yalnizca e-posta adresi)</li>
-</ul>
-
-<h2>6. Veri Saklama Suresi</h2>
-<p>Kisisel verileriniz, hizmetin sunulmasi icin gerekli olan sure boyunca saklanmaktadir. Hesabinizi silmeniz veya talepte bulunmaniz halinde verileriniz makul sure icinde imha edilecektir.</p>
-
-<h2>7. KVKK Kapsamindaki Haklariniz</h2>
-<p>6698 sayili Kisisel Verilerin Korunmasi Kanunu (KVKK) kapsaminda asagidaki haklara sahipsiniz:</p>
-<ul>
-<li>Kisisel verilerinizin islenip islenmedigini ogrenme</li>
-<li>Islenmisse buna iliskin bilgi talep etme</li>
-<li>Verilerin islenis amacini ogrenme</li>
-<li>Eksik veya yanlis islenmis verilerin duzeltilmesini isteme</li>
-<li>Verilerin silinmesini veya yok edilmesini isteme</li>
-<li>Islenen verilerin ucuncu kisilere bildirilmesini isteme</li>
-</ul>
-
-<h2>8. Cerezler (Cookies)</h2>
-<p>Platformumuz, kullanici deneyimini iyilestirmek ve site performansini analiz etmek amaciyla cerezler kullanmaktadir. Cerez tercihlerinizi tarayici ayarlarinizdan yonetebilirsiniz.</p>
-
-<h2>9. Iletisim</h2>
-<p>Gizlilik politikamiza iliskin sorulariniz icin <strong>destek@evindegeri.com</strong> adresinden bize ulasabilirsiniz.</p>
-
-<p><em>Son guncelleme: Mart 2026</em></p>`
+<h2>3. İşleme Amaçları</h2>
+<p>Topladığımız kişisel veriler; gayrimenkul değerleme hesaplamalarının yapılması, yapay zeka algoritmalarının eğitilmesi (anonimleştirilerek), üyelik sözleşmesinin kurulması, B2B/B2C pazarlama faaliyetlerinin yürütülmesi ve yasal zorunlulukların ifası amacıyla işlenmektedir.</p>
+<h2>4. Üçüncü Kişilere Aktarım</h2>
+<p>Verileriniz, yalnızca yasal sınırlar çerçevesinde; ödeme altyapı sağlayıcıları (örn: iyzico), bulut sunucu hizmeti veren firmalar ve yetkili kamu kurumlarıyla paylaşılmaktadır. Verileriniz asla reklam veya data satışı amacıyla üçüncü taraflarla paylaşılmaz.</p>
+<h2>5. İlgili Kişinin Hakları</h2>
+<p>KVKK Madde 11 uyarınca; verilerinizin işlenip işlenmediğini öğrenme, düzeltilmesini talep etme, silinmesini isteme hakkına sahipsiniz. Taleplerinizi <strong>destek@evindegeri.com</strong> adresine iletebilirsiniz.</p>
+<p><em>Son Güncelleme: Mart 2026</em></p>`
     },
     {
         slug: "kullanim-kosullari",
-        title: "Kullanim Kosullari",
-        content: `<h2>1. Genel Hukumler</h2>
-<p>Bu kullanim kosullari, Evinin Degeri ("Platform") web sitesini ve hizmetlerini kullanan tum kullanicilari baglamaktadir. Platformu kullanarak bu kosullari kabul etmis sayilirsiniz.</p>
-
-<h2>2. Hizmet Tanimi</h2>
-<p>Evinin Degeri, yapay zeka ve istatistiksel algoritmalar kullanarak gayrimenkul degerleme hizmeti sunan bir dijital platformdur. Platform asagidaki hizmetleri sunmaktadir:</p>
-<ul>
-<li>Ucretsiz gayrimenkul deger tahmini</li>
-<li>Yapay zeka destekli bolgesel analiz</li>
-<li>Kurumsal (B2B) kullanicilara ozel limitsiz degerleme</li>
-<li>Yatirim isi haritasi</li>
-<li>Emlak sektoru blog ve interior</li>
-</ul>
-
-<h2>3. Onemli Yasal Uyarilar</h2>
-<p><strong>YATIRIM TAVSIYESI DEGILDIR:</strong> Platformumuz tarafindan uretilen tum degerleme sonuclari, yapay zeka algoritmasi ve guncel piyasa verileri kullanilarak olusturulan <strong>tahmini degerlerdir</strong>. Bu sonuclar;</p>
-<ul>
-<li>Resmi bir gayrimenkul ekspertiz raporu yerine <strong>gecmez</strong></li>
-<li><strong>Yatirim tavsiyesi niteliginde degildir</strong> ve yatirim tavsiyesi icermez</li>
-<li>Alim-satim kararlari icin tek basina yeterli bir kaynak olarak kabul <strong>edilemez</strong></li>
-<li>Enflasyon oranlari, bolgesel veriler ve yapay zeka analizine dayali olarak uretilmektedir</li>
-<li>Gercek piyasa fiyatlarindan farklilik gosterebilir</li>
-</ul>
-<p>Kesin alim-satim kararlari icin <strong>SPK lisansli gayrimenkul degerleme uzmanlari</strong> ile calisilmasi sart ve tavsiye edilmektedir.</p>
-
-<h2>4. Kullanici Sorumluluklari</h2>
-<p>Kullanicilar asagidaki hususlara uymakla yukumludur:</p>
-<ul>
-<li>Forma girilen bilgilerin dogrulugu kullanicinin sorumlulugundeadir</li>
-<li>Platformun kotu niyetle, abart spam amacli veya yetkisiz erisim amacli kullanilmamasi</li>
-<li>Diger kullanicilarin haklarinin ihlal edilmemesi</li>
-<li>Platformun teknik altyapisina zarar verilmemesi</li>
-</ul>
-
-<h2>5. Kullanim Sinirlamalari</h2>
-<p>Platform, kotu niyetli kullanimlari onlemek icin asagidaki sinirlamalari uygulayabilir:</p>
-<ul>
-<li>Belirli bir zaman diliminde maksimum degerleme sayisi</li>
-<li>Telefon numarasi bazli gunluk kullanim limiti</li>
-<li>IP bazli erisim sinirlamasi</li>
-</ul>
-
-<h2>6. Fikri Mulkiyet</h2>
-<p>Platform uzerindeki tum icerikler, tasarimlar, algoritmalar, yazilim kodlari ve veritabanlari Evinin Degeri'nin fikri mulkiyetindedir ve telif hakki ile korunmaktadir. Izinsiz kopyalama, degistirme veya dagitma yasaktir.</p>
-
-<h2>7. Sorumluluk Sinirlamasi</h2>
-<p>Evinin Degeri, sunulan degerleme sonuclarinin dogrulugu, eksiksizligi veya guncelligi konusunda garanti vermemektedir. Platform kullanilarak alinan kararlarin sorumlulugu tamamen kullaniciya aittir. Evinin Degeri, bu kararlardagan kaynaklanan dogrudan veya dolayli zaralardan sorumlu tutulamaz.</p>
-
-<h2>8. Degisiklikler</h2>
-<p>Bu kullanim kosullari onceden bildirim yapilmaksizin guncellenebilir. Guncellenmis kosullar platformda yayinlandigi tarihten itibaren gecerlidir.</p>
-
-<h2>9. Uygulanacak Hukuk</h2>
-<p>Bu kosullar Turkiye Cumhuriyeti hukukuna tabidir. Uyusmazliklarda Istanbul Mahkemeleri ve Icra Daireleri yetkilidir.</p>
-
-<h2>10. Iletisim</h2>
-<p>Kullanim kosullarina iliskin sorulariniz icin <strong>destek@evindegeri.com</strong> adresinden bize ulasabilirsiniz.</p>
-
-<p><em>Son guncelleme: Mart 2026</em></p>`
+        title: "Kullanım Koşulları",
+        content: `<h2>1. Taraflar ve Onay</h2>
+<p>Bu metin, Evinin Değeri sistemini ziyaret eden ve kullanan tüm gerçek ve tüzel kişiler ("Kullanıcı") ile hizmet sağlayıcı Şirket arasındaki bağlayıcı kuralları belirler. Platformu kullanarak bu şartları kabul etmiş sayılırsınız.</p>
+<h2>2. Hizmetin Kapsamı ve Yapay Zeka Uyarısı</h2>
+<p>Platform, kullanıcı beyanına, bölge çarpanlarına ve makine öğrenimi modellerine dayanarak <strong>TAHMİNİ</strong> pazar değeri hesaplamaktadır. Sunulan sonuçlar SPK lisanslı bir ekspertiz raporu değildir.</p>
+<h2>3. Yatırım Tavsiyesi Değildir (Sorumluluk Reddi)</h2>
+<p>Elde edilen değerler, kira çarpanları veya amortisman süreleri <strong>kesinlikle yatırım tavsiyesi içermez.</strong> Evinin Değeri, bu raporlara dayanarak alınan ticari, hukuki veya finansal kararlardan doğabilecek hiçbir maddi/manevi zarardan sorumlu tutulamaz.</p>
+<h2>4. Fikri Mülkiyet Hakları</h2>
+<p>Sitedeki tüm yazılımlar, tasarımlar, logolar, metinler ve Isı Haritası algoritmaları şirketimize aittir. Kopyalanması, tersine mühendislik yapılması veya ticari amaçla izinsiz kullanılması yasal takibata tabidir.</p>
+<h2>5. Adil Kullanım (Fair Use)</h2>
+<p>Bireysel amaçlı ücretsiz değerleme hizmetinin bot hesaplar veya scraping yöntemleriyle suistimal edilmesi durumunda, şirket IP numaralarını ve cihazları kalıcı olarak engelleme hakkını saklı tutar.</p>
+<p><em>Son Güncelleme: Mart 2026</em></p>`
+    },
+    {
+        slug: "mesafeli-satis-sozlesmesi",
+        title: "Mesafeli Satış Sözleşmesi",
+        content: `<h2>1. Taraflar</h2>
+<p><strong>Satıcı:</strong> Evinin Değeri Gayrimenkul Teknolojileri A.Ş.<br>
+<strong>Alıcı (Tüketici):</strong> Platform üzerinden dijital Premium rapor veya B2B abonelik satın alan kişi/kurum.</p>
+<h2>2. Sözleşmenin Konusu</h2>
+<p>İşbu sözleşme, Alıcı'nın Satıcı'ya ait Evinin Değeri platformundan elektronik ortamda siparişini yaptığı "Premium Yatırım Haritası", "Detaylı Değerleme PDF Raporu" veya "B2B Kurumsal Paket" hizmetlerinin satışı ve ifası ile ilgili hak ve yükümlülükleri düzenler.</p>
+<h2>3. Hizmet Bedeli ve Ödeme Şartları</h2>
+<p>Satın alınan paketin vergiler dahil satış fiyatı sipariş formunda ve fatura bilgisinde gösterilmektedir. Ödeme, onaylanmış ödeme kuruluşları (örn: iyzico/Stripe) üzerinden tahsil edilir.</p>
+<h2>4. İfa ve Teslimat</h2>
+<p>Sözleşme konusu "Dijital İçerik/Yazılım", ödemenin onaylanmasının hemen ardından saniyeler içerisinde kullanıcının ekranında veya e-posta adresinde dijital olarak teslim edilir/kullanıma açılır.</p>
+<h2>5. Cayma Hakkının İstisnası</h2>
+<p>Mesafeli Sözleşmeler Yönetmeliği Madde 15/1-g uyarınca, "Elektronik ortamda anında ifa edilen hizmetler veya tüketiciye anında teslim edilen gayrimaddi mallara ilişkin sözleşmeler" <strong>cayma hakkının istisnasıdır.</strong> Bu sebeple sipariş tamamlanıp rapor dijital olarak oluşturulduktan sonra iade yapılamaz.</p>
+<h2>6. Uyuşmazlık Çözümü</h2>
+<p>Sözleşmenin uygulanmasından doğacak uyuşmazlıklarda İstanbul (Çağlayan) Mahkemeleri ve İcra Daireleri yetkilidir.</p>`
+    },
+    {
+        slug: "iptal-iade",
+        title: "İptal ve İade Koşulları",
+        content: `<h2>1. Dijital Ürün Hizmet Politikası</h2>
+<p>Evinin Değeri platformu üzerinden satılan ürünler fiziksel bir mal değil, anında üretilen ve dijital olarak teslim edilen "Yapay Zeka Destekli Analiz Raporları" ve "Yazılım Abonelikleri"dir.</p>
+<h2>2. Cayma Hakkının Bulunmaması (İade Edilemezlik)</h2>
+<p>Tüketici Hakları gereğince dijital ortamda anında ifa edilen hizmetler iade edilemez. Kullanıcı "Rapor Al" butonuna tıklayıp ödemeyi gerçekleştirdiğinde işlem tamamlanmış, sunucu maliyetleri ve veri analiz maliyetleri gerçekleşmiş olur. Bu sebeple <strong>satın alınan tekil raporların ücret iadesi yapılmamaktadır.</strong></p>
+<h2>3. Abonelik İptal Koşulları</h2>
+<p>Kurumsal B2B Emlakçı Paketi veya Premium Aylık/Yıllık abonelik alan kullanıcılar, aboneliklerini diledikleri zaman "Ayarlar > Faturalandırma" menüsünden iptal edebilirler. İptal işlemi bir sonraki fatura döneminden itibaren geçerli olur. İçinde bulunulan ayın ücret iadesi yapılmaz, ancak hizmet fatura döngüsü bitene kadar kullanılmaya devam eder.</p>
+<h2>4. Teknik Hata Durumları</h2>
+<p>Eğer platform kaynaklı bir sistem çökmesi, raporun eksik oluşturulması veya farklı bir adresin analiz edilmesi gibi teknik bir sunucu hatası yaşanırsa, 14 gün içerisinde destek maili üzerinden ulaşıldığı takdirde inceleme başlatılır. Şirket hatası tespit edilirse koşulsuz ve kesintisiz iade gerçekleştirilir.</p>`
     }
 ];
 
@@ -139,7 +84,7 @@ async function main() {
             console.log(`Created: ${page.slug}`);
         }
     }
-    console.log("CMS legal pages updated successfully.");
+    console.log("CMS legal pages updated successfully (4 comprehensive pages).");
 }
 
 main().catch(console.error).finally(() => prisma.$disconnect());

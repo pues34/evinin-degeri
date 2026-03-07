@@ -88,16 +88,21 @@ export default function HeatmapClient() {
                                     {!session ? (
                                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                             <Link href="/kayit" className="bg-appleDark text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-appleBlue hover:scale-105 transition-all shadow-lg flex items-center justify-center gap-2">
-                                                <UserPlus size={20} /> Kayıt Ol
+                                                <UserPlus size={20} /> Ücretsiz Kayıt Ol
                                             </Link>
                                             <Link href="/giris" className="bg-white text-appleDark border border-gray-200 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition shadow-sm flex items-center justify-center gap-2">
                                                 <LogIn size={20} /> Giriş Yap
                                             </Link>
                                         </div>
                                     ) : (
-                                        <Link href="/fiyatlandirma" className="inline-flex items-center justify-center gap-2 w-full md:w-auto bg-appleDark text-white px-12 py-4 rounded-xl font-bold text-lg hover:bg-appleBlue hover:scale-105 transition-all shadow-lg hover:shadow-xl">
-                                            Premium Özellikleri Aç <ArrowRight size={20} />
-                                        </Link>
+                                        <div className="flex flex-col items-center mt-4">
+                                            <Link href="/fiyatlandirma" className="inline-flex items-center justify-center gap-2 w-full md:w-auto bg-gradient-to-r from-amber-500 to-amber-600 text-white px-12 py-4 rounded-xl font-bold text-lg hover:from-amber-600 hover:to-amber-700 hover:scale-105 transition-all shadow-lg hover:shadow-xl shadow-amber-500/20">
+                                                <Sparkles size={20} className="text-amber-100" /> Premium Isı Haritasını Aç (299₺)
+                                            </Link>
+                                            <p className="text-gray-400 text-sm mt-4 font-medium max-w-lg text-center gap-1 flex items-center justify-center">
+                                                <Lock size={14} /> Sadece Premium yatırımcılar bu ekrana erişebilir.
+                                            </p>
+                                        </div>
                                     )}
                                 </div>
                             </div>

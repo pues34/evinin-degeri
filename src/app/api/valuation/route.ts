@@ -433,6 +433,16 @@ export async function POST(req: NextRequest) {
       }
     });
 
+    try {
+      // Increment the global valuation counter for the landing page
+      await prisma.systemSettings.updateMany({
+        where: {},
+        data: { valuationCounter: { increment: 1 } }
+      });
+    } catch (err) {
+      console.warn("Could not increment counter:", err);
+    }
+
     // 4. Send Email via Resend
     if (resend && contactInfo.email) {
       try {

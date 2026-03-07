@@ -11,7 +11,7 @@ const testimonials = [
         text: "Kadıköy'deki evimi satmadan önce fiyatından emin olamıyordum. Evinin Değeri sayesinde piyasa gerçeklerini öğrendim, evimi tam da raporda çıkan fiyata 2 haftada sattım!",
         color: "bg-blue-100 text-blue-700",
         gradient: "from-blue-50 to-white border-blue-100",
-        avatarUrl: "https://i.pravatar.cc/150?u=ayse"
+        avatarUrl: "https://i.pravatar.cc/150?u=ayse_kadin"
     },
     {
         initials: "MT",
@@ -20,7 +20,7 @@ const testimonials = [
         text: "Yatırım yapmak için birçok farklı semtten evleri burada sorguladım. Yapay zekanın sağladığı bölgesel analizler ve ısı haritası gerçekten profesyonelce.",
         color: "bg-gray-200 text-gray-700",
         gradient: "from-gray-50 to-white border-gray-100",
-        avatarUrl: "https://i.pravatar.cc/150?u=murat"
+        avatarUrl: "https://i.pravatar.cc/150?u=murat_erkek"
     },
     {
         initials: "BZ",
@@ -29,7 +29,7 @@ const testimonials = [
         text: "B2B modülünü kullanıyorum. Müşterilerime çok hızlı ve veri odaklı sunumlar yapabiliyorum. Kesinlikle her profesyonelin elinin altında olmalı.",
         color: "bg-amber-100 text-amber-700",
         gradient: "from-amber-50 to-white border-amber-100",
-        avatarUrl: "https://i.pravatar.cc/150?u=burak"
+        avatarUrl: "https://i.pravatar.cc/150?u=burak_erkek2"
     },
     {
         initials: "EE",
@@ -38,7 +38,7 @@ const testimonials = [
         text: "Hayalimdeki evi bulduğumda fiyatı bana biraz yüksek gelmişti. Buradan sorgulattığımda gerçekten de şişirilmiş olduğunu anladım, ciddi bir pazarlık avantajı sağladı.",
         color: "bg-purple-100 text-purple-700",
         gradient: "from-purple-50 to-white border-purple-100",
-        avatarUrl: "https://i.pravatar.cc/150?u=elif"
+        avatarUrl: "https://i.pravatar.cc/150?u=elif_kadin2"
     }
 ];
 

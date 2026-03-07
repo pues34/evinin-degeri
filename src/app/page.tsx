@@ -97,8 +97,8 @@ export default async function Home() {
 
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-tr from-appleBlue/30 to-purple-500/30 transform rotate-6 rounded-3xl blur-xl" />
-              <div className="bg-white/5 p-2 rounded-2xl shadow-2xl relative z-10 border border-white/10 backdrop-blur-xl">
-                <img src="/b2b-dashboard-preview.png" alt="B2B Emlakçı Paneli" className="w-full h-auto rounded-xl object-cover ring-1 ring-white/20 shadow-2xl" />
+              <div className="bg-gray-900 p-2 rounded-2xl shadow-2xl relative z-10 border border-white/10 backdrop-blur-xl">
+                <img src="/b2b-dashboard-preview.png" alt="B2B Emlakçı Paneli" className="w-full h-auto rounded-xl object-contain ring-1 ring-white/10 shadow-inner" />
               </div>
             </div>
           </div>
