@@ -1,18 +1,33 @@
 "use client";
 
-import { Crown, Activity, ExternalLink, History, TrendingUp, Download, CheckCircle, BarChart3, Users, Clock, UserPlus, LogOut, Share2, X, Map, Settings } from "lucide-react";
+import { Crown, Activity, ExternalLink, History, TrendingUp, Download, CheckCircle, BarChart3, Users, Clock, UserPlus, LogOut, Share2, X, Map, Settings, Home } from "lucide-react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import FastSupportForm from "@/components/FastSupportForm";
 import SocialMediaGenerator from "@/components/SocialMediaGenerator";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function B2BClientInterface({ user, valuations, leads, isActivePro }: { user: any, valuations: any[], leads: any[], isActivePro: boolean }) {
     const [downloading, setDownloading] = useState(false);
-    const [activeTab, setActiveTab] = useState<'PORTFOLIO' | 'LEAD_MARKET' | 'HEATMAP' | 'MY_BRAND' | 'SETTINGS'>('PORTFOLIO');
+    const [activeTab, setActiveTab] = useState<'PORTFOLIO' | 'LEAD_MARKET' | 'HEATMAP' | 'MY_BRAND' | 'MY_LISTINGS' | 'SETTINGS'>('PORTFOLIO');
     const [logoUrl, setLogoUrl] = useState(user?.customLogoUrl || "");
     const [savingLogo, setSavingLogo] = useState(false);
+
+    // Phase 18
+    const [listings, setListings] = useState<any[]>([]);
+    const [loadingListings, setLoadingListings] = useState(false);
+
+    useEffect(() => {
+        if (activeTab === 'MY_LISTINGS' && listings.length === 0) {
+            setLoadingListings(true);
+            fetch("/api/listings?mode=my-listings")
+                .then(res => res.json())
+                .then(data => setListings(data))
+                .catch(console.error)
+                .finally(() => setLoadingListings(false));
+        }
+    }, [activeTab]);
 
     // Settings State
     const [settings, setSettings] = useState({
@@ -283,6 +298,12 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
                             <Crown size={18} /> Markam
                         </button>
                         <button
+                            onClick={() => setActiveTab('MY_LISTINGS')}
+                            className={`flex-1 sm:flex-none px-6 py-5 font-bold text-sm flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'MY_LISTINGS' ? 'border-indigo-500 text-indigo-600 bg-white' : 'border-transparent text-gray-500 hover:text-indigo-600'}`}
+                        >
+                            <Home size={18} /> İlanlarım
+                        </button>
+                        <button
                             onClick={() => setActiveTab('SETTINGS')}
                             className={`flex-1 sm:flex-none px-6 py-5 font-bold text-sm flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'SETTINGS' ? 'border-gray-800 text-gray-900 bg-white' : 'border-transparent text-gray-500 hover:text-gray-900'}`}
                         >
@@ -427,6 +448,53 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
                                         ))}
                                     </div>
                                 )}
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* TAB CONTENT: MY_LISTINGS */}
+                {activeTab === 'MY_LISTINGS' && (
+                    <div className="p-8">
+                        <div className="flex justify-between items-center mb-6">
+                            <div>
+                                <h2 className="text-xl font-bold text-appleDark">Bireysel İlalarınız</h2>
+                                <p className="text-sm text-gray-500 mt-1">Sisteme yüklediğiniz ilanlar ve onay durumları.</p>
+                            </div>
+                            <Link href="/ilan-ver">
+                                <button className="px-4 py-2 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 transition">
+                                    + Yeni İlan
+                                </button>
+                            </Link>
+                        </div>
+                        {loadingListings ? (
+                            <div className="text-center py-10 text-gray-400">İlanlar yükleniyor...</div>
+                        ) : listings.length === 0 ? (
+                            <div className="text-center py-12 bg-gray-50 rounded-2xl border border-gray-100">
+                                <p className="text-gray-500 font-medium">Bireysel vitrinimizde yayınlanmış bir ilanınız yok.</p>
+                                <p className="text-sm text-gray-400 mt-2">Dilediğiniz zaman portföyünüzden ücretsiz ilan yayınlayarak geniş kitlelere ulaşabilirsiniz.</p>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {listings.map(listing => (
+                                    <div key={listing.id} className="bg-white border text-left border-gray-100 rounded-2xl p-5 shadow-sm">
+                                        <div className="flex justify-between items-start mb-3">
+                                            <h3 className="font-bold text-appleDark line-clamp-2">{listing.title}</h3>
+                                            <div className="shrink-0 ml-3">
+                                                {listing.status === 'PENDING' && <span className="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-1 rounded-md whitespace-nowrap">BEKLİYOR</span>}
+                                                {listing.status === 'APPROVED' && <span className="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-1 rounded-md whitespace-nowrap">YAYINDA</span>}
+                                                {listing.status === 'REJECTED' && <span className="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-1 rounded-md whitespace-nowrap">RET</span>}
+                                            </div>
+                                        </div>
+                                        <p className="text-2xl font-black text-appleBlue mb-3">
+                                            {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(listing.askingPrice)}
+                                        </p>
+                                        <div className="text-sm text-gray-500 flex flex-col gap-1">
+                                            <span className="flex items-center gap-1"><Map size={14} className="text-gray-400" /> {listing.district}, {listing.city}</span>
+                                            <span>{listing.netSqm} m2 | {listing.rooms}</span>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         )}
                     </div>

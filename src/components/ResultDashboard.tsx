@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Copy, CheckCircle, BrainCircuit, TrendingUp, MapPin, Users, Hexagon, Shield, GraduationCap, TreePine, ShoppingBag, Train, ThumbsUp, ThumbsDown, Minus, Activity, Clock, ShieldAlert } from "lucide-react";
+import { Copy, CheckCircle, BrainCircuit, TrendingUp, MapPin, Users, Hexagon, Shield, GraduationCap, TreePine, ShoppingBag, Train, ThumbsUp, ThumbsDown, Minus, Activity, Clock, ShieldAlert, Home } from "lucide-react";
 import Link from "next/link";
 import PdfButton from "./PdfButton";
 import AdBanner from "./AdBanner";
@@ -377,6 +377,23 @@ export default function ResultDashboard({ id }: { id: string }) {
                                 </p>
                             </div>
                         </div>
+                    </div>
+
+                    {/* Phase 18: İlan Verme CTA */}
+                    <div className="glass-card p-6 bg-gradient-to-br from-indigo-50 to-purple-50 border-indigo-100 relative overflow-hidden group">
+                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-white rounded-full mix-blend-overlay opacity-50 group-hover:scale-110 transition-transform duration-500"></div>
+                        <h3 className="font-bold text-lg text-indigo-900 mb-2 flex items-center relative z-10">
+                            <Home size={22} className="mr-2 text-indigo-600" />
+                            Evimi Sat / Kirala
+                        </h3>
+                        <p className="text-sm text-indigo-700 mb-5 leading-relaxed relative z-10">
+                            Bu değerlemeden yola çıkarak anında ücretsiz ilan oluşturun. Milyonlarca yatırımcıya ulaşın.
+                        </p>
+                        <Link href={`/ilan-ver?city=${encodeURIComponent(data.city)}&district=${encodeURIComponent(data.district)}&neighborhood=${encodeURIComponent(data.neighborhood)}&rooms=${encodeURIComponent(data.rooms)}&netSqm=${data.netSqm}&grossSqm=${data.grossSqm}&buildingAge=${data.buildingAge}&floor=${encodeURIComponent(data.floor)}&estimatedValue=${displayValue}`} className="relative z-10">
+                            <button className="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold text-sm hover:bg-indigo-700 shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2">
+                                Hemen İlan Yayınla
+                            </button>
+                        </Link>
                     </div>
 
                     {sponsorFields && (sponsorFields.sponsorHeaderUrl || sponsorFields.adsenseHeader) && (

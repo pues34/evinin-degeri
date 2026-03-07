@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { User, Lock, Mail, Phone, Crown, CheckCircle } from "lucide-react";
 
 export default function ProfileClient({ user }: { user: any }) {
@@ -11,6 +11,27 @@ export default function ProfileClient({ user }: { user: any }) {
         newPassword: ""
     });
     const [saving, setSaving] = useState(false);
+
+    // Phase 18: Listings
+    const [listings, setListings] = useState<any[]>([]);
+    const [loadingListings, setLoadingListings] = useState(true);
+
+    useEffect(() => {
+        const fetchListings = async () => {
+            try {
+                const res = await fetch("/api/listings?mode=my-listings");
+                if (res.ok) {
+                    const data = await res.json();
+                    setListings(data);
+                }
+            } catch (error) {
+                console.error("Listings load error", error);
+            } finally {
+                setLoadingListings(false);
+            }
+        };
+        fetchListings();
+    }, []);
 
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -70,6 +91,41 @@ export default function ProfileClient({ user }: { user: any }) {
                                 <button className="w-full py-2 bg-appleDark text-white text-sm font-bold rounded-xl hover:bg-black transition-colors">
                                     Premium&apos;a Yükselt
                                 </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Phase 18: İlanlarım */}
+                    <div className="bg-white rounded-[24px] p-6 shadow-sm border border-gray-100">
+                        <div className="flex justify-between items-center mb-4">
+                            <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest">İlanlarım</h4>
+                            <a href="/ilan-ver" className="text-xs font-bold text-appleBlue hover:text-blue-700 bg-blue-50 px-3 py-1.5 rounded-lg transition-colors">
+                                + Yeni İlan
+                            </a>
+                        </div>
+
+                        {loadingListings ? (
+                            <div className="text-center py-4 text-gray-400 text-sm">Yükleniyor...</div>
+                        ) : listings.length === 0 ? (
+                            <div className="text-center py-6 bg-gray-50 rounded-xl border border-gray-100">
+                                <p className="text-gray-500 text-sm">Henüz bir ilanınız bulunmuyor.</p>
+                                <p className="text-xs text-gray-400 mt-1">Yılda 3 adet ücretsiz ilan verebilirsiniz.</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-3">
+                                {listings.map(listing => (
+                                    <div key={listing.id} className="bg-gray-50 border border-gray-100 rounded-xl p-3 flex justify-between items-center">
+                                        <div className="overflow-hidden">
+                                            <p className="text-sm font-bold text-appleDark truncate w-40">{listing.title}</p>
+                                            <p className="text-xs text-gray-500 mt-0.5">{new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(listing.askingPrice)}</p>
+                                        </div>
+                                        <div className="shrink-0">
+                                            {listing.status === 'PENDING' && <span className="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-1 rounded-md">ONAY BEKLİYOR</span>}
+                                            {listing.status === 'APPROVED' && <span className="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-1 rounded-md">YAYINDA</span>}
+                                            {listing.status === 'REJECTED' && <span className="bg-red-100 text-red-800 text-[10px] font-bold px-2 py-1 rounded-md">REDDEDİLDİ</span>}
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         )}
                     </div>

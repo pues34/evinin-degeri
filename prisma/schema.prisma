@@ -193,6 +193,9 @@ model Realtor {
   // Ödemeler (ParamPos B2B)
   payments        Payment[]
 
+  // Phase 18: İlanlar
+  listings        Listing[]
+
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -280,6 +283,9 @@ model User {
   // Radardaki Favori / Fırsat İlanlar
   savedListings   SavedListing[]
 
+  // Phase 18: Kendi İlanları
+  listings        Listing[]
+
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
@@ -324,4 +330,53 @@ model RadarOpportunity {
   
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+}
+
+// --- PHASE 18: İLAN MODÜLÜ (LISTINGS SYSTEM) ---
+
+enum ListingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Listing {
+  id              String         @id @default(cuid())
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  title           String         @db.VarChar(255)
+  description     String         @db.Text
+  askingPrice     Float
+  estimatedValue  Float
+  discountRate    Float          // hesaplanan iskonto oranı
+  phone           String?
+
+  // Konum
+  city            String
+  district        String
+  neighborhood    String
+
+  // Özellikler
+  netSqm          Int
+  grossSqm        Int
+  rooms           String
+  buildingAge     Int
+  floor           String
+
+  images          String[]       // URL array
+
+  status          ListingStatus  @default(PENDING)
+
+  ownerType       String         // "USER" veya "REALTOR"
+  
+  userId          String?
+  user            User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  realtorId       String?
+  realtor         Realtor?       @relation(fields: [realtorId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([discountRate])
 }

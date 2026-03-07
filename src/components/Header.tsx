@@ -50,6 +50,9 @@ export default function Header() {
                         <Link href="/yatirim-haritasi" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname === '/yatirim-haritasi' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
                             <Map size={16} /> Isı Haritası
                         </Link>
+                        <Link href="/ilanlar" className={`text-sm font-bold flex items-center px-3 py-1.5 bg-blue-50 rounded-xl gap-1.5 transition-colors ${pathname === '/ilanlar' ? 'text-appleBlue' : 'text-appleDark hover:text-appleBlue'}`}>
+                            <Building2 size={16} /> Ayrıcalıklı İlanlar
+                        </Link>
                         <Link href="/blog" className={`text-sm font-medium flex items-center gap-1.5 transition-colors ${pathname.startsWith('/blog') ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
                             <BookOpen size={16} /> Emlak Blog
                         </Link>
