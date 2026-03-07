@@ -21,10 +21,10 @@ export default async function Footer() {
                     <div className="col-span-2 md:col-span-1">
                         <Link href="/" className="inline-flex items-center gap-2 text-lg font-bold text-appleDark tracking-tight mb-4">
                             <span className="p-1.5 bg-appleDark text-white rounded-lg"><Hexagon size={16} className="fill-current" /></span>
-                            Evinin Degeri
+                            Evinin Değeri
                         </Link>
                         <p className="text-gray-500 text-sm leading-relaxed mb-4">
-                            Yapay zeka ile gayrimenkulunuzun gercek degerini aninda hesaplayin.
+                            Yapay zeka ile gayrimenkulünüzün gerçek değerini anında hesaplayın.
                         </p>
                         <div className="space-y-2 text-gray-500 text-xs">
                             <div className="flex items-center gap-2">
@@ -46,25 +46,25 @@ export default async function Footer() {
                     <div>
                         <h4 className="font-semibold text-appleDark text-sm mb-4">Kurumsal</h4>
                         <ul className="space-y-2.5">
-                            <li><Link href="/hakkimizda" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Hakkimizda</Link></li>
-                            <li><Link href="/iletisim" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Iletisim</Link></li>
-                            <li><Link href="/blog" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Emlak Guncesi</Link></li>
-                            <li><Link href="/sss" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Sikca Sorulan Sorular</Link></li>
-                            <li><Link href="/nasil-hesapliyoruz" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Nasil Hesapliyoruz?</Link></li>
+                            <li><Link href="/hakkimizda" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Hakkımızda</Link></li>
+                            <li><Link href="/iletisim" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">İletişim</Link></li>
+                            <li><Link href="/blog" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Emlak Güncesi</Link></li>
+                            <li><Link href="/sss" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Sıkça Sorulan Sorular</Link></li>
+                            <li><Link href="/nasil-hesapliyoruz" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Nasıl Hesaplıyoruz?</Link></li>
                         </ul>
                     </div>
 
                     {/* Cozumler */}
                     <div>
-                        <h4 className="font-semibold text-appleDark text-sm mb-4">Cozumler</h4>
+                        <h4 className="font-semibold text-appleDark text-sm mb-4">Çözümler</h4>
                         <ul className="space-y-2.5">
-                            <li><Link href="/" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Ev Degerleme</Link></li>
+                            <li><Link href="/" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Ev Değerleme</Link></li>
                             <li><Link href="/kira-hesaplama" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Kira Getirisi Hesapla</Link></li>
-                            <li><Link href="/amortisman-hesaplama" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Amortisman Suresi Hesapla</Link></li>
+                            <li><Link href="/amortisman-hesaplama" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Amortisman Süresi Hesapla</Link></li>
                             <li><Link href="/konut-fiyat-endeksi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Konut Fiyat Endeksi</Link></li>
-                            <li><Link href="/karsilastirma" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Degerleme Karsilastir</Link></li>
-                            <li><Link href="/gecmis" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Degerleme Gecmisim</Link></li>
-                            <li><Link href="/yatirim-haritasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Yatirim Haritasi</Link></li>
+                            <li><Link href="/karsilastirma" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Değerleme Karşılaştır</Link></li>
+                            <li><Link href="/gecmis" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Değerleme Geçmişim</Link></li>
+                            <li><Link href="/yatirim-haritasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Yatırım Haritası</Link></li>
                             <li><Link href="/b2b" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Kurumsal (B2B)</Link></li>
                         </ul>
                     </div>
@@ -73,10 +73,10 @@ export default async function Footer() {
                     <div>
                         <h4 className="font-semibold text-appleDark text-sm mb-4">Yasal</h4>
                         <ul className="space-y-2.5">
-                            <li><Link href="/gizlilik-politikasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Gizlilik Politikasi</Link></li>
-                            <li><Link href="/kullanim-kosullari" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Kullanim Kosullari</Link></li>
-                            <li><Link href="/mesafeli-satis-sozlesmesi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Mesafeli Satis Sozlesmesi</Link></li>
-                            <li><Link href="/iptal-iade" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Iptal ve Iade Kosullari</Link></li>
+                            <li><Link href="/gizlilik-politikasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Gizlilik Politikası</Link></li>
+                            <li><Link href="/kullanim-kosullari" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Kullanım Koşulları</Link></li>
+                            <li><Link href="/mesafeli-satis-sozlesmesi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Mesafeli Satış Sözleşmesi</Link></li>
+                            <li><Link href="/iptal-iade" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">İptal ve İade Koşulları</Link></li>
                         </ul>
                     </div>
 

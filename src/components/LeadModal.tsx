@@ -121,7 +121,7 @@ export default function LeadModal({ isOpen, onClose, formData }: any) {
                 }
 
                 // 2. Background Sign In
-                const signInResult = await signIn('credentials', {
+                const signInResult = await signIn('b2c-login', {
                     redirect: false,
                     email: lead.email,
                     password: lead.password

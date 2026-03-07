@@ -10,7 +10,8 @@ const testimonials = [
         role: "Ev Sahibi - Kadıköy",
         text: "Kadıköy'deki evimi satmadan önce fiyatından emin olamıyordum. Evinin Değeri sayesinde piyasa gerçeklerini öğrendim, evimi tam da raporda çıkan fiyata 2 haftada sattım!",
         color: "bg-blue-100 text-blue-700",
-        gradient: "from-blue-50 to-white border-blue-100"
+        gradient: "from-blue-50 to-white border-blue-100",
+        avatarUrl: "https://i.pravatar.cc/150?u=ayse"
     },
     {
         initials: "MT",
@@ -18,7 +19,8 @@ const testimonials = [
         role: "Yatırımcı - Beylikdüzü",
         text: "Yatırım yapmak için birçok farklı semtten evleri burada sorguladım. Yapay zekanın sağladığı bölgesel analizler ve ısı haritası gerçekten profesyonelce.",
         color: "bg-gray-200 text-gray-700",
-        gradient: "from-gray-50 to-white border-gray-100"
+        gradient: "from-gray-50 to-white border-gray-100",
+        avatarUrl: "https://i.pravatar.cc/150?u=murat"
     },
     {
         initials: "BZ",
@@ -26,7 +28,8 @@ const testimonials = [
         role: "Emlak Danışmanı - Şişli",
         text: "B2B modülünü kullanıyorum. Müşterilerime çok hızlı ve veri odaklı sunumlar yapabiliyorum. Kesinlikle her profesyonelin elinin altında olmalı.",
         color: "bg-amber-100 text-amber-700",
-        gradient: "from-amber-50 to-white border-amber-100"
+        gradient: "from-amber-50 to-white border-amber-100",
+        avatarUrl: "https://i.pravatar.cc/150?u=burak"
     },
     {
         initials: "EE",
@@ -34,7 +37,8 @@ const testimonials = [
         role: "Alıcı - Ümraniye",
         text: "Hayalimdeki evi bulduğumda fiyatı bana biraz yüksek gelmişti. Buradan sorgulattığımda gerçekten de şişirilmiş olduğunu anladım, ciddi bir pazarlık avantajı sağladı.",
         color: "bg-purple-100 text-purple-700",
-        gradient: "from-purple-50 to-white border-purple-100"
+        gradient: "from-purple-50 to-white border-purple-100",
+        avatarUrl: "https://i.pravatar.cc/150?u=elif"
     }
 ];
 
@@ -71,9 +75,14 @@ export default function TestimonialSlider() {
                                 <div className="text-blue-200 absolute top-4 right-4 opacity-50"><Quote size={32} /></div>
                                 <p className="text-gray-600 italic mb-6 leading-relaxed relative z-10 text-lg">&quot;{testimonial.text}&quot;</p>
                                 <div className="flex items-center gap-4 mt-auto">
-                                    <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold ${testimonial.color}`}>
-                                        {testimonial.initials}
-                                    </div>
+                                    {testimonial.avatarUrl ? (
+                                        // eslint-disable-next-line @next/next/no-img-element
+                                        <img src={testimonial.avatarUrl} alt={testimonial.name} className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm" />
+                                    ) : (
+                                        <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold ${testimonial.color}`}>
+                                            {testimonial.initials}
+                                        </div>
+                                    )}
                                     <div>
                                         <h5 className="font-bold text-appleDark">{testimonial.name}</h5>
                                         <span className="text-xs font-medium text-gray-500">{testimonial.role}</span>

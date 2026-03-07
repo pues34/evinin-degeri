@@ -395,8 +395,8 @@ export default function ResultDashboard({ id }: { id: string }) {
                         {data.neighborhoodTrend && data.neighborhoodTrend.length > 1 ? (
                             <>
                                 <p className="text-sm text-gray-500 mb-6">Bu mahallede yapilan gerceklesmis degerlemelerin son 6 aylik ortalama m2 fiyat degisimi.</p>
-                                <div style={{ width: '100%', height: 300 }}>
-                                    <ResponsiveContainer>
+                                <div style={{ width: '100%', height: 300, minWidth: '300px' }}>
+                                    <ResponsiveContainer width="100%" height="100%">
                                         <BarChart data={data.neighborhoodTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                                             <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                                             <YAxis
