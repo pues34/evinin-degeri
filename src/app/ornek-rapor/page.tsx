@@ -1,6 +1,7 @@
-import { FileText, Download, CheckCircle, Info } from "lucide-react";
+import { FileText, CheckCircle, Info } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
+import SamplePdfButton from "@/components/SamplePdfButton";
 
 export const metadata: Metadata = {
     title: "Örnek Ev Değer Raporu | Evinin Değeri",
@@ -25,13 +26,13 @@ export default function OrnekRaporPage() {
                                 <p className="text-gray-500 font-medium mt-1">Sistemimizden satın alacağınız raporun özet şablonudur.</p>
                             </div>
                         </div>
-                        <Link href="/" className="px-6 py-3 bg-appleDark text-white font-bold rounded-xl hover:bg-appleBlue transition-colors shadow-md flex items-center gap-2">
-                            <Download size={18} /> Kendi Raporunu Oluştur
-                        </Link>
+                        <div className="flex gap-3">
+                            <SamplePdfButton />
+                        </div>
                     </div>
 
                     {/* MOCK REPORT CONTENT */}
-                    <div className="border-2 border-gray-100 rounded-3xl p-8 bg-white relative">
+                    <div id="sample-report-content" className="border-2 border-gray-100 rounded-3xl p-8 bg-white relative">
                         <div className="absolute top-4 right-4 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
                             <CheckCircle size={14} /> Yapay Zeka Onaylı
                         </div>
