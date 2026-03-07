@@ -128,11 +128,6 @@ export default async function Footer() {
                 <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between text-xs text-gray-400">
                     <div className="flex flex-col md:flex-row gap-4 items-center">
                         <p>&copy; {new Date().getFullYear()} Evinin Degeri. Tum haklari saklidir.</p>
-                        <span className="hidden md:inline text-gray-300">|</span>
-                        <p className="text-center md:text-left">
-                            <strong>Evinin Değeri Bilişim Teknolojileri Tic. Ltd. Şti.</strong><br />
-                            Mersis No: 0123456789000015 &bull; Kadıköy V.D. 1234567890
-                        </p>
                     </div>
                     <p className="mt-4 md:mt-0 text-center md:text-right">Yapay Zeka Destekli Gayrimenkul Degerleme Platformu</p>
                 </div>
