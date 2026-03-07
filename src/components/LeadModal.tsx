@@ -1,13 +1,17 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
-import { X, ShieldCheck } from "lucide-react";
+import { useState, useEffect } from "react";
+import { X, ShieldCheck, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSession, signIn } from "next-auth/react";
 
 export default function LeadModal({ isOpen, onClose, formData }: any) {
-    const [lead, setLead] = useState({ fullName: "", phone: "", email: "" });
+    const { data: session, status } = useSession();
+    const router = useRouter();
+
+    const [lead, setLead] = useState({ fullName: "", phone: "", email: "", password: "" });
     const [agreed, setAgreed] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -16,7 +20,18 @@ export default function LeadModal({ isOpen, onClose, formData }: any) {
     const [otpCode, setOtpCode] = useState("");
     const [otpLoading, setOtpLoading] = useState(false);
 
-    const router = useRouter();
+    // Pre-fill if authenticated
+    useEffect(() => {
+        if (session?.user) {
+            setLead(prev => ({
+                ...prev,
+                fullName: session.user.name || "",
+                email: session.user.email || "",
+                phone: (session.user as any).phone || ""
+            }));
+            setAgreed(true); // Auto-agree for logged in users
+        }
+    }, [session]);
 
     if (!isOpen) return null;
 
@@ -29,11 +44,41 @@ export default function LeadModal({ isOpen, onClose, formData }: any) {
         }
         if (!agreed) return alert("Lütfen KVKK ve Yapay Zeka Onay metnini kabul edin.");
 
-        if (!otpStep) {
-            // STEP 1: Request OTP
+        // --- AUTHENTICATED USER FLOW ---
+        if (session) {
             setLoading(true);
             try {
-                const res = await fetch("/api/otp/send", {
+                const valRes = await fetch("/api/valuation", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ ...formData, contactInfo: lead, agreed })
+                });
+                const valData = await valRes.json();
+
+                if (valData.success) {
+                    router.push(`/result/${valData.id}`);
+                } else {
+                    alert("Hesaplama Hatası: " + valData.error);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Bağlantı hatası.");
+            } finally {
+                setLoading(false);
+            }
+            return;
+        }
+
+        // --- UNAUTHENTICATED USER FLOW ---
+        if (!lead.password || lead.password.length < 6) {
+            return alert("Lütfen en az 6 karakterli bir şifre belirleyin.");
+        }
+
+        if (!otpStep) {
+            // STEP 1: Request OTP for Registration
+            setLoading(true);
+            try {
+                const res = await fetch("/api/auth/send-register-otp", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email: lead.email })
@@ -46,30 +91,47 @@ export default function LeadModal({ isOpen, onClose, formData }: any) {
                     alert("E-posta Gönderim Hatası: " + data.error);
                 }
             } catch (err) {
-                alert("Uyarı: Arka uç E-posta modülü zaman aşımına uğradı.");
+                alert("Uyarı: Arka uç E-posta modülü zaman aşımına uğradı veya hata verdi.");
             } finally {
                 setLoading(false);
             }
         } else {
-            // STEP 2: Verify OTP & Submit Lead
+            // STEP 2: Verify OTP, Register, Log In & Submit Valuation
             if (otpCode.length !== 6) return alert("Lütfen 6 haneli doğrulama kodunu girin.");
             setOtpLoading(true);
 
             try {
-                // Verify OTP
-                const verifyRes = await fetch("/api/otp/verify", {
+                // 1. Register User
+                const regRes = await fetch("/api/auth/register", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: lead.email, code: otpCode })
+                    body: JSON.stringify({
+                        name: lead.fullName,
+                        email: lead.email,
+                        password: lead.password,
+                        phone: lead.phone,
+                        otpCode
+                    })
                 });
-                const verifyData = await verifyRes.json();
+                const regData = await regRes.json();
 
-                if (!verifyData.success) {
+                if (!regData.success) {
                     setOtpLoading(false);
-                    return alert("Doğrulama Hatası: " + verifyData.error);
+                    return alert("Kayıt Hatası: " + regData.error);
                 }
 
-                // Call actual valuation endpoint
+                // 2. Background Sign In
+                const signInResult = await signIn('credentials', {
+                    redirect: false,
+                    email: lead.email,
+                    password: lead.password
+                });
+
+                if (signInResult?.error) {
+                    console.warn("Otomatik giriş başarısız oldu:", signInResult.error);
+                }
+
+                // 3. Call actual valuation endpoint
                 const valRes = await fetch("/api/valuation", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -115,29 +177,46 @@ export default function LeadModal({ isOpen, onClose, formData }: any) {
 
                     {!otpStep ? (
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-appleDark mb-1">Ad Soyad <span className="text-red-500">*</span></label>
-                                <input required type="text" value={lead.fullName} onChange={e => setLead({ ...lead, fullName: e.target.value })} className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-appleBlue transition-all" placeholder="Örn: Ahmet Yılmaz" />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-appleDark mb-1">Telefon Numarası <span className="text-red-500">*</span></label>
-                                <input required type="tel" pattern="^(\+90|0)?[1-9][0-9]{9}$" title="Lütfen geçerli bir Türkiye numarası girin (Örn: 05321234567)" value={lead.phone} onChange={e => setLead({ ...lead, phone: e.target.value })} className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-appleBlue transition-all" placeholder="0532 000 00 00" />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-appleDark mb-1">E-posta <span className="text-red-500">*</span></label>
-                                <input required type="email" value={lead.email} onChange={e => setLead({ ...lead, email: e.target.value })} className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-appleBlue transition-all" placeholder="ornek@email.com" />
-                                <p className="text-xs text-appleLightGray mt-1">Raporunuz bu adrese gönderilecektir. Lütfen doğru girdiğinizden emin olun.</p>
-                            </div>
+                            {session ? (
+                                <div className="bg-indigo-50 border border-indigo-100 p-4 rounded-xl mb-4 text-center">
+                                    <p className="text-sm text-indigo-800">
+                                        <strong>{session.user?.name}</strong> olarak giriş yaptınız. Sonuçlar doğrudan hesabınıza kaydedilecektir.
+                                    </p>
+                                </div>
+                            ) : null}
 
-                            <div className="flex items-start gap-3 mt-6 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                            {!session && (
+                                <>
+                                    <div>
+                                        <label className="block text-sm font-medium text-appleDark mb-1">Ad Soyad <span className="text-red-500">*</span></label>
+                                        <input required type="text" value={lead.fullName} onChange={e => setLead({ ...lead, fullName: e.target.value })} className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-appleBlue transition-all" placeholder="Örn: Ahmet Yılmaz" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-appleDark mb-1">Telefon Numarası <span className="text-red-500">*</span></label>
+                                        <input required type="tel" pattern="^(\+90|0)?[1-9][0-9]{9}$" title="Lütfen geçerli bir Türkiye numarası girin (Örn: 05321234567)" value={lead.phone} onChange={e => setLead({ ...lead, phone: e.target.value })} className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-appleBlue transition-all" placeholder="0532 000 00 00" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-appleDark mb-1">E-posta <span className="text-red-500">*</span></label>
+                                        <input required type="email" value={lead.email} onChange={e => setLead({ ...lead, email: e.target.value })} className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-appleBlue transition-all" placeholder="ornek@email.com" />
+                                        <p className="text-xs text-appleLightGray mt-1">Raporunuz bu adrese gönderilecektir. Lütfen doğru girdiğinizden emin olun.</p>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-appleDark mb-1">Hesap Şifreniz <span className="text-red-500">*</span></label>
+                                        <input required type="password" minLength={6} value={lead.password} onChange={e => setLead({ ...lead, password: e.target.value })} className="w-full p-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-appleBlue transition-all" placeholder="Sisteme giriş şifreniz (En az 6 karakter)" />
+                                        <p className="text-xs text-appleLightGray mt-1">Bu işlem ile yatırımcı hesabınız da otomatik oluşturulacaktır.</p>
+                                    </div>
+                                </>
+                            )}
+
+                            <div className={`flex items-start gap-3 mt-6 p-4 rounded-xl border ${session ? 'bg-indigo-50/50 border-indigo-100 hidden' : 'bg-gray-50 border-gray-100'}`}>
                                 <input required type="checkbox" id="agreement" checked={agreed} onChange={e => setAgreed(e.target.checked)} className="mt-1 w-4 h-4 text-appleBlue rounded border-gray-300 focus:ring-appleBlue" />
                                 <label htmlFor="agreement" className="text-xs text-gray-500 leading-relaxed cursor-pointer">
                                     Bu sonucun bir yapay zeka tahmini olduğunu, <Link href="/p/kullanim-kosullari" target="_blank" className="text-appleBlue hover:underline">Kullanım Koşulları</Link> kapsamında bir yatırım tavsiyesi olmadığını ve <Link href="/p/gizlilik-politikasi" target="_blank" className="text-appleBlue hover:underline">KVKK</Link> metni çerçevesinde verilerimin işlenmesini kabul ediyorum.
                                 </label>
                             </div>
 
-                            <button disabled={loading} type="submit" className="w-full mt-6 py-3 px-4 bg-appleDark text-white rounded-xl font-medium hover:bg-black transition-all shadow-apple transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center">
-                                {loading ? "Doğrulama Kodu Gönderiliyor..." : "Devam Et"}
+                            <button disabled={loading || status === "loading"} type="submit" className="w-full mt-6 py-3 px-4 bg-appleDark text-white rounded-xl font-medium hover:bg-black transition-all shadow-apple transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center">
+                                {loading || status === "loading" ? <Loader2 className="animate-spin" size={20} /> : (session ? "Değeri Hesapla" : "Kayıt Ol ve Sonucu Gör")}
                             </button>
                         </form>
                     ) : (
