@@ -9,11 +9,11 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.evindegeri.com"),
   title: {
-    default: "Evinin Değeri | Yapay Zeka ile Anında Gayrimenkul Değerleme",
-    template: "%s | Evinin Değeri"
+    default: "Evin Değeri Ne Kadar? Yapay Zeka ile Konut Fiyat Hesaplama",
+    template: "%s | Evin Değeri - Konut Fiyat Hesaplama"
   },
-  description: "Türkiye'nin en gelişmiş yapay zeka algoritması ile evinizin, arsanızın veya iş yerinizin gerçek piyasa değerini anında ve ücretsiz öğrenin.",
-  keywords: ["ev değerleme", "gayrimenkul değerleme", "evimin değeri ne kadar", "yapay zeka emlak", "konut fiyat hesaplama", "istanbul ev fiyatları"],
+  description: "Türkiye'nin en gelişmiş yapay zeka emlak değerleme algoritması ile evinizin, arsanızın veya iş yerinizin gerçek piyasa değerini anında ve ücretsiz hesaplayın.",
+  keywords: ["ev değerleme", "gayrimenkul değerleme", "evimin değeri ne kadar", "yapay zeka emlak", "konut fiyat hesaplama", "istanbul ev fiyatları", "kira hesaplama", "araba takas"],
   authors: [{ name: "Evinin Değeri Ekibi" }],
   creator: "Evinin Değeri",
   publisher: "Evinin Değeri",
@@ -27,14 +27,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "tr_TR",
     url: "https://www.evindegeri.com",
-    title: "Evinin Değeri | Yapay Zeka ile Anında Gayrimenkul Değerleme",
-    description: "Türkiye'nin en gelişmiş yapay zeka algoritması ile evinizin gerçek piyasa değerini anında öğrenin.",
+    title: "Evin Değeri Ne Kadar? Yapay Zeka ile Konut Fiyat Hesaplama",
+    description: "Türkiye'nin en gelişmiş yapay zeka algoritması ile evinizin gerçek piyasa değerini anında hesaplayın.",
     siteName: "Evinin Değeri",
+    images: [
+      {
+        url: 'https://www.evindegeri.com/logo.png',
+        width: 800,
+        height: 600,
+        alt: 'Evinin Değeri Logo',
+      }
+    ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "Evinin Değeri | Yapay Zeka ile Anında Gayrimenkul Değerleme",
-    description: "Türkiye'nin en gelişmiş yapay zeka algoritması ile evinizin gerçek piyasa değerini anında öğrenin.",
+    title: "Evin Değeri Ne Kadar? Yapay Zeka ile Konut Fiyat Hesaplama",
+    description: "Türkiye'nin en gelişmiş yapay zeka algoritması ile evinizin gerçek piyasa değerini anında hesaplayın.",
   }
 };
 
@@ -68,13 +76,11 @@ export default function RootLayout({
 
   return (
     <html lang="tr" suppressHydrationWarning>
-      <head>
+      <body className={inter.className} suppressHydrationWarning>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
         />
-      </head>
-      <body className={inter.className} suppressHydrationWarning>
         <Providers>
           <Header />
           <main className="min-h-screen flex flex-col">
