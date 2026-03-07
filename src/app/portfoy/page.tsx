@@ -4,7 +4,13 @@ import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { Home, TrendingUp, Wallet, Star } from "lucide-react";
 import Link from "next/link";
+import type { Metadata } from "next";
 import UpgradeButton from "./UpgradeButton";
+
+export const metadata: Metadata = {
+    title: "Emlak Portföyüm | Evinin Değeri",
+    description: "Kaydettiğiniz tüm evleri tek ekranda görüntüleyin. Portföyünüzün toplam finansal değişimini ve yatırım durumunu analiz edin.",
+};
 
 export default async function PortfoyDashboard() {
     const session = await getServerSession(authOptions);
@@ -22,7 +28,8 @@ export default async function PortfoyDashboard() {
     const totalValue = myProperties.reduce((acc, curr) => acc + curr.estimatedValue, 0);
 
     return (
-        <div className="min-h-screen flex flex-col pt-24 bg-gray-50">
+        <div className="min-h-screen flex flex-col pt-24 bg-gray-50">
+
             <main className="flex-grow container mx-auto px-4 py-8 max-w-6xl">
                 {/* Dashboard Header */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
@@ -123,6 +130,7 @@ export default async function PortfoyDashboard() {
                     )}
                 </div>
 
-            </main>        </div>
+            </main>
+        </div>
     );
 }

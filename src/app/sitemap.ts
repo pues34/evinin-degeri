@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://evinindegeri.com';
+    const baseUrl = 'https://www.evinindegeri.com';
 
     return [
         {
@@ -35,6 +35,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.9,
         },
         {
+            url: `${baseUrl}/radari`,
+            lastModified: new Date(),
+            changeFrequency: 'hourly',
+            priority: 0.9,
+        },
+        {
             url: `${baseUrl}/karsilastirma`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -45,6 +51,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/b2b`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/b2b/register`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.6,
         },
         {
             url: `${baseUrl}/blog`,

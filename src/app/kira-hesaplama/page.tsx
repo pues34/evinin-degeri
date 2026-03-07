@@ -1,5 +1,6 @@
 import KiraHesaplamaClient from "./KiraHesaplamaClient";
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
     title: "Kira Getirisi Hesaplama Aracı | Evinin Değeri",
@@ -8,5 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default function KiraHesaplama() {
-    return <KiraHesaplamaClient />;
+    return (
+        <Suspense fallback={<div className="min-h-screen pt-24 text-center">Yükleniyor...</div>}>
+            <KiraHesaplamaClient />
+        </Suspense>
+    );
 }

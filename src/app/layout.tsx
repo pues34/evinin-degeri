@@ -7,6 +7,7 @@ import { Providers } from "@/components/Providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.evinindegeri.com"),
   title: {
     default: "Evinin Değeri | Yapay Zeka ile Anında Gayrimenkul Değerleme",
     template: "%s | Evinin Değeri"
@@ -16,10 +17,13 @@ export const metadata: Metadata = {
   authors: [{ name: "Evinin Değeri Ekibi" }],
   creator: "Evinin Değeri",
   publisher: "Evinin Değeri",
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     type: "website",
     locale: "tr_TR",
-    url: "https://evinindegeri.com",
+    url: "https://www.evinindegeri.com",
     title: "Evinin Değeri | Yapay Zeka ile Anında Gayrimenkul Değerleme",
     description: "Türkiye'nin en gelişmiş yapay zeka algoritması ile evinizin gerçek piyasa değerini anında öğrenin.",
     siteName: "Evinin Değeri",
@@ -37,6 +41,8 @@ import Footer from "@/components/Footer";
 import ClientFooterWrapper from "@/components/ClientFooterWrapper";
 import CookieConsent from "@/components/CookieConsent";
 
+import { GoogleAnalytics } from '@next/third-parties/google';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -46,8 +52,8 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
     "name": "Evinin Değeri",
-    "image": "https://evinindegeri.com/logo.png",
-    "url": "https://evinindegeri.com",
+    "image": "https://www.evinindegeri.com/logo.png",
+    "url": "https://www.evinindegeri.com",
     "description": "Türkiye'nin en gelişmiş yapay zeka algoritması ile evinizin, arsanızın veya iş yerinizin gerçek piyasa değerini anında ve ücretsiz öğrenin.",
     "address": {
       "@type": "PostalAddress",

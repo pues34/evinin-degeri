@@ -4,8 +4,8 @@ import { Mail, Phone, MapPin, Clock, Building2 } from "lucide-react";
 import ContactFormClient from "@/components/ContactFormClient";
 
 export const metadata: Metadata = {
-    title: "Iletisim | Evinin Degeri",
-    description: "Evinin Degeri ekibi ile iletisime gecin. Gayrimenkul degerleme, kurumsal isbirligi veya teknik destek icin bize ulasin.",
+    title: "Iletisim | Evinin Değeri",
+    description: "Evinin Değeri ekibi ile iletisime gecin. Gayrimenkul degerleme, kurumsal isbirligi veya teknik destek icin bize ulasin.",
 };
 
 export default function IletisimPage() {

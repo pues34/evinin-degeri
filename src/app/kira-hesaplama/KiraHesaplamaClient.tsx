@@ -1,15 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calculator, TrendingUp, Info } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export default function KiraHesaplamaClient() {
+    const searchParams = useSearchParams();
     const [propertyValue, setPropertyValue] = useState<string>("5000000");
     const [monthlyRent, setMonthlyRent] = useState<string>("25000");
 
     const [calculatedValue, setCalculatedValue] = useState<number>(5000000);
     const [calculatedRent, setCalculatedRent] = useState<number>(25000);
+
+    useEffect(() => {
+        const valueParam = searchParams.get('value');
+        const rentParam = searchParams.get('rent');
+        const idParam = searchParams.get('id');
+
+        if (idParam) {
+            // Fetch dynamically if ID is provided
+            fetch(`/api/valuation/${idParam}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        setPropertyValue(data.data.estimatedValue.toString());
+                        setMonthlyRent(data.data.estimatedRent.toString());
+                        setCalculatedValue(Math.round(data.data.estimatedValue));
+                        setCalculatedRent(Math.round(data.data.estimatedRent));
+                    }
+                })
+                .catch(console.error);
+        } else if (valueParam && rentParam) {
+            // Pre-fill directly from URL params if no ID
+            setPropertyValue(valueParam);
+            setMonthlyRent(rentParam);
+            setCalculatedValue(Number(valueParam) || 0);
+            setCalculatedRent(Number(rentParam) || 0);
+        }
+    }, [searchParams]);
 
     const handleCalculate = () => {
         setCalculatedValue(Number(propertyValue) || 0);

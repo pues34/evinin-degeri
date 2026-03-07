@@ -127,7 +127,7 @@ export default async function Footer() {
 
                 <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between text-xs text-gray-400">
                     <div className="flex flex-col md:flex-row gap-4 items-center">
-                        <p>&copy; {new Date().getFullYear()} Evinin Degeri. Tum haklari saklidir.</p>
+                        <p>&copy; {new Date().getFullYear()} Evinin Değeri. Tum haklari saklidir.</p>
                     </div>
                     <p className="mt-4 md:mt-0 text-center md:text-right">Yapay Zeka Destekli Gayrimenkul Degerleme Platformu</p>
                 </div>

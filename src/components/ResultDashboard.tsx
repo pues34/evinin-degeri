@@ -230,7 +230,7 @@ export default function ResultDashboard({ id }: { id: string }) {
                         ) : (
                             <>
                                 <span className="p-2 bg-white/10 text-white rounded-xl backdrop-blur-sm"><Hexagon size={32} className="fill-current" /></span>
-                                <h2 className="text-4xl font-extrabold tracking-tight">Evinin Degeri</h2>
+                                <h2 className="text-4xl font-extrabold tracking-tight">Evinin Değeri</h2>
                             </>
                         )}
                     </div>
@@ -663,10 +663,10 @@ export default function ResultDashboard({ id }: { id: string }) {
                 <div className="pdf-only-item mt-12 pt-8 border-t border-gray-200 flex-col items-center justify-center text-center">
                     <div className="flex items-center gap-2 text-appleDark font-bold mb-4 opacity-70">
                         <Hexagon size={24} className="fill-current" />
-                        <span className="text-xl">Evinin Degeri</span>
+                        <span className="text-xl">Evinin Değeri</span>
                     </div>
                     <p className="text-[11px] text-gray-500 leading-relaxed max-w-4xl text-justify">
-                        <strong className="text-gray-700">Yasal Uyari:</strong> Bu raporda sunulan degerleme sonucu, TCMB verileri, bolgesel enflasyon oranlari ve yapay zeka tarafindan saglanan gecmis satis istatistiklerine dayali matematiksel bir projeksiyondur. Kesinlikle bir gayrimenkul ekspertiz raporu veya herhangi bir ticari faaliyet icin <strong>yatirim tavsiyesi niteligini tasimaz</strong>. Evinin Degeri, bu rapor sonucunda dogabilecek dogrudan veya dolayli alim/satim, kiralama kaynakli maddi zararlardan hukuken sorumlu tutulamaz. Detayli piyasa kararlari icin lisansli uzmanlara basvurmaniz onerilir.
+                        <strong className="text-gray-700">Yasal Uyari:</strong> Bu raporda sunulan degerleme sonucu, TCMB verileri, bolgesel enflasyon oranlari ve yapay zeka tarafindan saglanan gecmis satis istatistiklerine dayali matematiksel bir projeksiyondur. Kesinlikle bir gayrimenkul ekspertiz raporu veya herhangi bir ticari faaliyet icin <strong className="font-bold">yatirim tavsiyesi niteligini tasimaz</strong>. Evinin Değeri, bu rapor sonucunda dogabilecek dogrudan veya dolayli alim/satim, kiralama kaynakli maddi zararlardan hukuken sorumlu tutulamaz. Detayli piyasa kararlari icin lisansli uzmanlara basvurmaniz onerilir.
                     </p>
                     <p className="text-[10px] text-gray-400 mt-4">&copy; {new Date().getFullYear()} evindegeri.com - Tum Haklari Saklidir.</p>
                 </div>
