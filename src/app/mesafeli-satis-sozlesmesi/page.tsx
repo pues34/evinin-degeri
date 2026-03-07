@@ -23,13 +23,13 @@ export default function MesafeliSatisSozlesmesi() {
                         <p><strong>Telefon:</strong> 0533 725 3171</p>
 
                         <h3 className="font-medium mt-4 mb-1">1.2 Alıcı:</h3>
-                        <p>www.evinindegeri.com (&quot;Platform&quot; veya &quot;Site&quot;) üzerinden üyelik veya hizmet satın alımı gerçekleştiren B2B (Kurumsal) veya bireysel kullanıcı.</p>
+                        <p>www.evindegeri.com (&quot;Platform&quot; veya &quot;Site&quot;) üzerinden üyelik veya hizmet satın alımı gerçekleştiren B2B (Kurumsal) veya bireysel kullanıcı.</p>
                     </section>
 
                     <section>
                         <h2 className="text-xl font-semibold text-appleDark mb-3">2. Sözleşmenin Konusu</h2>
                         <p>
-                            İşbu sözleşmenin konusu, Alıcı&apos;nın Satıcı&apos;ya ait www.evinindegeri.com alan adlı internet sitesi üzerinden elektronik ortamda siparişini yaptığı gayrimenkul değerleme,
+                            İşbu sözleşmenin konusu, Alıcı&apos;nın Satıcı&apos;ya ait www.evindegeri.com alan adlı internet sitesi üzerinden elektronik ortamda siparişini yaptığı gayrimenkul değerleme,
                             Big Data analizi ve potansiyel müşteri (Lead) sağlama paketleri (&quot;Dijital SaaS Hizmetleri&quot;) ile ilgili olarak tarafların hak ve yükümlülüklerinin saptanmasıdır.
                         </p>
                     </section>

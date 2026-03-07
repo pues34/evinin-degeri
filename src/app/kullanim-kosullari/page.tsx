@@ -15,7 +15,7 @@ export default function KullanimKosullari() {
                     <section>
                         <h2 className="text-xl font-semibold text-appleDark mb-3">1. Giriş ve Taraflar</h2>
                         <p>
-                            www.evinindegeri.com (bundan böyle &quot;Platform&quot; olarak anılacaktır) sitesine erişiminiz ve kullanımınız işbu Kullanım Koşulları&apos;na tabidir. Platformu kullanarak bu şartları tamamen okuduğunuzu, anladığınızı ve kabul ettiğinizi beyan edersiniz.
+                            www.evindegeri.com (bundan böyle &quot;Platform&quot; olarak anılacaktır) sitesine erişiminiz ve kullanımınız işbu Kullanım Koşulları&apos;na tabidir. Platformu kullanarak bu şartları tamamen okuduğunuzu, anladığınızı ve kabul ettiğinizi beyan edersiniz.
                         </p>
                         <p className="mt-2">
                             Platform&apos;un işletmecisi: <strong>Evinin Değeri Gayrimenkul Teknolojileri</strong> (Muratpaşa Mah. Cemiyet Cad. No:28 Bayrampaşa / İstanbul)
