@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, MapPin, Hexagon, Instagram, Twitter, Linkedin, Phone, ShieldCheck, CreditCard } from "lucide-react";
+import { Mail, MapPin, Hexagon, Instagram, Phone, ShieldCheck, CreditCard } from "lucide-react";
 
 import prisma from "@/lib/prisma";
 
@@ -91,12 +91,6 @@ export default async function Footer() {
                             <a href={settings?.instagramUrl || "https://instagram.com/evindegeri"} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-50 rounded-full hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500 hover:text-white transition-all text-gray-400 flex items-center justify-center">
                                 <Instagram size={16} />
                             </a>
-                            <a href={settings?.twitterUrl || "https://twitter.com/evindegeri"} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all text-gray-400 flex items-center justify-center">
-                                <Twitter size={16} />
-                            </a>
-                            <a href={settings?.linkedinUrl || "https://linkedin.com/company/evindegeri"} target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-50 rounded-full hover:bg-blue-700 hover:text-white transition-all text-gray-400 flex items-center justify-center">
-                                <Linkedin size={16} />
-                            </a>
                         </div>
 
                         <h4 className="font-semibold text-appleDark text-sm mt-8 mb-4">Güvenli Ödeme</h4>
@@ -129,9 +123,9 @@ export default async function Footer() {
                     </p>
                     <div className="flex flex-col md:flex-row items-center justify-between text-xs text-gray-400">
                         <div className="flex flex-col md:flex-row gap-4 items-center">
-                            <p>&copy; {new Date().getFullYear()} Evinin Değeri. Tum haklari saklidir.</p>
+                            <p>&copy; {new Date().getFullYear()} Evinin Değeri. Tüm hakları saklıdır.</p>
                         </div>
-                        <p className="mt-4 md:mt-0 text-center md:text-right">Yapay Zeka Destekli Gayrimenkul Degerleme Platformu</p>
+                        <p className="mt-4 md:mt-0 text-center md:text-right">Yapay Zeka Destekli Gayrimenkul Değerleme Platformu</p>
                     </div>
                 </div>
             </div>

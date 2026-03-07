@@ -1,4 +1,4 @@
-import { LineChart, ShieldCheck, MapPin, Crown, TrendingUp } from "lucide-react";
+import { LineChart, ShieldCheck, MapPin, Crown, TrendingUp, FileText, Target, Building2, CreditCard, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import TestimonialSlider from "@/components/TestimonialSlider";
 import prisma from "@/lib/prisma";
@@ -54,6 +54,57 @@ export default async function Home() {
         </div>
       </div>
 
+      {/* B1: Örnek Rapor CTA */}
+      <div className="bg-gradient-to-r from-indigo-600 to-blue-600 py-10 relative z-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4 text-white">
+            <div className="w-14 h-14 bg-white/15 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/20">
+              <FileText size={28} className="text-white" />
+            </div>
+            <div>
+              <h3 className="text-xl font-bold">Yapay Zeka Raporumuzu İnceleyin</h3>
+              <p className="text-blue-200 text-sm">Gerçek bir değerleme raporunun nasıl göründüğünü görün.</p>
+            </div>
+          </div>
+          <a href="/ornek-rapor" className="shrink-0 px-8 py-3.5 bg-white text-indigo-600 rounded-xl font-bold text-sm hover:bg-indigo-50 transition-all shadow-lg flex items-center gap-2">
+            Örnek Raporu Gör <ArrowRight size={16} />
+          </a>
+        </div>
+      </div>
+
+      {/* B4: Premium Araçlar Tanıtımı */}
+      <div className="bg-white py-20 border-t border-gray-100 relative z-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-semibold text-appleDark mb-3">Premium Araçlar</h2>
+            <p className="text-gray-500">Yapay zeka ile donatılmış üst düzey yatırım araçları.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <a href="/radari" className="bg-gradient-to-br from-orange-50 to-red-50 p-8 rounded-3xl border border-orange-100 hover:shadow-xl hover:-translate-y-1 transition-all group block">
+              <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
+                <Target size={28} />
+              </div>
+              <h3 className="text-xl font-bold text-appleDark mb-2">Fırsat Radarı</h3>
+              <p className="text-gray-500 leading-relaxed text-sm">Piyasa değerinin %10+ altında satılan kelepir gayrimenkulleri yapay zeka ile anında yakalayın.</p>
+            </a>
+            <a href="/yatirim-haritasi" className="bg-gradient-to-br from-blue-50 to-green-50 p-8 rounded-3xl border border-blue-100 hover:shadow-xl hover:-translate-y-1 transition-all group block">
+              <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-green-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform">
+                <MapPin size={28} />
+              </div>
+              <h3 className="text-xl font-bold text-appleDark mb-2">Isı Haritası</h3>
+              <p className="text-gray-500 leading-relaxed text-sm">İstanbul&apos;un bölgesel fiyat yoğunluğunu interaktif harita üzerinde canlı olarak izleyin.</p>
+            </a>
+            <a href="/ilanlar" className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-3xl border border-indigo-100 hover:shadow-xl hover:-translate-y-1 transition-all group block">
+              <div className="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform">
+                <Building2 size={28} />
+              </div>
+              <h3 className="text-xl font-bold text-appleDark mb-2">Ayrıcalıklı İlanlar</h3>
+              <p className="text-gray-500 leading-relaxed text-sm">Sistem tarafından onaylı, yapay zeka ile değerlenmiş özel gayrimenkul portföyleri.</p>
+            </a>
+          </div>
+        </div>
+      </div>
+
       {/* How it Works - Animated Component */}
       <HowItWorksSection />
 
@@ -91,9 +142,14 @@ export default async function Home() {
                 </li>
               </ul>
 
-              <a href="/b2b" className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-appleBlue to-blue-600 text-white rounded-xl shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] hover:-translate-y-1 transition-all font-semibold text-lg">
-                Kurumsal Panel&apos;e Giriş Yap &rarr;
-              </a>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a href="/b2b" className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-appleBlue to-blue-600 text-white rounded-xl shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] hover:-translate-y-1 transition-all font-semibold text-lg">
+                  Kurumsal Panel&apos;e Giriş Yap &rarr;
+                </a>
+                <a href="/b2b/register" className="inline-flex items-center px-8 py-4 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-xl hover:bg-white/20 transition-all font-semibold text-lg">
+                  Ücretsiz Demo İste &rarr;
+                </a>
+              </div>
             </div>
 
             <div className="relative">
@@ -153,6 +209,36 @@ export default async function Home() {
               <div className="w-full">
                 <TestimonialSlider />
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* B2: Mini Fiyatlandırma Önizleme */}
+      <div className="bg-white py-20 border-t border-gray-100 relative z-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-semibold text-appleDark mb-3">Paketler</h2>
+            <p className="text-gray-500">İhtiyacınıza göre seçin, hemen başlayın.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-gray-50 p-8 rounded-3xl border border-gray-100 text-center">
+              <h3 className="text-lg font-bold text-appleDark mb-2">Standart</h3>
+              <div className="text-4xl font-extrabold text-appleDark mb-1">Ücretsiz</div>
+              <p className="text-gray-500 text-sm mb-6">Anlık değerleme + detaylı rapor</p>
+              <a href="/" className="block w-full py-3 bg-gray-200 text-appleDark rounded-xl font-medium text-sm">Hemen Başla</a>
+            </div>
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-3xl border-2 border-appleBlue text-center relative shadow-lg">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-appleBlue text-white text-xs font-bold rounded-full">Popüler</div>
+              <h3 className="text-lg font-bold text-appleDark mb-2">Premium Yatırımcı</h3>
+              <div className="text-4xl font-extrabold text-appleBlue mb-1">299₺<span className="text-lg text-gray-400 font-normal">/ay</span></div>
+              <p className="text-gray-500 text-sm mb-6">Radar + Harita + AI Danışman</p>
+              <a href="/fiyatlandirma" className="block w-full py-3 bg-appleBlue text-white rounded-xl font-medium text-sm hover:bg-blue-600 transition-colors">Detayları Gör</a>
+            </div>
+            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-8 rounded-3xl border border-emerald-200 text-center">
+              <h3 className="text-lg font-bold text-appleDark mb-2">Kurumsal (B2B)</h3>
+              <div className="text-4xl font-extrabold text-emerald-600 mb-1">İletişim</div>
+              <p className="text-gray-500 text-sm mb-6">Sınırsız değerleme + lead + PDF</p>
+              <a href="/b2b" className="block w-full py-3 bg-emerald-500 text-white rounded-xl font-medium text-sm hover:bg-emerald-600 transition-colors">Teklif Al</a>
             </div>
           </div>
         </div>

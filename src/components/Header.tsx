@@ -54,7 +54,7 @@ export default function Header() {
                             <Building2 size={14} /> İlanlar
                         </Link>
                         <Link href="/blog" className={`text-xs xl:text-sm font-medium flex items-center gap-1 transition-colors ${pathname.startsWith('/blog') ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
-                            <BookOpen size={14} /> Blog
+                            <BookOpen size={14} /> Güncesi
                         </Link>
                         {session ? (
                             <div className="flex items-center gap-1.5 shrink-0 ml-2">

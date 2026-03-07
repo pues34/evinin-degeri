@@ -99,15 +99,15 @@ export default function B2BLandingClient() {
             {/* Scrolling Marquee / Social Proof */}
             <div className="py-10 bg-white border-y border-gray-100 overflow-hidden relative flex">
                 <div className="flex gap-12 items-center whitespace-nowrap animate-marquee">
-                    {[1, 2, 3].map((i) => (
+                    {[1, 2].map((i) => (
                         <div key={i} className="flex gap-12 items-center">
-                            <div className="text-xl font-bold text-gray-400">🔥 +12.000 Değerleme</div>
+                            <div className="text-xl font-bold text-gray-400">🔥 +12.000 Değerleme Yapıldı</div>
                             <div className="w-2 h-2 rounded-full bg-gray-200"></div>
-                            <div className="text-xl font-bold text-gray-400">📈 Sınırsız Raporlama</div>
+                            <div className="text-xl font-bold text-gray-400">📈 Sınırsız PDF Raporlama</div>
                             <div className="w-2 h-2 rounded-full bg-gray-200"></div>
-                            <div className="text-xl font-bold text-gray-400">🤝 500+ Aktif PRO Ofis</div>
+                            <div className="text-xl font-bold text-gray-400">🤝 Kurumsal Emlak Ofisleri</div>
                             <div className="w-2 h-2 rounded-full bg-gray-200"></div>
-                            <div className="text-xl font-bold text-gray-400">🎯 %100 Doğruluk Payı</div>
+                            <div className="text-xl font-bold text-gray-400">🎯 Yapay Zeka Destekli</div>
                             <div className="w-2 h-2 rounded-full bg-gray-200"></div>
                         </div>
                     ))}

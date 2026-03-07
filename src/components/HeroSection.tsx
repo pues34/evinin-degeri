@@ -28,7 +28,7 @@ export default function HeroSection({ counterValue }: { counterValue: number }) 
                 </h1>
 
                 <p className="text-lg md:text-xl text-appleLightGray max-w-2xl mx-auto leading-relaxed mb-6">
-                    Türkiye&apos;nin dört bir yanındaki gayrimenkullerin güncel piyasa değerini, gelişmiş yapay zeka ve bölge çarpanları algoritmamızla anında hesaplayın.
+                    İstanbul&apos;daki gayrimenkulünüzün güncel piyasa değerini, gelişmiş yapay zeka ve bölgesel şerefiye algoritmamızla anında hesaplayın.
                 </p>
 
                 <motion.div
