@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
+import Image from "next/image";
 import { Download, Share2, MapPin, Building, Activity, Home } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -73,7 +74,9 @@ export default function SocialMediaGenerator({ valuationData, realtorLogo }: { v
                         {/* Top: Branding */}
                         <div className="flex items-center justify-between relative z-10">
                             {realtorLogo ? (
-                                <img src={realtorLogo} alt="Logo" className="h-8 object-contain" />
+                                <div className="relative h-8 w-24">
+                                    <Image src={realtorLogo} alt="Logo" layout="fill" objectFit="contain" className="object-contain" unoptimized />
+                                </div>
                             ) : (
                                 <div className={`font-bold text-lg tracking-tight ${textColor}`}>
                                     EVİNİN <span className={theme === "light" ? "text-appleBlue" : "text-blue-400"}>DEĞERİ</span>

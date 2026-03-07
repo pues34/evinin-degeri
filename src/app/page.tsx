@@ -1,4 +1,5 @@
 import { LineChart, ShieldCheck, MapPin, Crown, TrendingUp } from "lucide-react";
+import Image from "next/image";
 import TestimonialSlider from "@/components/TestimonialSlider";
 import prisma from "@/lib/prisma";
 import HowItWorksSection from "@/components/HowItWorksSection";
@@ -98,7 +99,7 @@ export default async function Home() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-tr from-appleBlue/30 to-purple-500/30 transform rotate-6 rounded-3xl blur-xl" />
               <div className="bg-gray-900 p-2 rounded-2xl shadow-2xl relative z-10 border border-white/10 backdrop-blur-xl">
-                <img src="/b2b-dashboard-preview.png" alt="B2B Emlakçı Paneli" className="w-full h-auto rounded-xl object-contain ring-1 ring-white/10 shadow-inner" />
+                <Image src="/b2b-dashboard-preview.png" alt="B2B Emlakçı Paneli" width={800} height={450} priority={true} className="w-full h-auto rounded-xl object-contain ring-1 ring-white/10 shadow-inner" />
               </div>
             </div>
           </div>

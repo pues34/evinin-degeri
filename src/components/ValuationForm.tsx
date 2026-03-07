@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ArrowLeft, MapPin, Building, Home, CheckCircle2, Calculator } from "lucide-react";
 import LeadModal from "./LeadModal";
@@ -351,7 +352,7 @@ export default function ValuationForm() {
                             <div className="grid grid-cols-4 gap-3 mt-4">
                                 {photos.map((photo, idx) => (
                                     <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 group">
-                                        <img src={photo} alt={`Uploaded ${idx}`} className="w-full h-full object-cover" />
+                                        <Image src={photo} alt={`Uploaded ${idx}`} layout="fill" objectFit="cover" className="w-full h-full object-cover" />
                                         <button
                                             onClick={() => removePhoto(idx)}
                                             className="absolute top-1 right-1 p-1 bg-white/90 text-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white"

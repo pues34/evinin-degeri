@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight, BarChart3, Users, Crown, CheckCircle2, FileText, Hexagon, Shield, Zap, UserPlus } from "lucide-react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -85,7 +86,7 @@ export default function B2BLandingClient() {
                         {/* We use an abstract gradient placeholder if no image exists yet, so it won't break */}
                         <div className="aspect-[16/9] bg-gradient-to-tr from-gray-50 to-gray-100 flex items-center justify-center text-gray-400 relative overflow-hidden">
                             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
-                            <img src="/b2b-dashboard-preview.png" alt="B2B Panel" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                            <Image src="/b2b-dashboard-preview.png" alt="B2B Panel" width={1200} height={675} priority={true} className="w-full h-full object-cover" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                             <div className="absolute text-center bg-white/50 backdrop-blur-md p-6 rounded-2xl shadow-xl border border-white">
                                 <BarChart3 size={48} className="mx-auto text-appleBlue mb-2" />
                                 <h3 className="font-bold text-appleDark text-xl">Profesyonel Yönetim Paneli</h3>

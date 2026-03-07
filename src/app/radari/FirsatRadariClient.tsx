@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Search, MapPin, Tag, TrendingDown, Target, Zap, AlertCircle, Hexagon, Loader2, UserPlus, LogIn, ArrowRight, Database, BarChart3, Building2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function FirsatRadariClient() {
@@ -138,7 +139,7 @@ export default function FirsatRadariClient() {
                         {listings.map((listing) => (
                             <div key={listing.id} className="bg-white rounded-[24px] border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition group flex flex-col">
                                 <div className="h-48 bg-gray-200 relative overflow-hidden">
-                                    <img src={listing.imageUrl || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80"} alt="Emlak Görseli" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                                    <Image src={listing.imageUrl || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80"} alt="Emlak Görseli" layout="fill" objectFit="cover" className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                                     <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1.5 rounded-lg font-bold text-sm flex items-center shadow-md">
                                         <TrendingDown size={16} className="mr-1" /> %{Number(listing.discount).toFixed(1)} İskontolu
                                     </div>

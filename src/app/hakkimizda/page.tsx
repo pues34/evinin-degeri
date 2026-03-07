@@ -1,4 +1,5 @@
 import { Hexagon, TrendingUp, Shield, Sparkles, MoveRight, BrainCircuit } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = {
@@ -43,7 +44,9 @@ export default function AboutPage() {
                 <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32">
                     <div className="relative group">
                         <div className="absolute inset-0 bg-blue-500/10 rounded-[2rem] transform rotate-3 scale-105 group-hover:rotate-6 transition-transform duration-500"></div>
-                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Evinin Değeri Ofisi" className="relative rounded-[2rem] shadow-2xl object-cover h-[500px] w-full" />
+                        <div className="relative h-[500px] w-full rounded-[2rem] shadow-2xl overflow-hidden">
+                            <Image src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Evinin Değeri Ofisi" layout="fill" objectFit="cover" className="relative object-cover" />
+                        </div>
                     </div>
 
                     <div>
@@ -103,6 +106,7 @@ export default function AboutPage() {
                     </div>
                 </div>
 
-            </main>        </div>
+            </main>
+        </div>
     );
 }

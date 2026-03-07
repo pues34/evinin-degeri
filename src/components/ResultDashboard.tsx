@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Copy, CheckCircle, BrainCircuit, TrendingUp, MapPin, Users, Hexagon, Shield, GraduationCap, TreePine, ShoppingBag, Train, ThumbsUp, ThumbsDown, Minus, Activity, Clock, ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import PdfButton from "./PdfButton";
@@ -226,7 +227,9 @@ export default function ResultDashboard({ id }: { id: string }) {
                     <div className="absolute top-0 right-0 w-64 h-64 bg-appleBlue rounded-full blur-[80px] opacity-20 pointer-events-none" />
                     <div className="relative z-10 flex items-center justify-center gap-3 mb-4">
                         {data.realtor?.subscriptionTier === 'PRO_PLUS' && data.realtor?.customLogoUrl ? (
-                            <img src={data.realtor.customLogoUrl} alt="Emlak Ofisi Logosu" className="h-16 object-contain bg-white/10 p-2 rounded-xl backdrop-blur-sm" crossOrigin="anonymous" />
+                            <div className="relative h-16 w-48">
+                                <Image src={data.realtor.customLogoUrl} alt="Emlak Ofisi Logosu" layout="fill" objectFit="contain" className="bg-white/10 p-2 rounded-xl backdrop-blur-sm" unoptimized />
+                            </div>
                         ) : (
                             <>
                                 <span className="p-2 bg-white/10 text-white rounded-xl backdrop-blur-sm"><Hexagon size={32} className="fill-current" /></span>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import Image from "next/image";
 
 interface AdBannerProps {
     adsenseId?: string | null;
@@ -30,10 +31,12 @@ export default function AdBanner({ adsenseId, sponsorUrl, sponsorLink, className
     if (sponsorUrl && sponsorUrl.trim() !== "") {
         return (
             <div className={`w-full overflow-hidden rounded-2xl shadow-sm relative group border border-gray-100 bg-white ${className}`}>
-                <a href={sponsorLink || "#"} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
-                    <img
+                <a href={sponsorLink || "#"} target="_blank" rel="noopener noreferrer" className="block w-full h-full relative h-[100px]">
+                    <Image
                         src={sponsorUrl}
                         alt="Sponsor Reklamı"
+                        layout="fill"
+                        objectFit="cover"
                         className="w-full h-full object-cover"
                     />
                     <div className="absolute top-2 right-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded backdrop-blur-sm uppercase tracking-wider opacity-80 group-hover:opacity-100 transition-opacity">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Search, Filter } from "lucide-react";
 
@@ -91,11 +92,12 @@ export default function BlogListClient({ initialPosts }: { initialPosts: any[] }
                     {paginatedPosts.map((post: any) => (
                         <Link href={`/blog/${post.slug}`} key={post.id} className="group flex flex-col bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-apple transition-all duration-300 transform hover:-translate-y-1">
                             <div className="h-48 overflow-hidden relative bg-gray-100">
-                                <img
+                                <Image
                                     src={post.imageUrl || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"}
                                     alt={post.title}
+                                    layout="fill"
+                                    objectFit="cover"
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                                    onError={(e: any) => { e.target.src = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" }}
                                 />
                                 {post.category && (
                                     <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-appleBlue shadow-sm">

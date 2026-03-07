@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar, FileText, Lightbulb, Map, TrendingUp } from "lucide-react";
 import AdBanner from "@/components/AdBanner";
@@ -48,14 +49,18 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         <article className="min-h-screen bg-appleGray pb-24">
             {/* Hero Section */}
             <div className="relative w-full h-[50vh] md:h-[60vh] overflow-hidden bg-black">
-                <img
+                <Image
                     src={post.imageUrl || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"}
                     alt={post.title}
+                    layout="fill"
+                    objectFit="cover"
                     className="absolute inset-0 w-full h-full object-cover opacity-50 blur-sm scale-105"
                 />
-                <img
+                <Image
                     src={post.imageUrl || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"}
                     alt={post.title}
+                    layout="fill"
+                    objectFit="contain"
                     className="absolute inset-0 w-full h-full object-contain opacity-90"
                 />
                 <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-appleGray via-appleGray/80 to-transparent" />
@@ -185,9 +190,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                             <div className="space-y-4">
                                 {recentPosts.map((rp: any) => (
                                     <Link key={rp.id} href={`/blog/${rp.slug}`} className="group flex gap-4 items-center">
-                                        <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
+                                        <div className="relative w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
                                             {rp.imageUrl ? (
-                                                <img src={rp.imageUrl} alt={rp.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                                <Image src={rp.imageUrl} alt={rp.title} layout="fill" objectFit="cover" className="object-cover group-hover:scale-110 transition-transform duration-500" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-gray-400"><FileText /></div>
                                             )}

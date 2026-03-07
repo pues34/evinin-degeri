@@ -2,6 +2,7 @@
 
 import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Users, Search, RefreshCw, BarChart2, Star, Calculator, Map, Mail, Bell, MessageSquare, LayoutDashboard, Settings, Activity, Clock, FileText, CheckCircle, Smartphone, Globe, Shield, CreditCard, Crown, Eye, X, ChevronRight, Share2, TrendingUp, Building2, Trash2, Edit2, Download, LogOut, Target } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 
@@ -783,8 +784,8 @@ export default function AdminDashboard() {
                                                     <td className="px-6 py-4">
                                                         {lead.priceFeedback ? (
                                                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${lead.priceFeedback === 'YUKSEK' ? 'bg-orange-100 text-orange-800' :
-                                                                    lead.priceFeedback === 'DUSUK' ? 'bg-red-100 text-red-800' :
-                                                                        'bg-emerald-100 text-emerald-800'
+                                                                lead.priceFeedback === 'DUSUK' ? 'bg-red-100 text-red-800' :
+                                                                    'bg-emerald-100 text-emerald-800'
                                                                 }`}>
                                                                 {lead.priceFeedback}
                                                             </span>
@@ -1839,7 +1840,9 @@ export default function AdminDashboard() {
                                         {radarDeals.length === 0 && <div className="text-center py-12 text-gray-400 bg-white rounded-xl border border-dashed">Radar henüz boş.</div>}
                                         {radarDeals.map((r: any) => (
                                             <div key={r.id} className="bg-white p-4 rounded-2xl border flex gap-4 items-center">
-                                                <img src={r.imageUrl || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=150&q=80"} className="w-24 h-24 object-cover rounded-xl" />
+                                                <div className="relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
+                                                    <Image src={r.imageUrl || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=150&q=80"} alt={r.title || "Radar Görseli"} layout="fill" objectFit="cover" className="object-cover" />
+                                                </div>
                                                 <div className="flex-1">
                                                     <div className="flex justify-between">
                                                         <h5 className="font-bold text-appleDark text-sm">{r.title}</h5>
