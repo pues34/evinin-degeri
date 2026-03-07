@@ -746,13 +746,14 @@ export default function AdminDashboard() {
                                                 <th className="px-6 py-4 font-medium">Ad Soyad</th>
                                                 <th className="px-6 py-4 font-medium">Iletisim</th>
                                                 <th className="px-6 py-4 font-medium">Degerleme Sonucu</th>
+                                                <th className="px-6 py-4 font-medium">Kullanici Geri Bildirimi</th>
                                                 <th className="px-6 py-4 font-medium">Islem</th>
                                             </tr>
                                         </thead>
                                         <tbody className="divide-y divide-gray-50">
                                             {filteredLeads.length === 0 && (
                                                 <tr>
-                                                    <td colSpan={7} className="text-center py-8 text-gray-400">Henuz talep bulunmuyor.</td>
+                                                    <td colSpan={8} className="text-center py-8 text-gray-400">Henuz talep bulunmuyor.</td>
                                                 </tr>
                                             )}
                                             {filteredLeads.map((lead: any) => (
@@ -778,6 +779,18 @@ export default function AdminDashboard() {
                                                                 </span>
                                                             )}
                                                         </span>
+                                                    </td>
+                                                    <td className="px-6 py-4">
+                                                        {lead.priceFeedback ? (
+                                                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${lead.priceFeedback === 'YUKSEK' ? 'bg-orange-100 text-orange-800' :
+                                                                    lead.priceFeedback === 'DUSUK' ? 'bg-red-100 text-red-800' :
+                                                                        'bg-emerald-100 text-emerald-800'
+                                                                }`}>
+                                                                {lead.priceFeedback}
+                                                            </span>
+                                                        ) : (
+                                                            <span className="text-gray-300 text-xs">-</span>
+                                                        )}
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <button

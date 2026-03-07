@@ -38,6 +38,7 @@ export async function GET() {
             overridenValue: r.overridenValue ? new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(r.overridenValue) : null,
             rawOverridenValue: r.overridenValue,
             adminNote: r.adminNote || "",
+            priceFeedback: r.priceFeedback || null,
             propertyDetails: `${r.city}, ${r.district}, ${r.neighborhood} - ${r.rooms} (${r.netSqm} m²)`
         }));
 

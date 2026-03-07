@@ -13,7 +13,7 @@ export default function Header() {
     if (pathname.startsWith("/yonetim-gizli-portal") || pathname.includes("login")) return null;
 
     return (
-        <header className="sticky top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
+        <header className="sticky top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 z-[100]">
             <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16 gap-4 lg:gap-8">
                     <Link href="/" className="flex items-center gap-2.5 group shrink-0 py-1 transition-all">
