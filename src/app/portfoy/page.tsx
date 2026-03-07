@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { Home, TrendingUp, Wallet, Star } from "lucide-react";
+import { Home, TrendingUp, Wallet, Star, User } from "lucide-react";
 import Link from "next/link";
 import type { Metadata } from "next";
 import UpgradeButton from "./UpgradeButton";
@@ -25,6 +25,11 @@ export default async function PortfoyDashboard() {
         orderBy: { createdAt: "desc" }
     });
 
+    const userProfile = await prisma.user.findUnique({
+        where: { id: session.user.id }
+    });
+    const isPremium = userProfile?.isPremium || false;
+
     const totalValue = myProperties.reduce((acc, curr) => acc + curr.estimatedValue, 0);
 
     return (
@@ -37,9 +42,14 @@ export default async function PortfoyDashboard() {
                         <h1 className="text-3xl font-extrabold text-appleDark tracking-tight">Portföyüm</h1>
                         <p className="text-gray-500 mt-1">Yatırımlarınızın güncel durumunu buradan takip edebilirsiniz.</p>
                     </div>
-                    <Link href="/" className="px-6 py-3 bg-appleDark text-white rounded-xl font-bold hover:bg-appleBlue transition-colors shadow-sm inline-flex items-center gap-2">
-                        <Home size={18} /> Yeni Ev Ekle
-                    </Link>
+                    <div className="flex items-center gap-3">
+                        <Link href="/bireysel/profil" className="px-6 py-3 bg-white text-appleDark border border-gray-200 rounded-xl font-bold hover:bg-gray-50 transition-colors shadow-sm inline-flex items-center gap-2">
+                            <User size={18} /> Profil Ayarları
+                        </Link>
+                        <Link href="/" className="px-6 py-3 bg-appleDark text-white rounded-xl font-bold hover:bg-appleBlue transition-colors shadow-sm inline-flex items-center gap-2">
+                            <Home size={18} /> Yeni Ev Ekle
+                        </Link>
+                    </div>
                 </div>
 
                 {/* Top Metrics Cards */}
@@ -72,10 +82,10 @@ export default async function PortfoyDashboard() {
                             <div className="flex justify-between items-start w-full">
                                 <div>
                                     <p className="text-sm font-medium text-indigo-100 mb-1 flex justify-start"><Star className="mr-1 mt-[2px] w-4 h-4 text-yellow-300 fill-yellow-300" /> Premium Raporlar</p>
-                                    <p className="text-lg font-bold leading-tight mt-2">{session.user.isPremium ? 'Aktif' : 'Özel PDF Pazar Raporları ve Yatırım Fırsatları'}</p>
+                                    <p className="text-lg font-bold leading-tight mt-2">{isPremium ? 'Aktif' : 'Özel PDF Pazar Raporları ve Yatırım Fırsatları'}</p>
                                 </div>
                             </div>
-                            {!session.user.isPremium && (
+                            {!isPremium && (
                                 <UpgradeButton />
                             )}
                         </div>

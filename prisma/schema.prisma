@@ -183,6 +183,11 @@ model Realtor {
   // White-Label (Markalama) Özel Logosu
   customLogoUrl   String?  @db.Text
   
+  // Şirket ve Fatura Bilgileri (Phase 13)
+  taxOffice       String?
+  taxNumber       String?
+  address         String?  @db.Text
+  
   valuations      ValuationRequest[]
   
   // Ödemeler (ParamPos B2B)

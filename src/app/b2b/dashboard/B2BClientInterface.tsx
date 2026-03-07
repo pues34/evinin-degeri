@@ -1,6 +1,6 @@
 "use client";
 
-import { Crown, Activity, ExternalLink, History, TrendingUp, Download, CheckCircle, BarChart3, Users, Clock, UserPlus, LogOut, Share2, X, Map } from "lucide-react";
+import { Crown, Activity, ExternalLink, History, TrendingUp, Download, CheckCircle, BarChart3, Users, Clock, UserPlus, LogOut, Share2, X, Map, Settings } from "lucide-react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
@@ -10,16 +10,29 @@ import { useState } from "react";
 
 export default function B2BClientInterface({ user, valuations, leads, isActivePro }: { user: any, valuations: any[], leads: any[], isActivePro: boolean }) {
     const [downloading, setDownloading] = useState(false);
-    const [activeTab, setActiveTab] = useState<'PORTFOLIO' | 'LEAD_MARKET' | 'HEATMAP' | 'MY_BRAND'>('PORTFOLIO');
+    const [activeTab, setActiveTab] = useState<'PORTFOLIO' | 'LEAD_MARKET' | 'HEATMAP' | 'MY_BRAND' | 'SETTINGS'>('PORTFOLIO');
     const [logoUrl, setLogoUrl] = useState(user?.customLogoUrl || "");
     const [savingLogo, setSavingLogo] = useState(false);
+
+    // Settings State
+    const [settings, setSettings] = useState({
+        companyName: user?.companyName || "",
+        phone: user?.phone || "",
+        taxOffice: user?.taxOffice || "",
+        taxNumber: user?.taxNumber || "",
+        address: user?.address || "",
+        currentPassword: "",
+        newPassword: ""
+    });
+    const [savingSettings, setSavingSettings] = useState(false);
+
     const [socialPostData, setSocialPostData] = useState<any>(null);
 
     const handleSaveLogo = async () => {
         setSavingLogo(true);
         try {
-            const res = await fetch("/api/b2b/settings", {
-                method: "POST",
+            const res = await fetch("/api/realtor/profile", {
+                method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ customLogoUrl: logoUrl })
             });
@@ -33,6 +46,28 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
             alert("Bağlantı hatası.");
         }
         setSavingLogo(false);
+    };
+
+    const handleSaveSettings = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setSavingSettings(true);
+        try {
+            const res = await fetch("/api/realtor/profile", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(settings)
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert("Profil ayarları başarıyla kaydedildi!");
+                setSettings({ ...settings, currentPassword: "", newPassword: "" });
+            } else {
+                alert("Hata: " + data.error);
+            }
+        } catch (e) {
+            alert("Bağlantı hatası.");
+        }
+        setSavingSettings(false);
     };
 
     // Calculate Portfoio Stats
@@ -104,7 +139,7 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
                                 <LogOut size={14} /> Çıkış Yap
                             </button>
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Hoş Geldiniz, <span className="text-white">{user.name.split(' ')[0]}</span>.</h1>
+                        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2">Hoş Geldiniz, <span className="text-white">{user.companyName?.split(' ')[0] || "Kurumsal Üye"}</span>.</h1>
                         <p className="text-blue-100/80 max-w-xl text-lg mt-4 leading-relaxed">Gayrimenkul portföyünüzün tüm analizlerini yönetin, B2B limitsiz değerleme motoruyla sahada her zaman rakiplerinizin bir adım önünde olun.</p>
                     </div>
 
@@ -246,6 +281,12 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
                             className={`flex-1 sm:flex-none px-6 py-5 font-bold text-sm flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'MY_BRAND' ? 'border-purple-500 text-purple-600 bg-white' : 'border-transparent text-gray-500 hover:text-purple-600'}`}
                         >
                             <Crown size={18} /> Markam
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('SETTINGS')}
+                            className={`flex-1 sm:flex-none px-6 py-5 font-bold text-sm flex items-center justify-center gap-2 border-b-2 transition-colors ${activeTab === 'SETTINGS' ? 'border-gray-800 text-gray-900 bg-white' : 'border-transparent text-gray-500 hover:text-gray-900'}`}
+                        >
+                            <Settings size={18} /> Profil Ayarları
                         </button>
                     </div>
                     <div className="p-4 sm:p-0 sm:pr-8 w-full sm:w-auto">
@@ -472,6 +513,67 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
                                 </div>
                             </div>
                         )}
+                    </div>
+                )}
+                {/* TAB CONTENT: SETTINGS */}
+                {activeTab === 'SETTINGS' && (
+                    <div className="bg-white min-h-[400px] p-8">
+                        <div className="max-w-3xl mx-auto">
+                            <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 mb-8 flex items-start gap-4">
+                                <Settings className="text-gray-700 shrink-0 mt-1" size={24} />
+                                <div>
+                                    <h4 className="text-lg font-bold text-gray-900 mb-1">Kurumsal Profil & Fatura Bilgileri</h4>
+                                    <p className="text-gray-600 text-sm">
+                                        Şirketinizin iletişim bilgilerini, vergi kimliğini ve hesap şifrenizi bu alandan güncelleyebilirsiniz.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <form onSubmit={handleSaveSettings} className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-700">Firma Adı</label>
+                                        <input type="text" value={settings.companyName} onChange={e => setSettings({ ...settings, companyName: e.target.value })} className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-appleBlue outline-none" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-700">Telefon Numarası</label>
+                                        <input type="tel" value={settings.phone} onChange={e => setSettings({ ...settings, phone: e.target.value })} className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-appleBlue outline-none" placeholder="05XX XXX XX XX" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-700">Vergi Dairesi</label>
+                                        <input type="text" value={settings.taxOffice} onChange={e => setSettings({ ...settings, taxOffice: e.target.value })} className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-appleBlue outline-none" placeholder="Eskisehir VD" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-700">Vergi Numarası / TC</label>
+                                        <input type="text" value={settings.taxNumber} onChange={e => setSettings({ ...settings, taxNumber: e.target.value })} className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-appleBlue outline-none" placeholder="1234567890" />
+                                    </div>
+                                    <div className="md:col-span-2 space-y-2">
+                                        <label className="text-sm font-bold text-gray-700">Firma / Fatura Adresi</label>
+                                        <textarea value={settings.address} onChange={e => setSettings({ ...settings, address: e.target.value })} className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-appleBlue outline-none min-h-[100px]" placeholder="Açık adresiniz..." />
+                                    </div>
+                                </div>
+
+                                <hr className="border-gray-100 my-8" />
+
+                                <h4 className="text-lg font-bold text-gray-900 mb-4">Şifre Değiştir</h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-700">Mevcut Şifre</label>
+                                        <input type="password" value={settings.currentPassword} onChange={e => setSettings({ ...settings, currentPassword: e.target.value })} className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-appleBlue outline-none" placeholder="Boş bırakırsanız şifre değişmez" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-700">Yeni Şifre</label>
+                                        <input type="password" value={settings.newPassword} onChange={e => setSettings({ ...settings, newPassword: e.target.value })} className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-appleBlue outline-none" placeholder="En az 6 karakter" />
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-end pt-4">
+                                    <button disabled={savingSettings} type="submit" className="px-8 py-3 bg-appleDark text-white font-bold rounded-xl hover:bg-black transition-colors shadow-md disabled:opacity-50">
+                                        {savingSettings ? "Kaydediliyor..." : "Ayarları Kaydet"}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 )}
             </div>

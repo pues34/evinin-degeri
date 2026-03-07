@@ -13,7 +13,16 @@ export default async function B2BDashboard() {
         redirect("/b2b/login");
     }
 
-    const { id, isPro, name, subscriptionEnd } = session.user;
+    // Fetch Full Realtor Data for Settings and Real-Time Premium Auth
+    const realtorProfile = await prisma.realtor.findUnique({
+        where: { id: session.user.id }
+    });
+
+    if (!realtorProfile) {
+        redirect("/b2b/login");
+    }
+
+    const { id, isPro, subscriptionEnd, subscriptionTier, companyName } = realtorProfile;
 
     // Check if subscription has expired
     let expired = false;
@@ -44,12 +53,7 @@ export default async function B2BDashboard() {
         <div className="min-h-screen bg-appleGray pt-24 pb-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-6xl mx-auto">
                 <B2BClientInterface
-                    user={{
-                        name: name,
-                        email: session.user.email || "",
-                        subscriptionEnd: subscriptionEnd,
-                        subscriptionTier: session.user.subscriptionTier || 'FREE'
-                    }}
+                    user={realtorProfile}
                     valuations={recentValuations}
                     leads={leadMarket}
                     isActivePro={isActivePro}

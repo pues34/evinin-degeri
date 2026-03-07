@@ -64,6 +64,9 @@ export default function Header() {
                                         <Link href="/portfoy" className="px-4 py-2 bg-appleDark text-white rounded-full text-sm font-medium shadow-sm hover:bg-appleBlue transition-all flex items-center gap-1.5 whitespace-nowrap">
                                             <User size={16} /> Portföyüm
                                         </Link>
+                                        <Link href="/bireysel/profil" className="px-4 py-2 bg-white text-appleDark border border-gray-200 rounded-full text-sm font-medium shadow-sm hover:bg-gray-50 transition-all flex items-center gap-1.5 whitespace-nowrap">
+                                            Profilim
+                                        </Link>
                                         <Link href="/ai-danisman" className="px-4 py-2 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full text-sm font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 whitespace-nowrap">
                                             <Bot size={16} /> AI Danışman
                                         </Link>
