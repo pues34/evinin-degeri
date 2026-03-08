@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LogOut, Home, LayoutDashboard, Settings } from "lucide-react";
+import { LogOut, Home, LayoutDashboard, Tag, FileText } from "lucide-react";
 import { signOut } from "next-auth/react";
 
 export default function AdminSidebar() {
@@ -13,13 +13,16 @@ export default function AdminSidebar() {
                     <LayoutDashboard size={20} /> Dashboard
                 </Link>
                 <Link href="/yonetim-gizli-portal/ilanlar" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition">
-                    <Home size={20} /> İlan Yönetimi
+                    <FileText size={20} /> İlan Yönetimi
+                </Link>
+                <Link href="/yonetim-gizli-portal/promosyonlar" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition">
+                    <Tag size={20} /> Promo Kodları
                 </Link>
                 <Link href="/" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition mt-auto">
                     <Home size={20} /> Siteye Dön
                 </Link>
             </nav>
-            <button onClick={() => signOut({ callbackUrl: '/b2b/login' })} className="flex items-center gap-3 p-3 text-red-400 hover:bg-red-500/10 rounded-xl transition mt-auto">
+            <button onClick={() => signOut({ callbackUrl: '/yonetim-gizli-portal/login' })} className="flex items-center gap-3 p-3 text-red-400 hover:bg-red-500/10 rounded-xl transition mt-auto">
                 <LogOut size={20} /> Çıkış Yap
             </button>
         </aside>

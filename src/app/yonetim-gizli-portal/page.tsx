@@ -567,12 +567,7 @@ export default function AdminDashboard() {
                     >
                         <LayoutDashboard size={18} className="mr-3" /> Sayfalar (CMS)
                     </button>
-                    <button
-                        onClick={() => setActiveTab("b2b-users")}
-                        className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'b2b-users' ? 'bg-appleBlue text-white' : 'text-gray-600 hover:bg-gray-50'}`}
-                    >
-                        <Building2 size={18} className="mr-3" /> B2B Emlakçılar
-                    </button>
+
                     <button
                         onClick={() => setActiveTab("b2c-users")}
                         className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'b2c-users' ? 'bg-appleBlue text-white' : 'text-gray-600 hover:bg-gray-50'}`}
@@ -603,12 +598,7 @@ export default function AdminDashboard() {
                     >
                         <LayoutDashboard size={18} className="mr-3" /> SEO Blog (AI)
                     </button>
-                    <button
-                        onClick={() => setActiveTab("testimonials")}
-                        className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'testimonials' ? 'bg-appleBlue text-white' : 'text-gray-600 hover:bg-gray-50'}`}
-                    >
-                        <Star size={18} className="mr-3" /> Referans Yönetimi
-                    </button>
+
                     <button
                         onClick={() => setActiveTab("site-settings")}
                         className={`w-full flex items-center px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTab === 'site-settings' ? 'bg-appleBlue text-white' : 'text-gray-600 hover:bg-gray-50'}`}

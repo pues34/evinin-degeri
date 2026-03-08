@@ -71,18 +71,20 @@ export async function POST(req: NextRequest) {
 
         if (!userId && !realtorId) return NextResponse.json({ error: "No user id" }, { status: 400 });
 
-        // Enforce limit: max 3 per year mapped by current year
-        const startOfYear = new Date(new Date().getFullYear(), 0, 1);
-        const listingCount = await prisma.listing.count({
-            where: {
-                ownerType: ownerType,
-                ...(userId ? { userId } : { realtorId }),
-                createdAt: { gte: startOfYear }
+        // Premium kontrol: ücretsiz kullanıcılar aylık 1, premium sınırsız
+        if (userId) {
+            const user = await prisma.user.findUnique({ where: { id: userId }, select: { isPremium: true } });
+            if (!user?.isPremium) {
+                const startOfMonth = new Date();
+                startOfMonth.setDate(1);
+                startOfMonth.setHours(0, 0, 0, 0);
+                const monthlyCount = await prisma.listing.count({
+                    where: { userId, createdAt: { gte: startOfMonth } }
+                });
+                if (monthlyCount >= 1) {
+                    return NextResponse.json({ error: "Ücretsiz üyelik ile aylık 1 ilan verebilirsiniz. Premium'a geçerek sınırsız ilan verebilirsiniz." }, { status: 403 });
+                }
             }
-        });
-
-        if (listingCount >= 3) {
-            return NextResponse.json({ error: "Yıllık maksimum 3 ilan sınırına ulaştınız." }, { status: 403 });
         }
 
         const body = await req.json();
@@ -104,6 +106,10 @@ export async function POST(req: NextRequest) {
         const seq = String(totalListings + 1).padStart(5, '0');
         const listingNumber = `ED-${year}-${seq}`;
 
+        // İlan yayın süresi: 30 gün
+        const expiresAt = new Date();
+        expiresAt.setDate(expiresAt.getDate() + 30);
+
         const newListing = await prisma.listing.create({
             data: {
                 title, description, askingPrice,
@@ -119,7 +125,8 @@ export async function POST(req: NextRequest) {
                 userId,
                 realtorId,
                 listingNumber,
-                status: "PENDING"
+                status: "PENDING",
+                expiresAt,
             }
         });
 

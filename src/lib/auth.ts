@@ -52,12 +52,23 @@ export const authOptions: AuthOptions = {
                     throw new Error("Şifre hatalı.");
                 }
 
+                // Login sırasında premium süresini kontrol et
+                let isPremium = user.isPremium;
+                if (isPremium && user.premiumEnd && new Date(user.premiumEnd) < new Date()) {
+                    // Premium süresi dolmuş, otomatik olarak ücretsiz katmana düşür
+                    await prisma.user.update({
+                        where: { id: user.id },
+                        data: { isPremium: false },
+                    });
+                    isPremium = false;
+                }
+
                 return {
                     id: user.id,
                     name: user.name || (user as any).companyName || "Kullanıcı",
                     email: user.email,
                     role: "user",
-                    isPremium: user.isPremium,
+                    isPremium,
                     accountType: (user as any).accountType || "bireysel",
                 } as any;
             }

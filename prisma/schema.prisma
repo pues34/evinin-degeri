@@ -8,11 +8,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-enum SubscriptionTier {
-  FREE
-  PRO
-  PRO_PLUS
-}
 
 model ValuationRequest {
   id              String   @id @default(cuid())
@@ -177,7 +172,7 @@ model Realtor {
   
   // Abonelik Seviyesi (V19 PRO/PRO_PLUS)
   isPro           Boolean  @default(false) // Geriye dönük uyumluluk için tutulur.
-  subscriptionTier SubscriptionTier @default(FREE)
+  subscriptionTier String @default("FREE")
   subscriptionEnd DateTime?
   
   // White-Label (Markalama) Özel Logosu
@@ -209,7 +204,7 @@ model Payment {
   errorMessage    String?  @db.Text
   
   // Hangi paket alındı
-  tierPurchased   SubscriptionTier
+  tierPurchased   String
   
   // Hangi Emlakçıya ait
   realtorId       String
@@ -383,6 +378,7 @@ model Listing {
   images          String[]       // URL array
 
   status          ListingStatus  @default(PENDING)
+  expiresAt       DateTime?      // İlan yayın süresi (oluşturulma + 30 gün)
 
   ownerType       String         // "USER" veya "REALTOR"
   
@@ -395,4 +391,18 @@ model Listing {
   @@index([status])
   @@index([createdAt])
   @@index([discountRate])
+}
+
+// --- PROMOSYON KODU SİSTEMİ ---
+
+model PromoCode {
+  id              String   @id @default(cuid())
+  code            String   @unique
+  discountType    String   // "percentage" veya "fixed"
+  discountValue   Float    // Yüzde (ör: 20) veya sabit tutar (ör: 100)
+  maxUses         Int      @default(100)
+  currentUses     Int      @default(0)
+  expiresAt       DateTime
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
 }
