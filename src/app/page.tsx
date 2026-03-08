@@ -6,8 +6,13 @@ import HeroSection from "@/components/HeroSection";
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const settings = await prisma.systemSettings.findFirst();
-  const counterValue = settings?.valuationCounter || 4231;
+  let counterValue = 4231;
+  try {
+    const settings = await prisma.systemSettings.findFirst();
+    counterValue = settings?.valuationCounter || 4231;
+  } catch (e) {
+    console.error("Homepage settings fetch error:", e);
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-appleGray overflow-hidden">

@@ -53,13 +53,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.8,
         },
         {
-            url: `${baseUrl}/b2b`,
+            url: `${baseUrl}/ilan-ver`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: `${baseUrl}/b2b/register`,
+            url: `${baseUrl}/kayit`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.6,

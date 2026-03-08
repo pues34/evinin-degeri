@@ -166,8 +166,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                             <Link href="/yatirim-haritasi" className="block p-3 rounded-xl hover:bg-gray-50 text-gray-600 font-medium transition-colors border border-transparent hover:border-gray-100">
                                 🗺️ Bölgesel Isı Haritası
                             </Link>
-                            <Link href="/b2b/login" className="block p-3 rounded-xl hover:bg-gray-50 text-gray-600 font-medium transition-colors border border-transparent hover:border-gray-100">
-                                🏢 Emlakçı / Kurumsal Giriş
+                            <Link href="/giris" className="block p-3 rounded-xl hover:bg-gray-50 text-gray-600 font-medium transition-colors border border-transparent hover:border-gray-100">
+                                🏢 Giriş Yap
                             </Link>
                         </div>
                     </div>

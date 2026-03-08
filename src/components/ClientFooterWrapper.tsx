@@ -5,7 +5,7 @@ export default function ClientFooterWrapper({ children }: { children: React.Reac
     const pathname = usePathname();
 
     // Yalnızca public sayfalarda footer gösterelim, admin veya dashboard sayfaları hariç
-    if (pathname.startsWith("/yonetim-gizli-portal") || pathname.includes("login") || pathname.startsWith("/b2b/dashboard")) {
+    if (pathname.startsWith("/yonetim-gizli-portal") || pathname.includes("login")) {
         return null;
     }
 
