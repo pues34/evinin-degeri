@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { User, Mail, Phone, Building2, Crown, Calendar, LogOut, Plus, Eye, Clock, CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { User, Mail, Phone, Building2, Crown, Calendar, LogOut, Plus, Eye, Clock, CheckCircle, XCircle, AlertCircle, Home, TrendingUp, Wallet } from "lucide-react";
 
 interface ProfileUser {
     id: string;
@@ -28,7 +27,19 @@ interface ListingItem {
     createdAt: string;
 }
 
-export default function ProfileClient({ user, listings }: { user: ProfileUser; listings: ListingItem[] }) {
+interface PortfolioItem {
+    id: string;
+    district: string;
+    neighborhood: string;
+    rooms: string;
+    grossSqm: number;
+    buildingAge: string;
+    estimatedValue: number;
+    requestNumber: string;
+    createdAt: string;
+}
+
+export default function ProfileClient({ user, listings, portfolio }: { user: ProfileUser; listings: ListingItem[]; portfolio: PortfolioItem[] }) {
     const statusBadge = (status: string) => {
         switch (status) {
             case 'APPROVED': return <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"><CheckCircle size={12} /> Yayında</span>;
@@ -37,9 +48,11 @@ export default function ProfileClient({ user, listings }: { user: ProfileUser; l
         }
     };
 
+    const totalPortfolioValue = portfolio.reduce((acc, curr) => acc + curr.estimatedValue, 0);
+
     return (
         <div className="min-h-screen bg-appleGray py-24 px-4">
-            <div className="max-w-4xl mx-auto space-y-8">
+            <div className="max-w-5xl mx-auto space-y-8">
 
                 {/* Profile Card */}
                 <div className="bg-white rounded-3xl shadow-apple border border-gray-100 p-8">
@@ -50,7 +63,7 @@ export default function ProfileClient({ user, listings }: { user: ProfileUser; l
                             </div>
                             <div>
                                 <h1 className="text-2xl font-bold text-appleDark">{user.name || "Kullanıcı"}</h1>
-                                <div className="flex items-center gap-2 mt-1">
+                                <div className="flex items-center gap-2 mt-1 flex-wrap">
                                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${user.accountType === 'sirket' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
                                         {user.accountType === 'sirket' ? 'Şirket Hesabı' : 'Bireysel Hesap'}
                                     </span>
@@ -117,6 +130,68 @@ export default function ProfileClient({ user, listings }: { user: ProfileUser; l
                     )}
                 </div>
 
+                {/* Portfolio Section */}
+                <div className="bg-white rounded-3xl shadow-apple border border-gray-100 p-8">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-xl font-bold text-appleDark flex items-center gap-2">
+                            <TrendingUp size={20} className="text-appleBlue" /> Portföyüm
+                        </h2>
+                        <Link href="/" className="flex items-center gap-2 px-4 py-2 bg-appleDark text-white rounded-xl text-sm font-medium hover:bg-appleBlue transition-colors">
+                            <Home size={16} /> Yeni Değerleme
+                        </Link>
+                    </div>
+
+                    {/* Summary */}
+                    {portfolio.length > 0 && (
+                        <div className="grid grid-cols-2 gap-4 mb-6">
+                            <div className="p-4 bg-blue-50 rounded-xl">
+                                <p className="text-xs text-gray-500 mb-1">Toplam Değer</p>
+                                <p className="text-xl font-extrabold text-appleDark">
+                                    {new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(totalPortfolioValue)}
+                                </p>
+                            </div>
+                            <div className="p-4 bg-emerald-50 rounded-xl">
+                                <p className="text-xs text-gray-500 mb-1">Takip Edilen</p>
+                                <p className="text-xl font-extrabold text-appleDark">{portfolio.length} <span className="text-sm font-medium text-gray-400">Mülk</span></p>
+                            </div>
+                        </div>
+                    )}
+
+                    {portfolio.length === 0 ? (
+                        <div className="text-center py-10">
+                            <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <Home size={24} className="text-gray-300" />
+                            </div>
+                            <p className="text-gray-400 font-medium">Portföyünüzde henüz mülk yok.</p>
+                            <Link href="/" className="text-appleBlue text-sm font-medium mt-2 inline-block hover:underline">
+                                Evimin değerini öğren →
+                            </Link>
+                        </div>
+                    ) : (
+                        <div className="space-y-3">
+                            {portfolio.map((prop) => (
+                                <Link key={prop.id} href={`/result/${prop.id}`} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group">
+                                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                                        <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-appleBlue shrink-0">
+                                            <Home size={18} />
+                                        </div>
+                                        <div className="min-w-0">
+                                            <h3 className="text-sm font-bold text-appleDark truncate">{prop.district}, {prop.neighborhood}</h3>
+                                            <p className="text-xs text-gray-400 mt-0.5">{prop.rooms} • {prop.grossSqm} m² • {prop.buildingAge}</p>
+                                        </div>
+                                    </div>
+                                    <div className="text-right shrink-0 ml-4">
+                                        <p className="text-sm font-extrabold text-appleDark">
+                                            {new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(prop.estimatedValue)}
+                                        </p>
+                                        <p className="text-[10px] text-gray-400">{new Date(prop.createdAt).toLocaleDateString('tr-TR')}</p>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
                 {/* My Listings */}
                 <div className="bg-white rounded-3xl shadow-apple border border-gray-100 p-8">
                     <div className="flex justify-between items-center mb-6">
@@ -127,7 +202,7 @@ export default function ProfileClient({ user, listings }: { user: ProfileUser; l
                     </div>
 
                     {listings.length === 0 ? (
-                        <div className="text-center py-12">
+                        <div className="text-center py-10">
                             <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                                 <Eye size={24} className="text-gray-300" />
                             </div>

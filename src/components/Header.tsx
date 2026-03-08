@@ -57,11 +57,8 @@ export default function Header() {
                         </Link>
                         {session ? (
                             <div className="flex items-center gap-1.5 shrink-0 ml-2">
-                                <Link href="/portfoy" className="px-3 py-1.5 bg-appleDark text-white rounded-full text-xs font-medium shadow-sm hover:bg-appleBlue transition-all flex items-center gap-1 whitespace-nowrap">
-                                    <User size={14} /> Portföyüm
-                                </Link>
-                                <Link href="/profil" className="px-3 py-1.5 bg-white text-appleDark border border-gray-200 rounded-full text-xs font-medium shadow-sm hover:bg-gray-50 transition-all flex items-center gap-1 whitespace-nowrap">
-                                    Profilim
+                                <Link href="/profil" className="px-3 py-1.5 bg-appleDark text-white rounded-full text-xs font-medium shadow-sm hover:bg-appleBlue transition-all flex items-center gap-1 whitespace-nowrap">
+                                    <User size={14} /> Profilim
                                 </Link>
                                 <Link href="/ai-danisman" className="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full text-xs font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-1 whitespace-nowrap">
                                     <Bot size={14} /> Danışman

@@ -44,5 +44,11 @@ export default async function ProfilPage() {
         take: 20,
     });
 
-    return <ProfileClient user={user as any} listings={listings as any[]} />;
+    // Portföy verileri
+    const portfolio = await prisma.valuationRequest.findMany({
+        where: { userId },
+        orderBy: { createdAt: "desc" },
+    });
+
+    return <ProfileClient user={user as any} listings={listings as any[]} portfolio={portfolio as any[]} />;
 }

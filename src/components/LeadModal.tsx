@@ -38,9 +38,12 @@ export default function LeadModal({ isOpen, onClose, formData }: any) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const phoneRegex = /^(\+90|0)?[1-9][0-9]{9}$/;
-        if (!phoneRegex.test(lead.phone.replace(/\s+/g, ''))) {
-            return alert("Lütfen geçerli bir Türkiye numarası girin (Örn: 05321234567)");
+        // Only validate phone for unauthenticated users
+        if (!session) {
+            const phoneRegex = /^(\+90|0)?[1-9][0-9]{9}$/;
+            if (!phoneRegex.test(lead.phone.replace(/\s+/g, ''))) {
+                return alert("Lütfen geçerli bir Türkiye numarası girin (Örn: 05321234567)");
+            }
         }
         if (!agreed) return alert("Lütfen KVKK ve Yapay Zeka Onay metnini kabul edin.");
 
@@ -121,7 +124,7 @@ export default function LeadModal({ isOpen, onClose, formData }: any) {
                 }
 
                 // 2. Background Sign In
-                const signInResult = await signIn('b2c-login', {
+                const signInResult = await signIn('user-login', {
                     redirect: false,
                     email: lead.email,
                     password: lead.password
