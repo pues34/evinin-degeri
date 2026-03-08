@@ -274,8 +274,19 @@ model User {
   password        String
   phone           String?
   
-  // B2C Abonelik veya Premium Satın Alımlar
+  // Hesap Tipi: "bireysel" veya "sirket"
+  accountType     String   @default("bireysel")
+  companyName     String?  // Sadece şirket hesapları için
+
+  // Premium Üyelik
   isPremium       Boolean  @default(false)
+  premiumEnd      DateTime?
+
+  // Kullanım Limitleri (Ücretsiz kullanıcılar için)
+  dailyQueryCount Int      @default(0)
+  lastQueryDate   DateTime?
+  monthlyListingCount Int  @default(0)
+  lastListingMonth    Int  @default(0)
   
   // Kullanıcının Portföyüne Eklediği Kendi Evleri
   portfolio       ValuationRequest[]
@@ -283,7 +294,7 @@ model User {
   // Radardaki Favori / Fırsat İlanlar
   savedListings   SavedListing[]
 
-  // Phase 18: Kendi İlanları
+  // Kendi İlanları
   listings        Listing[]
 
   createdAt       DateTime @default(now())

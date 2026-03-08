@@ -1,126 +1,137 @@
 "use client";
 
-import { Check, X, ShieldCheck, Zap, ArrowRight, Building, User, Target } from "lucide-react";
+import { useState } from "react";
+import { Check, X, Zap, Crown, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 export default function FiyatlandirmaClient() {
     const { data: session } = useSession();
+    const [isYearly, setIsYearly] = useState(false);
+
+    const monthlyPrice = 399;
+    const originalPrice = 999;
+    const yearlyTotal = Math.round(monthlyPrice * 12 * 0.95); // %5 indirim
+    const yearlyMonthly = Math.round(yearlyTotal / 12);
+
+    const features = [
+        { name: "Değerleme Sorgulama", free: "Günlük 1", premium: "Sınırsız" },
+        { name: "Sonucu Ekranda Görme", free: true, premium: true },
+        { name: "PDF Rapor İndirme", free: false, premium: true },
+        { name: "İlan Yayınlama", free: "Aylık 1", premium: "Sınırsız" },
+        { name: "Kira Getirisi Hesaplama", free: true, premium: true },
+        { name: "Amortisman Hesaplama", free: true, premium: true },
+        { name: "Isı Haritası", free: true, premium: true },
+        { name: "Fırsat Radarı", free: false, premium: true },
+        { name: "Yatırım Fırsatları", free: false, premium: true },
+    ];
 
     return (
-        <div className="min-h-screen pt-24 pb-20 bg-gray-50/50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-appleGray py-24 px-4">
+            <div className="max-w-4xl mx-auto">
 
-                {/* Header Section */}
-                <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-appleDark mb-6 tracking-tight">
-                        İhtiyacınıza Uygun <span className="text-appleBlue">PropTech Çözümü</span>
-                    </h1>
-                    <p className="text-lg text-gray-500">
-                        Bireysel yatırımcıların portföylerini yönetmesinden, gayrimenkul ofislerinin satış kapatmasına kadar herkes için bir Evin Değeri paketi var.
-                    </p>
+                {/* Header */}
+                <div className="text-center mb-14">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-100 rounded-full text-sm font-bold text-appleBlue mb-6">
+                        <Crown size={16} /> Fiyatlandırma
+                    </div>
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-appleDark mb-4">Basit ve Şeffaf Fiyatlandırma</h1>
+                    <p className="text-lg text-gray-500 max-w-xl mx-auto">İhtiyacınıza göre ücretsiz başlayın ya da Premium ile tüm özelliklerin kilidini açın.</p>
                 </div>
 
-                {/* Pricing Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Billing Toggle */}
+                <div className="flex items-center justify-center gap-4 mb-12">
+                    <span className={`text-sm font-medium ${!isYearly ? 'text-appleDark' : 'text-gray-400'}`}>Aylık</span>
+                    <button
+                        onClick={() => setIsYearly(!isYearly)}
+                        className={`relative w-14 h-7 rounded-full transition-colors ${isYearly ? 'bg-appleBlue' : 'bg-gray-300'}`}
+                    >
+                        <span className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform ${isYearly ? 'translate-x-7' : ''}`} />
+                    </button>
+                    <span className={`text-sm font-medium ${isYearly ? 'text-appleDark' : 'text-gray-400'}`}>
+                        Yıllık <span className="text-green-500 font-bold">%5 indirim</span>
+                    </span>
+                </div>
 
-                    {/* Free Tier */}
-                    <div className="bg-white rounded-[32px] p-8 shadow-sm border border-gray-100 flex flex-col relative">
-                        <div className="mb-6">
-                            <div className="w-12 h-12 bg-gray-100 text-gray-600 rounded-2xl flex items-center justify-center mb-4">
-                                <User size={24} />
-                            </div>
-                            <h3 className="text-2xl font-bold text-appleDark">Standart Giriş</h3>
-                            <p className="text-gray-500 mt-2 text-sm">Temel özellikleri keşfetmek ve başlangıç portföyünü oluşturmak isteyenler için.</p>
-                        </div>
-                        <div className="mb-8">
-                            <span className="text-4xl font-extrabold text-appleDark">Ücretsiz</span>
-                        </div>
-                        <ul className="space-y-4 mb-8 flex-1">
-                            <li className="flex items-start gap-3"><Check size={20} className="text-green-500 shrink-0 mt-0.5" /> <span className="text-sm text-gray-700">Yapay Zeka ile Ev Değerleme (Ayda 3 test)</span></li>
-                            <li className="flex items-start gap-3"><Check size={20} className="text-green-500 shrink-0 mt-0.5" /> <span className="text-sm text-gray-700">Kira ve Amortisman Hesaplama Aracı</span></li>
-                            <li className="flex items-start gap-3"><Check size={20} className="text-green-500 shrink-0 mt-0.5" /> <span className="text-sm text-gray-700">Temel Portföy Takibi (En fazla 3 Ev)</span></li>
-                            <li className="flex items-start gap-3 opacity-50"><X size={20} className="text-red-400 shrink-0 mt-0.5" /> <span className="text-sm text-gray-500">Fırsat Radarına (Kelepir Evler) Erişim</span></li>
-                            <li className="flex items-start gap-3 opacity-50"><X size={20} className="text-red-400 shrink-0 mt-0.5" /> <span className="text-sm text-gray-500">Bölgesel Yatırım Isı Haritası</span></li>
+                {/* Plans */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                    {/* Free Plan */}
+                    <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">
+                        <h3 className="text-xl font-bold text-appleDark mb-2">Ücretsiz</h3>
+                        <div className="text-5xl font-extrabold text-appleDark mb-1">0₺</div>
+                        <p className="text-gray-400 text-sm mb-8">Sonsuza kadar ücretsiz</p>
+                        <ul className="space-y-3 mb-8">
+                            {["Günlük 1 sorgulama", "Sonucu ekranda görme", "Aylık 1 ilan", "Kira & amortisman hesaplama", "Isı haritası"].map((f, i) => (
+                                <li key={i} className="flex items-center gap-3 text-gray-600 text-sm">
+                                    <Check size={16} className="text-green-500 shrink-0" /> {f}
+                                </li>
+                            ))}
                         </ul>
-                        <Link href="/kayit" className="w-full">
-                            <button className="w-full py-4 rounded-xl border-2 border-gray-200 text-appleDark font-bold hover:border-gray-300 hover:bg-gray-50 transition-colors">
-                                Ücretsiz Kayıt Ol
-                            </button>
+                        <Link href="/kayit" className="block w-full text-center py-3 bg-gray-100 text-appleDark rounded-xl font-medium text-sm hover:bg-gray-200 transition-colors">
+                            Ücretsiz Başla
                         </Link>
                     </div>
 
-                    {/* Premium Tier */}
-                    <div className="bg-gradient-to-b from-blue-900 to-indigo-900 rounded-[32px] p-8 shadow-2xl flex flex-col relative transform md:-translate-y-4 border border-blue-800">
-                        <div className="absolute top-0 right-10 transform -translate-y-1/2">
-                            <span className="bg-gradient-to-r from-orange-400 to-red-500 text-white text-xs font-bold uppercase py-1 px-3 rounded-full shadow-lg">En Çok Tercih Edilen</span>
+                    {/* Premium Plan */}
+                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl border-2 border-appleBlue shadow-lg p-8 relative">
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-appleBlue text-white text-xs font-bold rounded-full shadow-md flex items-center gap-1">
+                            <Zap size={12} /> Önerilen
                         </div>
-                        <div className="mb-6">
-                            <div className="w-12 h-12 bg-blue-800/50 text-blue-300 rounded-2xl flex items-center justify-center mb-4 border border-blue-700">
-                                <Zap size={24} />
-                            </div>
-                            <h3 className="text-2xl font-bold text-white">Premium Yatırımcı</h3>
-                            <p className="text-blue-200 mt-2 text-sm">Piyasanın önünde olmak ve kelepir fırsatları anında yakalamak isteyen alıcılar için.</p>
+                        <h3 className="text-xl font-bold text-appleDark mb-2">Premium</h3>
+                        <div className="flex items-baseline gap-2 mb-1">
+                            <span className="text-lg text-gray-400 line-through">{originalPrice}₺</span>
+                            <span className="text-5xl font-extrabold text-appleBlue">
+                                {isYearly ? yearlyMonthly : monthlyPrice}₺
+                            </span>
+                            <span className="text-gray-400 text-sm">/ay</span>
                         </div>
-                        <div className="mb-8">
-                            <div className="flex items-end gap-1">
-                                <span className="text-4xl font-extrabold text-white">₺299</span>
-                                <span className="text-blue-300 mb-1">/ ay</span>
-                            </div>
-                        </div>
-                        <ul className="space-y-4 mb-8 flex-1">
-                            <li className="flex items-start gap-3"><Check size={20} className="text-blue-400 shrink-0 mt-0.5" /> <span className="text-sm text-white">Sınırsız Yapay Zeka Ev Değerlemesi</span></li>
-                            <li className="flex items-start gap-3"><Check size={20} className="text-blue-400 shrink-0 mt-0.5" /> <span className="text-sm text-white">Sınırsız Portföy Ekleme ve Takip</span></li>
-                            <li className="flex items-start gap-3"><Check size={20} className="text-white shrink-0 mt-0.5 bg-blue-500 rounded-full p-0.5" /> <span className="text-sm text-white font-medium">Yapay Zeka Fırsat Radarı (Canlı Erişim)</span></li>
-                            <li className="flex items-start gap-3"><Check size={20} className="text-blue-400 shrink-0 mt-0.5" /> <span className="text-sm text-white">Bölgesel Değer Isı Haritaları</span></li>
-                            <li className="flex items-start gap-3"><Check size={20} className="text-blue-400 shrink-0 mt-0.5" /> <span className="text-sm text-white">Yapay Zeka Danışman (Emlak Botu) Sınırsız Sorular</span></li>
+                        {isYearly ? (
+                            <p className="text-green-600 text-sm font-medium mb-8">
+                                Yıllık toplam: {yearlyTotal.toLocaleString('tr-TR')}₺ (%5 indirim)
+                            </p>
+                        ) : (
+                            <p className="text-blue-500 text-sm font-medium mb-8">Lansman fiyatıyla</p>
+                        )}
+                        <ul className="space-y-3 mb-8">
+                            {["Sınırsız sorgulama", "PDF rapor indirme", "Sınırsız ilan", "Kira & amortisman hesaplama", "Isı haritası", "Fırsat Radarı", "Yatırım Fırsatları"].map((f, i) => (
+                                <li key={i} className="flex items-center gap-3 text-gray-700 text-sm font-medium">
+                                    <Check size={16} className="text-appleBlue shrink-0" /> {f}
+                                </li>
+                            ))}
                         </ul>
-                        <Link href={session ? "/radari" : "/kayit"} className="w-full">
-                            <button className="w-full py-4 rounded-xl bg-white text-blue-900 font-bold hover:bg-gray-100 transition-colors shadow-lg flex items-center justify-center gap-2">
-                                Premium&apos;a Geç <ArrowRight size={18} />
-                            </button>
+                        <Link href={session ? "/profil" : "/kayit"} className="block w-full text-center py-3 bg-appleBlue text-white rounded-xl font-bold text-sm hover:bg-blue-600 transition-colors shadow-md flex items-center justify-center gap-2">
+                            Premium&apos;a Geç <ArrowRight size={16} />
                         </Link>
-                    </div>
-
-                    {/* B2B Tier */}
-                    <div className="bg-white rounded-[32px] p-8 shadow-sm border border-gray-100 flex flex-col relative">
-                        <div className="mb-6">
-                            <div className="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-4">
-                                <Building size={24} />
-                            </div>
-                            <h3 className="text-2xl font-bold text-appleDark">Kurumsal (B2B)</h3>
-                            <p className="text-gray-500 mt-2 text-sm">Emlak profesyonelleri, değerleme uzmanları ve inşaat firmaları için API destekli çözüm.</p>
-                        </div>
-                        <div className="mb-8">
-                            <span className="text-3xl font-extrabold text-appleDark">Özel Fiyatlandırma</span>
-                        </div>
-                        <ul className="space-y-4 mb-8 flex-1">
-                            <li className="flex items-start gap-3"><Check size={20} className="text-emerald-500 shrink-0 mt-0.5" /> <span className="text-sm text-gray-700"><strong>White-Label Değerleme Aracı (Kendi Web Sitenize Ekleyin)</strong></span></li>
-                            <li className="flex items-start gap-3"><Check size={20} className="text-emerald-500 shrink-0 mt-0.5" /> <span className="text-sm text-gray-700">Müşteri Adayı (Lead) Toplama Formları</span></li>
-                            <li className="flex items-start gap-3"><Check size={20} className="text-emerald-500 shrink-0 mt-0.5" /> <span className="text-sm text-gray-700">Otomatik Instagram/Sosyal Medya Gönderisi Üretici</span></li>
-                            <li className="flex items-start gap-3"><Check size={20} className="text-emerald-500 shrink-0 mt-0.5" /> <span className="text-sm text-gray-700">10 Sayfalık PDF Ekspertiz Raporu Baskısı</span></li>
-                            <li className="flex items-start gap-3"><Check size={20} className="text-emerald-500 shrink-0 mt-0.5" /> <span className="text-sm text-gray-700">Özel Müşteri Portföy Paneli (CRM)</span></li>
-                        </ul>
-                        <Link href="/b2b" className="w-full">
-                            <button className="w-full py-4 rounded-xl bg-gray-900 text-white font-bold hover:bg-gray-800 transition-colors">
-                                İşletmeler İçin İncele
-                            </button>
-                        </Link>
-                    </div>
-
-                </div>
-
-                {/* FAQ or Trust badges */}
-                <div className="mt-20 border-t border-gray-100 pt-16 flex flex-col items-center">
-                    <p className="text-gray-400 text-sm font-medium uppercase tracking-widest mb-8">Güvenli Ödeme Altyapısı</p>
-                    <div className="flex gap-8 items-center opacity-50 grayscale hover:grayscale-0 transition-all duration-300">
-                        <div className="flex items-center gap-2 font-bold text-lg"><ShieldCheck className="text-green-500" /> SSL Güvencesi</div>
-                        <div className="font-bold text-xl italic text-blue-800 tracking-tighter">Iyzico</div>
-                        <div className="font-bold text-xl text-blue-600">Mastercard</div>
-                        <div className="font-bold text-xl text-orange-500 italic">Visa</div>
                     </div>
                 </div>
 
+                {/* Feature Comparison Table */}
+                <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div className="px-8 py-6 border-b border-gray-100">
+                        <h3 className="text-lg font-bold text-appleDark">Plan Karşılaştırması</h3>
+                    </div>
+                    <div className="divide-y divide-gray-50">
+                        {features.map((f, i) => (
+                            <div key={i} className="grid grid-cols-3 items-center px-8 py-4 hover:bg-gray-50/50 transition-colors">
+                                <span className="text-sm text-gray-700 font-medium">{f.name}</span>
+                                <div className="text-center">
+                                    {typeof f.free === "boolean" ? (
+                                        f.free ? <Check size={18} className="text-green-500 mx-auto" /> : <X size={18} className="text-gray-300 mx-auto" />
+                                    ) : (
+                                        <span className="text-sm text-gray-500">{f.free}</span>
+                                    )}
+                                </div>
+                                <div className="text-center">
+                                    {typeof f.premium === "boolean" ? (
+                                        f.premium ? <Check size={18} className="text-appleBlue mx-auto" /> : <X size={18} className="text-gray-300 mx-auto" />
+                                    ) : (
+                                        <span className="text-sm font-medium text-appleBlue">{f.premium}</span>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );

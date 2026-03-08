@@ -9,7 +9,6 @@ export default function Header() {
     const pathname = usePathname();
     const { data: session } = useSession();
 
-    // Yalnızca public sayfalarda header gösterelim, admin veya login sayfaları hariç
     if (pathname.startsWith("/yonetim-gizli-portal") || pathname.includes("login")) return null;
 
     return (
@@ -45,7 +44,7 @@ export default function Header() {
                             <Target size={14} className="text-indigo-500" /> Radar
                         </Link>
                         <Link href="/fiyatlandirma" className={`text-xs xl:text-sm font-medium flex items-center gap-1 transition-colors ${pathname === '/fiyatlandirma' ? 'text-appleBlue' : 'text-gray-500 hover:text-orange-500'}`}>
-                            <CreditCard size={14} /> Paketler
+                            <CreditCard size={14} /> Fiyatlandırma
                         </Link>
                         <Link href="/yatirim-haritasi" className={`text-xs xl:text-sm font-medium flex items-center gap-1 transition-colors ${pathname === '/yatirim-haritasi' ? 'text-appleBlue' : 'text-gray-500 hover:text-appleDark'}`}>
                             <Map size={14} /> Harita
@@ -58,43 +57,32 @@ export default function Header() {
                         </Link>
                         {session ? (
                             <div className="flex items-center gap-1.5 shrink-0 ml-2">
-                                {session.user?.role === "realtor" || session.user?.role === "admin" ? (
-                                    <Link href="/b2b/dashboard" className="px-3 xl:px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full text-xs font-medium shadow-sm hover:shadow-md transition-all flex items-center gap-1.5 whitespace-nowrap">
-                                        <Building2 size={14} /> B2B Panel
-                                    </Link>
-                                ) : (
-                                    <>
-                                        <Link href="/portfoy" className="px-3 py-1.5 bg-appleDark text-white rounded-full text-xs font-medium shadow-sm hover:bg-appleBlue transition-all flex items-center gap-1 whitespace-nowrap">
-                                            <User size={14} /> Portföyüm
-                                        </Link>
-                                        <Link href="/bireysel/profil" className="px-3 py-1.5 bg-white text-appleDark border border-gray-200 rounded-full text-xs font-medium shadow-sm hover:bg-gray-50 transition-all flex items-center gap-1 whitespace-nowrap">
-                                            Profilim
-                                        </Link>
-                                        <Link href="/ai-danisman" className="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full text-xs font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-1 whitespace-nowrap">
-                                            <Bot size={14} /> Danışman
-                                        </Link>
-                                    </>
-                                )}
+                                <Link href="/portfoy" className="px-3 py-1.5 bg-appleDark text-white rounded-full text-xs font-medium shadow-sm hover:bg-appleBlue transition-all flex items-center gap-1 whitespace-nowrap">
+                                    <User size={14} /> Portföyüm
+                                </Link>
+                                <Link href="/profil" className="px-3 py-1.5 bg-white text-appleDark border border-gray-200 rounded-full text-xs font-medium shadow-sm hover:bg-gray-50 transition-all flex items-center gap-1 whitespace-nowrap">
+                                    Profilim
+                                </Link>
+                                <Link href="/ai-danisman" className="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-full text-xs font-medium shadow-md hover:shadow-lg transition-all flex items-center gap-1 whitespace-nowrap">
+                                    <Bot size={14} /> Danışman
+                                </Link>
                             </div>
                         ) : (
                             <div className="flex items-center gap-1.5 shrink-0 ml-2">
                                 <Link href="/giris" className="text-xs font-medium text-gray-600 hover:text-appleDark transition-colors px-2">
                                     Giriş Yap
                                 </Link>
-                                <Link href="/kayit" className="px-3 py-1.5 border border-gray-200 text-gray-700 bg-white rounded-full text-xs font-medium shadow-sm hover:bg-gray-50 transition-all flex items-center gap-1 whitespace-nowrap">
+                                <Link href="/kayit" className="px-3 py-1.5 bg-appleBlue text-white rounded-full text-xs font-medium shadow-sm hover:bg-blue-600 transition-all flex items-center gap-1 whitespace-nowrap">
                                     Kayıt Ol
-                                </Link>
-                                <Link href="/b2b" className="px-3 py-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-full text-xs font-medium shadow-sm hover:shadow-md transition-all flex items-center gap-1 whitespace-nowrap">
-                                    Kurumsal
                                 </Link>
                             </div>
                         )}
                     </nav>
 
-                    {/* Mobile/Tablet Menu Button - Shows when width < xl */}
+                    {/* Mobile/Tablet Menu */}
                     <div className="xl:hidden flex items-center gap-2 shrink-0">
                         {session ? (
-                            <Link href={session.user?.role === 'user' ? '/portfoy' : '/b2b/dashboard'} className="px-3 py-1.5 bg-gray-50 text-appleDark rounded-lg text-xs font-bold border border-gray-200">Panel</Link>
+                            <Link href="/profil" className="px-3 py-1.5 bg-gray-50 text-appleDark rounded-lg text-xs font-bold border border-gray-200">Profilim</Link>
                         ) : (
                             <div className="flex gap-2">
                                 <Link href="/giris" className="px-3 py-1.5 bg-transparent text-gray-600 rounded-lg text-xs font-bold">Giriş</Link>

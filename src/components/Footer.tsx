@@ -67,7 +67,6 @@ export default async function Footer() {
                             <li><Link href="/karsilastirma" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Değerleme Karşılaştır</Link></li>
                             <li><Link href="/gecmis" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Değerleme Geçmişim</Link></li>
                             <li><Link href="/yatirim-haritasi" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Yatırım Haritası</Link></li>
-                            <li><Link href="/b2b" className="text-gray-500 hover:text-appleBlue transition-colors text-xs">Kurumsal (B2B)</Link></li>
                         </ul>
                     </div>
 

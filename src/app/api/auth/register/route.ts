@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { name, email, password, phone, otpCode } = body;
+        const { name, email, password, phone, otpCode, accountType, companyName } = body;
 
         if (!name || !email || !password || !phone) {
             return NextResponse.json({ success: false, error: "Ad, e-posta, telefon ve şifre zorunludur." }, { status: 400 });
@@ -48,9 +48,11 @@ export async function POST(req: Request) {
             data: {
                 name,
                 email,
-                phone: phone,
+                phone,
                 password: hashedPassword,
-                isPremium: false
+                isPremium: false,
+                accountType: accountType || "bireysel",
+                companyName: accountType === "sirket" ? companyName : null,
             }
         });
 

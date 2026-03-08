@@ -3,17 +3,19 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Mail, Lock, User, Phone, Hexagon, ArrowRight, AlertCircle, Loader2, CheckCircle2 } from "lucide-react";
+import { Mail, Lock, User, Phone, Hexagon, ArrowRight, AlertCircle, Loader2, CheckCircle2, Building2, UserCircle } from "lucide-react";
 
-export default function UserRegisterPage() {
+export default function RegisterPage() {
     const router = useRouter();
 
+    const [accountType, setAccountType] = useState<"bireysel" | "sirket">("bireysel");
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         phone: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        companyName: ""
     });
 
     const [otpCode, setOtpCode] = useState("");
@@ -50,6 +52,12 @@ export default function UserRegisterPage() {
             return;
         }
 
+        if (accountType === "sirket" && !formData.companyName.trim()) {
+            setError("Şirket hesapları için şirket adı zorunludur.");
+            setLoading(false);
+            return;
+        }
+
         try {
             const res = await fetch("/api/auth/send-register-otp", {
                 method: "POST",
@@ -58,10 +66,7 @@ export default function UserRegisterPage() {
             });
 
             const data = await res.json();
-
-            if (!res.ok) {
-                throw new Error(data.error || "Kod gönderilemedi.");
-            }
+            if (!res.ok) throw new Error(data.error || "Kod gönderilemedi.");
 
             setStep(2);
         } catch (err: any) {
@@ -91,21 +96,17 @@ export default function UserRegisterPage() {
                     email: formData.email,
                     phone: formData.phone,
                     password: formData.password,
-                    otpCode: otpCode
+                    otpCode: otpCode,
+                    accountType: accountType,
+                    companyName: accountType === "sirket" ? formData.companyName : undefined,
                 }),
             });
 
             const data = await res.json();
-
-            if (!res.ok) {
-                throw new Error(data.error || "Kayıt işlemi başarısız.");
-            }
+            if (!res.ok) throw new Error(data.error || "Kayıt işlemi başarısız.");
 
             setSuccess(true);
-            setTimeout(() => {
-                router.push("/giris");
-            }, 2000);
-
+            setTimeout(() => { router.push("/giris"); }, 2000);
         } catch (err: any) {
             setError(err.message);
             setLoading(false);
@@ -138,12 +139,8 @@ export default function UserRegisterPage() {
                     </span>
                     <span className="font-bold text-2xl text-appleDark tracking-tight">Evin Değeri</span>
                 </Link>
-                <h2 className="text-center text-3xl font-extrabold text-gray-900">
-                    Bireysel Hesap Oluştur
-                </h2>
-                <p className="mt-2 text-center text-sm text-gray-600">
-                    Yatırım fırsatlarını kolayca cebinizden takip edin.
-                </p>
+                <h2 className="text-center text-3xl font-extrabold text-gray-900">Hesap Oluştur</h2>
+                <p className="mt-2 text-center text-sm text-gray-600">Ücretsiz kaydolun, hemen kullanmaya başlayın.</p>
             </div>
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -157,21 +154,46 @@ export default function UserRegisterPage() {
                                 </div>
                             )}
 
+                            {/* Account Type Toggle */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Hesap Türü</label>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <button
+                                        type="button"
+                                        onClick={() => setAccountType("bireysel")}
+                                        className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all ${accountType === "bireysel" ? "border-appleBlue bg-blue-50 text-appleBlue" : "border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300"}`}
+                                    >
+                                        <UserCircle size={18} /> Bireysel
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setAccountType("sirket")}
+                                        className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 text-sm font-medium transition-all ${accountType === "sirket" ? "border-appleBlue bg-blue-50 text-appleBlue" : "border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300"}`}
+                                    >
+                                        <Building2 size={18} /> Şirket
+                                    </button>
+                                </div>
+                            </div>
+
+                            {accountType === "sirket" && (
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700">Şirket Adı</label>
+                                    <div className="mt-1 relative rounded-xl shadow-sm">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <Building2 className="h-5 w-5 text-gray-400" />
+                                        </div>
+                                        <input type="text" name="companyName" required value={formData.companyName} onChange={handleChange} className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors" placeholder="Şirket Unvanı" />
+                                    </div>
+                                </div>
+                            )}
+
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Ad Soyad</label>
                                 <div className="mt-1 relative rounded-xl shadow-sm">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <User className="h-5 w-5 text-gray-400" />
                                     </div>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        required
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
-                                        placeholder="Ad Soyad"
-                                    />
+                                    <input type="text" name="name" required value={formData.name} onChange={handleChange} className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors" placeholder="Ad Soyad" />
                                 </div>
                             </div>
 
@@ -181,15 +203,7 @@ export default function UserRegisterPage() {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <Mail className="h-5 w-5 text-gray-400" />
                                     </div>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        required
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
-                                        placeholder="ornek@email.com"
-                                    />
+                                    <input type="email" name="email" required value={formData.email} onChange={handleChange} className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors" placeholder="ornek@email.com" />
                                 </div>
                             </div>
 
@@ -199,15 +213,7 @@ export default function UserRegisterPage() {
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <Phone className="h-5 w-5 text-gray-400" />
                                     </div>
-                                    <input
-                                        type="tel"
-                                        name="phone"
-                                        required
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                        className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
-                                        placeholder="05xx xxx xx xx"
-                                    />
+                                    <input type="tel" name="phone" required value={formData.phone} onChange={handleChange} className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors" placeholder="05xx xxx xx xx" />
                                 </div>
                             </div>
 
@@ -218,15 +224,7 @@ export default function UserRegisterPage() {
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <Lock className="h-5 w-5 text-gray-400" />
                                         </div>
-                                        <input
-                                            type="password"
-                                            name="password"
-                                            required
-                                            value={formData.password}
-                                            onChange={handleChange}
-                                            className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
-                                            placeholder="••••••••"
-                                        />
+                                        <input type="password" name="password" required value={formData.password} onChange={handleChange} className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors" placeholder="••••••••" />
                                     </div>
                                     <p className="text-[10px] text-gray-400 mt-1">En az 8 kark., 1 harf ve rakam.</p>
                                 </div>
@@ -236,35 +234,14 @@ export default function UserRegisterPage() {
                                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                             <Lock className="h-5 w-5 text-gray-400" />
                                         </div>
-                                        <input
-                                            type="password"
-                                            name="confirmPassword"
-                                            required
-                                            value={formData.confirmPassword}
-                                            onChange={handleChange}
-                                            className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
-                                            placeholder="••••••••"
-                                        />
+                                        <input type="password" name="confirmPassword" required value={formData.confirmPassword} onChange={handleChange} className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors" placeholder="••••••••" />
                                     </div>
                                 </div>
                             </div>
 
-                            <div>
-                                <button
-                                    type="submit"
-                                    disabled={loading}
-                                    className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-appleDark hover:bg-appleBlue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-appleBlue transition-all disabled:opacity-70 mt-4"
-                                >
-                                    {loading ? (
-                                        <>
-                                            <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" />
-                                            Gönderiliyor...
-                                        </>
-                                    ) : (
-                                        "Kayıt Ol"
-                                    )}
-                                </button>
-                            </div>
+                            <button type="submit" disabled={loading} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-appleDark hover:bg-appleBlue transition-all disabled:opacity-70 mt-4">
+                                {loading ? (<><Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" /> Gönderiliyor...</>) : "Kayıt Ol"}
+                            </button>
                         </form>
                     ) : (
                         <form className="space-y-6" onSubmit={handleFinalSubmit}>
@@ -274,7 +251,7 @@ export default function UserRegisterPage() {
                                 </div>
                                 <h3 className="text-lg font-bold text-gray-900">E-postanızı Doğrulayın</h3>
                                 <p className="text-sm text-gray-500 mt-2">
-                                    <span className="font-medium text-appleDark">{formData.email}</span> adresine gönderdiğimiz 6 haneli doğrulama kodunu aşağıya giriniz.
+                                    <span className="font-medium text-appleDark">{formData.email}</span> adresine gönderdiğimiz 6 haneli doğrulama kodunu giriniz.
                                 </p>
                             </div>
 
@@ -287,31 +264,14 @@ export default function UserRegisterPage() {
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 text-center mb-2">Doğrulama Kodu</label>
-                                <input
-                                    type="text"
-                                    name="otpCode"
-                                    required
-                                    maxLength={6}
-                                    value={otpCode}
-                                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
-                                    className="block w-full px-4 py-4 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue text-2xl text-center tracking-[0.5em] bg-gray-50 outline-none transition-colors font-mono font-bold text-appleDark"
-                                    placeholder="••••••"
-                                />
+                                <input type="text" maxLength={6} value={otpCode} onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))} className="block w-full px-4 py-4 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue text-2xl text-center tracking-[0.5em] bg-gray-50 outline-none transition-colors font-mono font-bold text-appleDark" placeholder="••••••" />
                             </div>
 
                             <div className="flex flex-col gap-3">
-                                <button
-                                    type="submit"
-                                    disabled={loading || otpCode.length !== 6}
-                                    className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-appleDark hover:bg-appleBlue transition-all disabled:opacity-50"
-                                >
+                                <button type="submit" disabled={loading || otpCode.length !== 6} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-appleDark hover:bg-appleBlue transition-all disabled:opacity-50">
                                     {loading ? <Loader2 className="animate-spin h-5 w-5" /> : "Hesabı Onayla"}
                                 </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setStep(1)}
-                                    className="w-full text-sm font-medium text-gray-500 hover:text-appleDark transition-colors"
-                                >
+                                <button type="button" onClick={() => setStep(1)} className="w-full text-sm font-medium text-gray-500 hover:text-appleDark transition-colors">
                                     Geri Dön
                                 </button>
                             </div>

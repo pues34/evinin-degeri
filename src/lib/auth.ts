@@ -7,10 +7,10 @@ import prisma from "@/lib/prisma";
 export const authOptions: AuthOptions = {
     providers: [
         CredentialsProvider({
-            id: "credentials", // Keep exact ID for older admin compatibility
+            id: "credentials",
             name: "Admin Login",
             credentials: {
-                email: { label: "Email", type: "email", placeholder: "admin@evinin-degeri.com" },
+                email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
@@ -28,67 +28,10 @@ export const authOptions: AuthOptions = {
             }
         }),
         CredentialsProvider({
-            id: "realtor-login",
-            name: "Kurumsal Giriş",
+            id: "user-login",
+            name: "Kullanıcı Girişi",
             credentials: {
-                email: { label: "Email", type: "email", placeholder: "ornek@emlak.com" },
-                password: { label: "Şifre", type: "password" },
-                otpCode: { label: "Doğrulama Kodu", type: "text" }
-            },
-            async authorize(credentials) {
-                if (!credentials?.email || !credentials?.password || !credentials?.otpCode) {
-                    throw new Error("E-posta, şifre veya doğrulama kodu eksik.");
-                }
-
-                const realtor = await prisma.realtor.findUnique({
-                    where: { email: credentials.email }
-                });
-
-                if (!realtor) {
-                    throw new Error("Kullanıcı bulunamadı.");
-                }
-
-                const isValid = await bcrypt.compare(credentials.password, realtor.password);
-                if (!isValid) {
-                    throw new Error("Şifre hatalı.");
-                }
-
-                // Validate OTP 
-                const validCodeRecord = await prisma.validationCode.findFirst({
-                    where: {
-                        identifier: credentials.email,
-                        code: credentials.otpCode,
-                    }
-                });
-
-                if (!validCodeRecord) {
-                    throw new Error("Doğrulama kodu hatalı.");
-                }
-
-                if (validCodeRecord.expiresAt < new Date()) {
-                    throw new Error("Doğrulama kodunun süresi dolmuş. Lütfen tekrar gönderin.");
-                }
-
-                // If OTP is valid, clean it up
-                await prisma.validationCode.delete({ where: { id: validCodeRecord.id } });
-
-                return {
-                    id: realtor.id,
-                    name: realtor.companyName,
-                    email: realtor.email,
-                    role: "realtor",
-                    isPro: realtor.isPro,
-                    subscriptionTier: realtor.subscriptionTier,
-                    customLogoUrl: realtor.customLogoUrl,
-                    subscriptionEnd: realtor.subscriptionEnd
-                } as any;
-            }
-        }),
-        CredentialsProvider({
-            id: "b2c-login",
-            name: "Bireysel Yatırımcı Girişi",
-            credentials: {
-                email: { label: "Email", type: "email", placeholder: "bireysel@ornek.com" },
+                email: { label: "Email", type: "email" },
                 password: { label: "Şifre", type: "password" }
             },
             async authorize(credentials) {
@@ -111,44 +54,36 @@ export const authOptions: AuthOptions = {
 
                 return {
                     id: user.id,
-                    name: user.name || "Yatırımcı",
+                    name: user.name || (user as any).companyName || "Kullanıcı",
                     email: user.email,
                     role: "user",
-                    isPremium: user.isPremium
+                    isPremium: user.isPremium,
+                    accountType: (user as any).accountType || "bireysel",
                 } as any;
             }
         })
     ],
     pages: {
-        signIn: '/b2b/login',
+        signIn: '/giris',
     },
     callbacks: {
         async jwt({ token, user, trigger, session }: any) {
             if (user) {
                 token.role = user.role;
-                token.isPro = user.isPro;
-                token.subscriptionTier = user.subscriptionTier;
-                token.customLogoUrl = user.customLogoUrl;
-                token.subscriptionEnd = user.subscriptionEnd;
                 token.isPremium = user.isPremium;
+                token.accountType = user.accountType;
             }
             if (trigger === "update" && session) {
-                if (session.isPro !== undefined) token.isPro = session.isPro;
-                if (session.subscriptionTier !== undefined) token.subscriptionTier = session.subscriptionTier;
-                if (session.customLogoUrl !== undefined) token.customLogoUrl = session.customLogoUrl;
-                if (session.subscriptionEnd !== undefined) token.subscriptionEnd = session.subscriptionEnd;
                 if (session.isPremium !== undefined) token.isPremium = session.isPremium;
+                if (session.accountType !== undefined) token.accountType = session.accountType;
             }
             return token;
         },
         async session({ session, token }: any) {
             if (session?.user) {
                 (session.user as any).role = token.role;
-                (session.user as any).isPro = token.isPro;
-                (session.user as any).subscriptionTier = token.subscriptionTier;
-                (session.user as any).customLogoUrl = token.customLogoUrl;
-                (session.user as any).subscriptionEnd = token.subscriptionEnd;
                 (session.user as any).isPremium = token.isPremium;
+                (session.user as any).accountType = token.accountType;
                 (session.user as any).id = token.sub;
             }
             return session;

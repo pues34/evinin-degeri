@@ -9,7 +9,7 @@ import { Mail, Lock, Hexagon, ArrowRight, AlertCircle, Loader2 } from "lucide-re
 function LoginForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const callbackUrl = searchParams.get("callbackUrl") || "/portfoy";
+    const callbackUrl = searchParams.get("callbackUrl") || "/profil";
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -22,7 +22,7 @@ function LoginForm() {
         setError("");
 
         try {
-            const res = await signIn("b2c-login", {
+            const res = await signIn("user-login", {
                 email,
                 password,
                 redirect: false,
@@ -51,10 +51,10 @@ function LoginForm() {
                     <span className="font-bold text-2xl text-appleDark tracking-tight">Evin Değeri</span>
                 </Link>
                 <h2 className="text-center text-3xl font-extrabold text-gray-900">
-                    Yatırımcı Girişi
+                    Giriş Yap
                 </h2>
                 <p className="mt-2 text-center text-sm text-gray-600">
-                    Portföyünüzü ve fırsatları takip edin.
+                    Hesabınıza giriş yaparak tüm özelliklerden yararlanın.
                 </p>
             </div>
 
@@ -74,61 +74,25 @@ function LoginForm() {
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <Mail className="h-5 w-5 text-gray-400" />
                                 </div>
-                                <input
-                                    type="email"
-                                    required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
-                                    placeholder="ornek@email.com"
-                                />
+                                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors" placeholder="ornek@email.com" />
                             </div>
                         </div>
 
                         <div>
                             <div className="flex items-center justify-between mb-1">
                                 <label className="block text-sm font-medium text-gray-700">Şifre</label>
-                                <div className="text-sm">
-                                    <button
-                                        type="button"
-                                        onClick={() => alert("Şifre sıfırlama bağlantısı e-posta adresinize gönderildi. (Geliştirme Aşamasındadır)")}
-                                        className="font-medium text-appleBlue hover:text-indigo-500"
-                                    >
-                                        Şifremi unuttum?
-                                    </button>
-                                </div>
                             </div>
                             <div className="relative rounded-xl shadow-sm">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <Lock className="h-5 w-5 text-gray-400" />
                                 </div>
-                                <input
-                                    type="password"
-                                    required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors"
-                                    placeholder="••••••••"
-                                />
+                                <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl focus:ring-appleBlue focus:border-appleBlue sm:text-sm bg-gray-50 outline-none transition-colors" placeholder="••••••••" />
                             </div>
                         </div>
 
-                        <div>
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-appleDark hover:bg-appleBlue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-appleBlue transition-all disabled:opacity-70"
-                            >
-                                {loading ? (
-                                    <>
-                                        <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" />
-                                        Giriş Yapılıyor...
-                                    </>
-                                ) : (
-                                    "Giriş Yap"
-                                )}
-                            </button>
-                        </div>
+                        <button type="submit" disabled={loading} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-bold text-white bg-appleDark hover:bg-appleBlue transition-all disabled:opacity-70">
+                            {loading ? (<><Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5" /> Giriş Yapılıyor...</>) : "Giriş Yap"}
+                        </button>
                     </form>
 
                     <div className="mt-6 text-center">
@@ -142,7 +106,7 @@ function LoginForm() {
     );
 }
 
-export default function UserLoginPage() {
+export default function LoginPage() {
     return (
         <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-appleBlue" /></div>}>
             <LoginForm />
