@@ -225,7 +225,7 @@ function IlanVerForm() {
                     <div className="flex flex-col sm:flex-row gap-3">
                         <button
                             onClick={() => {
-                                const path = session?.user?.role === "realtor" ? "/b2b/dashboard" : "/bireysel/profil";
+                                const path = "/profil";
                                 router.push(path);
                             }}
                             className="flex-1 bg-appleDark text-white py-3 rounded-xl font-medium hover:bg-black transition-colors"
