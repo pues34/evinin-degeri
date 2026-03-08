@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import SamplePdfButton from "@/components/SamplePdfButton";
 
 export const metadata: Metadata = {
-    title: "Örnek Ev Değer Raporu | Evinin Değeri",
+    title: "Örnek Ev Değer Raporu | Evin Değeri",
     description: "Sistemimizin ürettiği gayrimenkul değerleme rapor örneğini inceleyin.",
 };
 

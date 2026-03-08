@@ -6,7 +6,7 @@ export default function AdminSidebar() {
     return (
         <aside className="hidden md:flex flex-col w-64 bg-appleDark text-white h-screen fixed top-0 left-0 p-6 z-50">
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-2">
-                <Home size={24} /> Evinin Değeri
+                <Home size={24} /> Evin Değeri
             </h2>
             <nav className="flex-1 space-y-2">
                 <Link href="/yonetim-gizli-portal" className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 transition">

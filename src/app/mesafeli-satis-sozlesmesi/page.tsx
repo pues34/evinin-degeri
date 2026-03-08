@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Mesafeli Satış Sözleşmesi | Evinin Değeri',
-    description: 'Evinin Değeri Gayrimenkul Teknolojileri platformu mesafeli satış sözleşmesi ve hizmet detayları.',
+    title: 'Mesafeli Satış Sözleşmesi | Evin Değeri',
+    description: 'Evin Değeri Gayrimenkul Teknolojileri platformu mesafeli satış sözleşmesi ve hizmet detayları.',
 };
 
 export default function MesafeliSatisSozlesmesi() {
@@ -15,7 +15,7 @@ export default function MesafeliSatisSozlesmesi() {
                     <section>
                         <h2 className="text-xl font-semibold text-appleDark mb-3">1. Taraflar</h2>
                         <h3 className="font-medium mt-4 mb-1">1.1 Hizmet Veren (Satıcı):</h3>
-                        <p><strong>Unvan:</strong> Evinin Değeri Gayrimenkul Teknolojileri</p>
+                        <p><strong>Unvan:</strong> Evin Değeri Gayrimenkul Teknolojileri</p>
                         <p><strong>Adres:</strong> Muratpaşa Mah. Cemiyet Cad. No:28 Bayrampaşa / İstanbul</p>
                         <p><strong>Vergi Dairesi:</strong> Tuna Vergi Dairesi</p>
                         <p><strong>Vergi / T.C. Kimlik No:</strong> 1310852802</p>

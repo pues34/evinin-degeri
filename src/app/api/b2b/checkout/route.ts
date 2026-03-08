@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 
         const merchant_oid = `B2B_${selectedTier}_${session.user.id}_${Date.now()}`;
         const user_name = session.user.name || "Kurumsal Kullanıcı";
-        const user_address = "Evinin Değeri B2B Kullanıcısı, İstanbul"; // Genel B2B Adresi
+        const user_address = "Evin Değeri B2B Kullanıcısı, İstanbul"; // Genel B2B Adresi
         const user_phone = "05555555555";
         const user_basket = JSON.stringify([[basketDescription, finalPrice.toString(), 1]]);
         const user_ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "127.0.0.1";

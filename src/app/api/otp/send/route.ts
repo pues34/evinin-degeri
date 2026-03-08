@@ -40,12 +40,12 @@ export async function POST(req: Request) {
             }
         });
 
-        const message = `Evinin Değeri raporunuzu görüntülemek için doğrulama kodunuz: ${code}\n\nBu kod 10 dakika boyunca geçerlidir.`;
+        const message = `Evin Değeri raporunuzu görüntülemek için doğrulama kodunuz: ${code}\n\nBu kod 10 dakika boyunca geçerlidir.`;
 
         try {
             if (process.env.RESEND_API_KEY) {
                 await resend.emails.send({
-                    from: 'Evinin Değeri <bilgi@evindegeri.com>',
+                    from: 'Evin Değeri <bilgi@evindegeri.com>',
                     to: [cleanEmail],
                     subject: 'Değerleme Raporu Doğrulama Kodu',
                     text: message,

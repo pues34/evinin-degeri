@@ -62,13 +62,13 @@ export async function POST(req: Request) {
                     // Başarılı ödeme maili
                     if (resend) {
                         await resend.emails.send({
-                            from: "Evinin Değeri B2B <bilgi@evindegeri.com>",
+                            from: "Evin Değeri B2B <bilgi@evindegeri.com>",
                             to: payment.realtor.email,
-                            subject: "Evinin Değeri PRO Abonelik Faturası",
+                            subject: "Evin Değeri PRO Abonelik Faturası",
                             html: `
                               <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                                 <div style="text-align: center; margin-bottom: 30px;">
-                                    <h2 style="color: #2563eb; margin: 0;">Evinin Değeri Kurumsal</h2>
+                                    <h2 style="color: #2563eb; margin: 0;">Evin Değeri Kurumsal</h2>
                                 </div>
                                 <div style="background: #f8fafc; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center;">
                                     <h3 style="color: #16a34a; margin-top: 0;">Ödemeniz Başarıyla Alındı 🚀</h3>
@@ -108,13 +108,13 @@ export async function POST(req: Request) {
                 // Başarısız ödeme maili
                 if (resend && payment.realtor) {
                     await resend.emails.send({
-                        from: "Evinin Değeri B2B <bilgi@evindegeri.com>",
+                        from: "Evin Değeri B2B <bilgi@evindegeri.com>",
                         to: payment.realtor.email,
                         subject: "PRO Abonelik Ödemesi Başarısız",
                         html: `
                           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                             <div style="text-align: center; margin-bottom: 30px;">
-                                <h2 style="color: #2563eb; margin: 0;">Evinin Değeri Kurumsal</h2>
+                                <h2 style="color: #2563eb; margin: 0;">Evin Değeri Kurumsal</h2>
                             </div>
                             <div style="background: #f8fafc; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center;">
                                 <h3 style="color: #dc2626; margin-top: 0;">Ödeme Başarısız Oldu ❌</h3>

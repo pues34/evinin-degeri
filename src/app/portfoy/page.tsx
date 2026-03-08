@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 import UpgradeButton from "./UpgradeButton";
 
 export const metadata: Metadata = {
-    title: "Emlak Portföyüm | Evinin Değeri",
+    title: "Emlak Portföyüm | Evin Değeri",
     description: "Kaydettiğiniz tüm evleri tek ekranda görüntüleyin. Portföyünüzün toplam finansal değişimini ve yatırım durumunu analiz edin.",
 };
 

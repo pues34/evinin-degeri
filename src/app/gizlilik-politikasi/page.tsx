@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Gizlilik Politikası | Evinin Değeri',
-    description: 'Evinin Değeri Gayrimenkul Teknolojileri olarak kişisel verilerinizi 256-bit SSL güvencesiyle koruyoruz.',
+    title: 'Gizlilik Politikası | Evin Değeri',
+    description: 'Evin Değeri Gayrimenkul Teknolojileri olarak kişisel verilerinizi 256-bit SSL güvencesiyle koruyoruz.',
 };
 
 export default function GizlilikPolitikasi() {
@@ -15,7 +15,7 @@ export default function GizlilikPolitikasi() {
                     <section>
                         <h2 className="text-xl font-semibold text-appleDark mb-3">1. Veri Sorumlusu ve Güvenlik Altyapısı</h2>
                         <p>
-                            Evinin Değeri Gayrimenkul Teknolojileri (&quot;Platform&quot;) olarak, kullanıcılarımıza ait kişisel ve finansal verilerin maksimum seviyede korunmasına önem veriyoruz. Sitemiz üzerindeki tüm veri transferleri uçtan uca <strong>256-Bit SSL sertifikası</strong> ile şifrelenmektedir.
+                            Evin Değeri Gayrimenkul Teknolojileri (&quot;Platform&quot;) olarak, kullanıcılarımıza ait kişisel ve finansal verilerin maksimum seviyede korunmasına önem veriyoruz. Sitemiz üzerindeki tüm veri transferleri uçtan uca <strong>256-Bit SSL sertifikası</strong> ile şifrelenmektedir.
                         </p>
                     </section>
 
@@ -44,7 +44,7 @@ export default function GizlilikPolitikasi() {
 
                     <section className="pt-4 text-sm text-gray-500">
                         <p><strong>Güncelleme Tarihi:</strong> {new Date().toLocaleDateString('tr-TR')}</p>
-                        <p>Evinin Değeri Gayrimenkul Teknolojileri - Muratpaşa Mah. Cemiyet Cad. No:28 Bayrampaşa / İstanbul</p>
+                        <p>Evin Değeri Gayrimenkul Teknolojileri - Muratpaşa Mah. Cemiyet Cad. No:28 Bayrampaşa / İstanbul</p>
                     </section>
                 </div>
             </div>

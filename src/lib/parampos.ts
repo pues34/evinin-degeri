@@ -53,7 +53,7 @@ export function createPaymentFormArgs(params: {
         guid: config.guid,
         islem_Guvenlik_Tip: "3D",
         Siparis_ID: params.orderId,
-        Siparis_Aciklama: "Evinin Degeri B2B Abonelik",
+        Siparis_Aciklama: "evindegeri.com B2B Abonelik",
         Islem_Tutar: amountStr,
         Toplam_Tutar: amountStr,
         Taksit: "1",

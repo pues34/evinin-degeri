@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Kullanım Koşulları | Evinin Değeri',
-    description: 'Evinin Değeri Gayrimenkul Teknolojileri kullanım şartları, lisans sınırları ve B2B kurumsal kullanım hakları.',
+    title: 'Kullanım Koşulları | Evin Değeri',
+    description: 'Evin Değeri Gayrimenkul Teknolojileri kullanım şartları, lisans sınırları ve B2B kurumsal kullanım hakları.',
 };
 
 export default function KullanimKosullari() {
@@ -18,7 +18,7 @@ export default function KullanimKosullari() {
                             www.evindegeri.com (bundan böyle &quot;Platform&quot; olarak anılacaktır) sitesine erişiminiz ve kullanımınız işbu Kullanım Koşulları&apos;na tabidir. Platformu kullanarak bu şartları tamamen okuduğunuzu, anladığınızı ve kabul ettiğinizi beyan edersiniz.
                         </p>
                         <p className="mt-2">
-                            Platform&apos;un işletmecisi: <strong>Evinin Değeri Gayrimenkul Teknolojileri</strong> (Muratpaşa Mah. Cemiyet Cad. No:28 Bayrampaşa / İstanbul)
+                            Platform&apos;un işletmecisi: <strong>Evin Değeri Gayrimenkul Teknolojileri</strong> (Muratpaşa Mah. Cemiyet Cad. No:28 Bayrampaşa / İstanbul)
                         </p>
                     </section>
 
@@ -49,7 +49,7 @@ export default function KullanimKosullari() {
                     <section>
                         <h2 className="text-xl font-semibold text-appleDark mb-3">5. Fikri Mülkiyet</h2>
                         <p>
-                            Platform içerisinde yer alan tüm tasarım, algoritma, grafik, metin ve kaynak kodları Evinin Değeri Gayrimenkul Teknolojileri&apos;ne aittir. Kopyalanması, tersine mühendislik yapılması (reverse engineering) veya izinsiz başka bir sunucuda barındırılması yasa dışıdır.
+                            Platform içerisinde yer alan tüm tasarım, algoritma, grafik, metin ve kaynak kodları Evin Değeri Gayrimenkul Teknolojileri&apos;ne aittir. Kopyalanması, tersine mühendislik yapılması (reverse engineering) veya izinsiz başka bir sunucuda barındırılması yasa dışıdır.
                         </p>
                     </section>
 

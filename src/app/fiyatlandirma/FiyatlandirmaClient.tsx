@@ -17,7 +17,7 @@ export default function FiyatlandirmaClient() {
                         İhtiyacınıza Uygun <span className="text-appleBlue">PropTech Çözümü</span>
                     </h1>
                     <p className="text-lg text-gray-500">
-                        Bireysel yatırımcıların portföylerini yönetmesinden, gayrimenkul ofislerinin satış kapatmasına kadar herkes için bir Evinin Değeri paketi var.
+                        Bireysel yatırımcıların portföylerini yönetmesinden, gayrimenkul ofislerinin satış kapatmasına kadar herkes için bir Evin Değeri paketi var.
                     </p>
                 </div>
 

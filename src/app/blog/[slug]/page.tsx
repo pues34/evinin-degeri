@@ -157,7 +157,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                             Yapay zeka analizimiz, {post.title.split(' ')[0]} bölgesindeki gayrimenkul likiditesinin ve değer artışının önümüzdeki çeyrekte hızlanacağını öngörüyor. Detaylı bölge raporunuzu almak için anında değerleme aracımızı kullanın.
                         </p>
                         <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-500 italic">
-                            — Evinin Değeri Veri Bilimi Ekibi
+                            — Evin Değeri Veri Bilimi Ekibi
                         </div>
                         <div className="space-y-3 mt-4">
                             <Link href="/" className="block p-3 rounded-xl hover:bg-gray-50 text-gray-600 font-medium transition-colors border border-transparent hover:border-gray-100">

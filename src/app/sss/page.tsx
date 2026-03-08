@@ -11,10 +11,10 @@ const faqs = [
         icon: <Home size={24} />,
         questions: [
             {
-                q: "Evinin Değeri nedir ve nasıl çalışır?",
+                q: "Evin Değeri nedir ve nasıl çalışır?",
                 a: (
                     <div className="space-y-3">
-                        <p><strong>Evinin Değeri</strong>, Türkiye&apos;nin önde gelen yapay zeka destekli, yeni nesil gayrimenkul değerleme ve pazar analizi platformudur. Geleneksel ve yavaş ekspertiz süreçlerini saniyelere indirmeyi hedefler.</p>
+                        <p><strong>Evin Değeri</strong>, Türkiye&apos;nin önde gelen yapay zeka destekli, yeni nesil gayrimenkul değerleme ve pazar analizi platformudur. Geleneksel ve yavaş ekspertiz süreçlerini saniyelere indirmeyi hedefler.</p>
                         <ul className="list-none space-y-2 mt-2">
                             <li className="flex items-start gap-2"><CheckCircle size={18} className="text-appleBlue mt-0.5 shrink-0" /> Akıllı algoritmalar ile piyasadaki milyonlarca aktif ve pasif ilanı tarar.</li>
                             <li className="flex items-start gap-2"><CheckCircle size={18} className="text-appleBlue mt-0.5 shrink-0" /> Evinizin özelliklerini çapraz sorgularla bölgesel endekslerle karşılaştırır.</li>
@@ -109,7 +109,7 @@ const faqs = [
             {
                 q: "Raporları kendi marka logomuzla (White-Label) indirebilir miyiz?",
                 a: (
-                    <p><strong>Evet, bu PRO PLUS paketimizin en çok tercih edilen özelliğidir.</strong> Çıktı aldığınız tüm detaylı değerleme ve analiz raporlarındaki &quot;Evinin Değeri&quot; ibareleri tamamen kalkar. Sistemden PDF&apos;i kendi kurumsal logonuz, emlak ofisi unvanınız, kendi adınız ve iletişim numaranızla indirirsiniz. Böylece müşterinize tamamen kendi yazılımınızdan çıkmış prestijli bir evrak sunarsınız.</p>
+                    <p><strong>Evet, bu PRO PLUS paketimizin en çok tercih edilen özelliğidir.</strong> Çıktı aldığınız tüm detaylı değerleme ve analiz raporlarındaki &quot;Evin Değeri&quot; ibareleri tamamen kalkar. Sistemden PDF&apos;i kendi kurumsal logonuz, emlak ofisi unvanınız, kendi adınız ve iletişim numaranızla indirirsiniz. Böylece müşterinize tamamen kendi yazılımınızdan çıkmış prestijli bir evrak sunarsınız.</p>
                 )
             }
         ]
@@ -189,7 +189,7 @@ export default function SSSPage() {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed"
                     >
-                        Evinin Değeri platformunun algoritması, B2B iş ortaklıkları ve güvenli ödeme sistemleri hakkında merak ettiğiniz tüm detayları sizin için şeffaflıkla derledik.
+                        Evin Değeri platformunun algoritması, B2B iş ortaklıkları ve güvenli ödeme sistemleri hakkında merak ettiğiniz tüm detayları sizin için şeffaflıkla derledik.
                     </motion.p>
                 </div>
             </div>

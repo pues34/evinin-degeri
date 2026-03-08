@@ -14,9 +14,9 @@ export const metadata: Metadata = {
   },
   description: "Türkiye'nin en gelişmiş yapay zeka emlak değerleme algoritması ile evinizin, arsanızın veya iş yerinizin gerçek piyasa değerini anında ve ücretsiz hesaplayın.",
   keywords: ["ev değerleme", "gayrimenkul değerleme", "evimin değeri ne kadar", "yapay zeka emlak", "konut fiyat hesaplama", "istanbul ev fiyatları", "kira hesaplama", "araba takas"],
-  authors: [{ name: "Evinin Değeri Ekibi" }],
-  creator: "Evinin Değeri",
-  publisher: "Evinin Değeri",
+  authors: [{ name: "Evin Değeri Ekibi" }],
+  creator: "Evin Değeri",
+  publisher: "Evin Değeri",
   alternates: {
     canonical: '/',
   },
@@ -29,13 +29,13 @@ export const metadata: Metadata = {
     url: "https://www.evindegeri.com",
     title: "Evin Değeri Ne Kadar? Yapay Zeka ile Konut Fiyat Hesaplama",
     description: "Türkiye'nin en gelişmiş yapay zeka algoritması ile evinizin gerçek piyasa değerini anında hesaplayın.",
-    siteName: "Evinin Değeri",
+    siteName: "Evin Değeri",
     images: [
       {
         url: 'https://www.evindegeri.com/logo.png',
         width: 800,
         height: 600,
-        alt: 'Evinin Değeri Logo',
+        alt: 'Evin Değeri Logo',
       }
     ]
   },
@@ -62,7 +62,7 @@ export default function RootLayout({
   const schemaMarkup = {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
-    "name": "Evinin Değeri",
+    "name": "Evin Değeri",
     "image": "https://www.evindegeri.com/logo.png",
     "url": "https://www.evindegeri.com",
     "description": "Türkiye'nin en gelişmiş yapay zeka algoritması ile evinizin, arsanızın veya iş yerinizin gerçek piyasa değerini anında ve ücretsiz öğrenin.",

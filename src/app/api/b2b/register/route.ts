@@ -57,7 +57,7 @@ export async function POST(req: Request) {
         if (resend) {
             try {
                 await resend.emails.send({
-                    from: "Evinin Değeri Sistem <bilgi@evindegeri.com>",
+                    from: "Evin Değeri Sistem <bilgi@evindegeri.com>",
                     to: "destek@evindegeri.com", // Admin E-mail
                     subject: "Yeni B2B Emlakçı Kaydı!",
                     html: `

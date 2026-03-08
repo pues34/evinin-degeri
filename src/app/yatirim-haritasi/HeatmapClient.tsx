@@ -38,7 +38,7 @@ export default function HeatmapClient() {
                         İstanbul Konut Isı Haritası
                     </h1>
                     <p className="text-appleLightGray max-w-3xl text-lg">
-                        Evinin Değeri yapay zekası ile hesaplanan on binlerce gayrimenkul değerleme verisine dayanarak oluşturulmuş, anlık piyasa dinamiklerini yansıtan bölgesel değer yoğunluk haritası. <span className="text-appleBlue font-medium">Kırmızı</span> alanlar yüksek ortalama birim fiyatlarını (m²), <span className="text-green-600 font-medium">Yeşil</span> alanlar ise nispeten uygun fiyatlı bölgeleri temsil eder.
+                        Evin Değeri yapay zekası ile hesaplanan on binlerce gayrimenkul değerleme verisine dayanarak oluşturulmuş, anlık piyasa dinamiklerini yansıtan bölgesel değer yoğunluk haritası. <span className="text-appleBlue font-medium">Kırmızı</span> alanlar yüksek ortalama birim fiyatlarını (m²), <span className="text-green-600 font-medium">Yeşil</span> alanlar ise nispeten uygun fiyatlı bölgeleri temsil eder.
                     </p>
                 </div>
 

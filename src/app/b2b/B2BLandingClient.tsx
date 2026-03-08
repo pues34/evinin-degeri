@@ -33,7 +33,7 @@ export default function B2BLandingClient() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2 text-xl font-bold text-appleDark">
                         <span className="p-1.5 bg-appleBlue text-white rounded-lg"><Hexagon size={20} className="fill-current" /></span>
-                        <span className="hidden sm:inline">Evinin Değeri <span className="text-gray-400 font-normal">| Kurumsal</span></span>
+                        <span className="hidden sm:inline">Evin Değeri <span className="text-gray-400 font-normal">| Kurumsal</span></span>
                     </Link>
                     <div className="flex items-center gap-4">
                         <Link href="#pricing" className="text-sm font-semibold text-gray-600 hover:text-appleDark transition-colors hidden sm:block">Fiyatlandırma</Link>

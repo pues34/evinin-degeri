@@ -4,8 +4,8 @@ import { Mail, Phone, MapPin, Clock, Building2 } from "lucide-react";
 import ContactFormClient from "@/components/ContactFormClient";
 
 export const metadata: Metadata = {
-    title: "İletişim | Evinin Değeri",
-    description: "Evinin Değeri ekibi ile iletişime geçin. Gayrimenkul değerleme, kurumsal işbirliği veya teknik destek için bize ulaşın.",
+    title: "İletişim | Evin Değeri",
+    description: "Evin Değeri ekibi ile iletişime geçin. Gayrimenkul değerleme, kurumsal işbirliği veya teknik destek için bize ulaşın.",
 };
 
 export default function IletisimPage() {
@@ -82,7 +82,7 @@ export default function IletisimPage() {
                         <MapPin size={20} className="text-appleBlue" />
                         <h2 className="text-2xl font-bold text-appleDark">Genel Merkez</h2>
                     </div>
-                    <p className="text-gray-500 font-medium mb-1">Evinin Değeri Gayrimenkul Teknolojileri</p>
+                    <p className="text-gray-500 font-medium mb-1">Evin Değeri Gayrimenkul Teknolojileri</p>
                     <p className="text-gray-500 mb-6">Muratpaşa Mah. Cemiyet Cad. No:28 Bayrampaşa / İstanbul</p>
 
                     {/* Google Maps Embed */}
@@ -95,12 +95,12 @@ export default function IletisimPage() {
                             allowFullScreen
                             loading="lazy"
                             referrerPolicy="no-referrer-when-downgrade"
-                            title="Evinin Değeri Ofis Konumu"
+                            title="Evin Değeri Ofis Konumu"
                         />
                     </div>
 
                     <p className="text-gray-400 text-sm max-w-lg mx-auto mt-6">
-                        Evinin Değeri, tamamen dijital bir B2B SaaS platformu olarak hizmet vermektedir.
+                        Evin Değeri, tamamen dijital bir B2B SaaS platformu olarak hizmet vermektedir.
                         Tüm abonelik ve destek işlemlerinizi online olarak gerçekleştirebilirsiniz.
                     </p>
                 </div>

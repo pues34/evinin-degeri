@@ -57,7 +57,7 @@ export default function AdminDashboard() {
     const [contactPhone, setContactPhone] = useState("");
     const [contactAddress, setContactAddress] = useState("Istanbul, Turkiye");
     const [workingHours, setWorkingHours] = useState("Hafta ici: 09:00 - 18:00, Hafta sonu: 10:00 - 15:00");
-    const [emailTemplate, setEmailTemplate] = useState("Sayin {name},\n\nEvinizin tahmini degeri: {value}\n\nDetayli raporunuz icin asagidaki linke tiklayabilirsiniz.\n\nSaygilarimizla,\nEvinin Degeri Ekibi");
+    const [emailTemplate, setEmailTemplate] = useState("Sayin {name},\n\nEvinizin tahmini degeri: {value}\n\nDetayli raporunuz icin asagidaki linke tiklayabilirsiniz.\n\nSaygilarimizla,\nevindegeri.com Ekibi");
 
     // Settings States
     const [settings, setSettings] = useState({
@@ -1856,7 +1856,7 @@ export default function AdminDashboard() {
                                                     <input type="number" name="askingPrice" required className="w-full p-2.5 rounded-xl border outline-none text-sm" placeholder="2500000" />
                                                 </div>
                                                 <div>
-                                                    <label className="block text-xs text-gray-500 mb-1">Evinin Değeri AI (TL)</label>
+                                                    <label className="block text-xs text-gray-500 mb-1">Evin Değeri AI (TL)</label>
                                                     <input type="number" name="estimatedValue" required className="w-full p-2.5 rounded-xl border outline-none text-sm" placeholder="3200000" />
                                                 </div>
                                             </div>

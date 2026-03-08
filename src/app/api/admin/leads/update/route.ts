@@ -51,7 +51,7 @@ export async function POST(req: Request) {
                 }));
 
                 await resend.emails.send({
-                    from: "Evinin Değeri Uzmanları <bilgi@evindegeri.com>",
+                    from: "Evin Değeri Uzmanları <bilgi@evindegeri.com>",
                     to: updated.contactInfo.email,
                     subject: "Değerleme Raporunuz Uzmanlarımız Tarafından Güncellendi 🏠",
                     html: emailHtml,

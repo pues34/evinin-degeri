@@ -88,7 +88,8 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const {
             title, description, askingPrice, estimatedValue, phone,
-            city, district, neighborhood, netSqm, grossSqm, rooms, buildingAge, floor, images
+            city, district, neighborhood, netSqm, grossSqm, rooms, buildingAge, floor,
+            heatingType, propertyType, images
         } = body;
 
         // Calculate discount rate
@@ -97,20 +98,32 @@ export async function POST(req: NextRequest) {
             discountRate = ((estimatedValue - askingPrice) / estimatedValue) * 100;
         }
 
+        // Generate unique listing number: ED-YYYY-NNNNN
+        const year = new Date().getFullYear();
+        const totalListings = await prisma.listing.count();
+        const seq = String(totalListings + 1).padStart(5, '0');
+        const listingNumber = `ED-${year}-${seq}`;
+
         const newListing = await prisma.listing.create({
             data: {
-                title, description, askingPrice, estimatedValue, phone,
-                city, district, neighborhood, netSqm, grossSqm, rooms, buildingAge, floor,
+                title, description, askingPrice,
+                estimatedValue: estimatedValue || askingPrice,
+                phone,
+                city, district, neighborhood,
+                netSqm, grossSqm, rooms, buildingAge, floor,
+                heatingType: heatingType || null,
+                propertyType: propertyType || null,
                 images: images || [],
                 discountRate,
                 ownerType,
                 userId,
                 realtorId,
+                listingNumber,
                 status: "PENDING"
             }
         });
 
-        return NextResponse.json({ success: true, listing: newListing });
+        return NextResponse.json({ success: true, listing: newListing, listingNumber });
 
     } catch (error: any) {
         console.error("POST Listing Error:", error);

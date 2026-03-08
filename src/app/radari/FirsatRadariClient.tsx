@@ -62,7 +62,7 @@ export default function FirsatRadariClient() {
                                             </div>
                                             <div>
                                                 <h4 className="font-bold text-appleDark mb-1">Yapay Zeka Taraması</h4>
-                                                <p className="text-gray-500 text-sm">Algoritmamız her gün milyonlarca ilanı tarar. Kendi hesapladığı gerçek değerin (Evinin Değeri) altına düşen ilanları otomatik yakalar.</p>
+                                                <p className="text-gray-500 text-sm">Algoritmamız her gün milyonlarca ilanı tarar. Kendi hesapladığı gerçek değerin (Evin Değeri) altına düşen ilanları otomatik yakalar.</p>
                                             </div>
                                         </div>
                                         <div className="flex gap-4">

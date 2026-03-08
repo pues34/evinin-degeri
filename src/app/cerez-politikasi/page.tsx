@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Çerez Politikası | Evinin Değeri",
+    title: "Çerez Politikası | Evin Değeri",
     description: "Sitemizde kullanılan çerezler (cookies) ve bunların yönetim yöntemleri hakkında bilgilendirme.",
 };
 
@@ -24,7 +24,7 @@ export default function CerezPolitikasiPage() {
 
                     <div className="prose prose-apple max-w-none text-gray-600 space-y-6">
                         <p>
-                            Evinin Değeri (&quot;Şirket&quot;) olarak, web sitemizin daha verimli çalışmasını sağlamak,
+                            Evin Değeri (&quot;Şirket&quot;) olarak, web sitemizin daha verimli çalışmasını sağlamak,
                             kullanıcı deneyimini geliştirmek ve sitemizi daha iyi kullanabilmeniz için sitemizde çerezler
                             (cookies) kullanmaktayız. İşbu Çerez Politikası, hangi çerezlerin kullanıldığını ve kullanıcıların
                             bu konudaki tercihlerini nasıl yönetebileceğini açıklamaktadır.

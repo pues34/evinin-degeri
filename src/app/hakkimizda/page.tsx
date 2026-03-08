@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = {
-    title: "Hakkımızda | Evinin Değeri",
-    description: "Türkiye'nin en gelişmiş yapay zeka destekli gayrimenkul değerleme platformu Evinin Değeri'nin kuruluş hikayesi ve vizyonu.",
+    title: "Hakkımızda | Evin Değeri",
+    description: "Türkiye'nin en gelişmiş yapay zeka destekli gayrimenkul değerleme platformu Evin Değeri'nin kuruluş hikayesi ve vizyonu.",
 };
 
 export default function AboutPage() {
@@ -16,7 +16,7 @@ export default function AboutPage() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2 text-xl font-bold text-appleDark tracking-tight">
                         <span className="p-1.5 bg-appleBlue text-white rounded-lg"><Hexagon size={20} className="fill-current" /></span>
-                        <span className="hidden sm:inline">Evinin Değeri</span>
+                        <span className="hidden sm:inline">Evin Değeri</span>
                     </Link>
                     <div className="flex items-center gap-4">
                         <Link href="/" className="text-sm font-semibold text-gray-600 hover:text-appleDark transition-colors">Ana Sayfa</Link>
@@ -31,7 +31,7 @@ export default function AboutPage() {
 
                 <div className="max-w-4xl mx-auto relative z-10 text-center mb-24">
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/40 border border-white/60 rounded-full text-sm font-medium text-appleDark mb-6 backdrop-blur-md shadow-sm">
-                        <Sparkles size={16} className="text-appleBlue" /> Evinin Değeri Nasıl Doğdu?
+                        <Sparkles size={16} className="text-appleBlue" /> Evin Değeri Nasıl Doğdu?
                     </div>
                     <h1 className="text-5xl md:text-6xl font-bold text-appleDark tracking-tight mb-8 leading-tight">
                         Gayrimenkul Sektörüne <br className="hidden md:block" /> <span className="text-appleBlue">Şeffaflık</span> Getiriyoruz.
@@ -45,7 +45,7 @@ export default function AboutPage() {
                     <div className="relative group">
                         <div className="absolute inset-0 bg-blue-500/10 rounded-[2rem] transform rotate-3 scale-105 group-hover:rotate-6 transition-transform duration-500"></div>
                         <div className="relative h-[500px] w-full rounded-[2rem] shadow-2xl overflow-hidden">
-                            <Image src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Evinin Değeri Ofisi" fill className="object-cover" />
+                            <Image src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Evin Değeri Ofisi" fill className="object-cover" />
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@ export default function AboutPage() {
                         <h2 className="text-3xl font-bold text-appleDark mb-6">Kuruluş Hikayemiz</h2>
                         <div className="space-y-6 text-gray-600 leading-relaxed text-lg">
                             <p>
-                                &quot;Evinin Değeri&quot;, gayrimenkul piyasasındaki bilgi asimetrisini bitirmek amacıyla teknoloji ve emlak uzmanlarının bir araya gelmesiyle kuruldu.
+                                &quot;Evin Değeri&quot;, gayrimenkul piyasasındaki bilgi asimetrisini bitirmek amacıyla teknoloji ve emlak uzmanlarının bir araya gelmesiyle kuruldu.
                                 Geleneksel değerleme süreçlerinin yavaşlığı ve emlakçıların spekülatif fiyatlama eğilimleri, insanları yanlış finansal kararlara sürüklüyordu.
                             </p>
                             <p>

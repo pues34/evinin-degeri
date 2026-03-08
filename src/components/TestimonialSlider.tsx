@@ -8,7 +8,7 @@ const testimonials = [
         initials: "AK",
         name: "Ayşe K.",
         role: "Ev Sahibi - Kadıköy",
-        text: "Kadıköy'deki evimi satmadan önce fiyatından emin olamıyordum. Evinin Değeri sayesinde piyasa gerçeklerini öğrendim, evimi tam da raporda çıkan fiyata 2 haftada sattım!",
+        text: "Kadıköy'deki evimi satmadan önce fiyatından emin olamıyordum. Evin Değeri sayesinde piyasa gerçeklerini öğrendim, evimi tam da raporda çıkan fiyata 2 haftada sattım!",
         color: "bg-blue-100 text-blue-700",
         gradient: "from-blue-50 to-white border-blue-100",
     },

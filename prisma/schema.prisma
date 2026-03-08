@@ -363,6 +363,11 @@ model Listing {
   rooms           String
   buildingAge     Int
   floor           String
+  heatingType     String?
+  propertyType    String?
+
+  // Benzersiz İlan Numarası
+  listingNumber   String?        @unique
 
   images          String[]       // URL array
 

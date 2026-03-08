@@ -21,10 +21,10 @@ export default function ReportEmail({
     return (
         <Html>
             <Head />
-            <Preview>Evinin Değeri - Gayrimenkul Değerleme Raporunuz Hazır!</Preview>
+            <Preview>Evin Değeri - Gayrimenkul Değerleme Raporunuz Hazır!</Preview>
             <Body style={main}>
                 <Container style={container}>
-                    <Heading style={h1}>Evinin Değeri</Heading>
+                    <Heading style={h1}>Evin Değeri</Heading>
                     <Text style={text}>Merhaba {fullName},</Text>
                     <Text style={text}>
                         Talep etmiş olduğunuz <b>{neighborhood}, {district}, {city}</b> konumundaki gayrimenkulünüz için
@@ -50,7 +50,7 @@ export default function ReportEmail({
                         resmi ekspertiz raporu veya hukuki bir dayanak teşkil etmez.
                     </Text>
                     <Text style={footer}>
-                        © 2026 Evinin Değeri. Tüm hakları saklıdır.
+                        © 2026 Evin Değeri. Tüm hakları saklıdır.
                     </Text>
                 </Container>
             </Body>

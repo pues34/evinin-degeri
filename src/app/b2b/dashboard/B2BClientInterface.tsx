@@ -42,7 +42,7 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
             });
             const data = await res.json();
             if (data.success) {
-                alert("Logo başarıyla kaydedildi! Üreteceğiniz PDF'lerde Evinin Değeri logosu yerine kendi markanız görünecektir.");
+                alert("Logo başarıyla kaydedildi! Üreteceğiniz PDF'lerde Evin Değeri logosu yerine kendi markanız görünecektir.");
             } else {
                 alert("Hata: " + data.error);
             }
@@ -538,7 +538,7 @@ export default function B2BClientInterface({ user, valuations, leads, isActivePr
                                 </div>
                                 <h3 className="text-2xl font-bold text-appleDark mb-3">White-Label Özelliği PRO PLUS Üyelere Özeldir</h3>
                                 <p className="text-gray-500 max-w-lg mb-8">
-                                    Evinin Değeri logolarını PDF raporlarınızdan kaldırın ve tamamen kendi emlak ofisi logonuz ile markanızın gücünü gösterin.
+                                    Evin Değeri logolarını PDF raporlarınızdan kaldırın ve tamamen kendi emlak ofisi logonuz ile markanızın gücünü gösterin.
                                 </p>
                                 <Link href="/b2b/pricing" className="px-8 py-4 bg-gradient-to-r from-purple-500 to-purple-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2 transform hover:-translate-y-1">
                                     <Crown size={20} className="fill-white" /> Paketinizi Yükseltin

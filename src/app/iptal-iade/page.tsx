@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'İptal ve İade Koşulları | Evinin Değeri',
-    description: 'Evinin Değeri dijital SaaS platformu iptal ve iade politikaları.',
+    title: 'İptal ve İade Koşulları | Evin Değeri',
+    description: 'Evin Değeri dijital SaaS platformu iptal ve iade politikaları.',
 };
 
 export default function IptalIade() {
@@ -15,7 +15,7 @@ export default function IptalIade() {
                     <section>
                         <h2 className="text-xl font-semibold text-appleDark mb-3">1. Dijital Hizmetlerin İadesi (Mesafeli Sözleşmeler Yönetmeliği)</h2>
                         <p>
-                            Evinin Değeri Gayrimenkul Teknolojileri (&quot;Platform&quot;) üzerinden satışı yapılan &quot;PRO&quot; ve &quot;PRO PLUS&quot; paketleri, kullanıcıya anında sağlanan ve tüketilen &quot;Bulut Tabanlı Yazılım / SaaS (Software as a Service)&quot; hizmetleridir.
+                            Evin Değeri Gayrimenkul Teknolojileri (&quot;Platform&quot;) üzerinden satışı yapılan &quot;PRO&quot; ve &quot;PRO PLUS&quot; paketleri, kullanıcıya anında sağlanan ve tüketilen &quot;Bulut Tabanlı Yazılım / SaaS (Software as a Service)&quot; hizmetleridir.
                         </p>
                         <p className="mt-2 text-red-600 font-medium">
                             Bu sebeple, T.C. Mesafeli Sözleşmeler Yönetmeliği’nin 15. maddesi &quot;Elektronik ortamda anında ifa edilen hizmetler veya tüketiciye anında teslim edilen gayrimaddi mallara ilişkin sözleşmeler&quot; gereğince KURAL OLARAK CAYMA HAKKI (İADE) BULUNMAMAKTADIR. Kullanıcı satın alma işlemini yaparak aboneliği aktif ettiği anda iade hakkından feragat ettiğini peşinen kabul eder.

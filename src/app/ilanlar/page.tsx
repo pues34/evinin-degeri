@@ -28,7 +28,7 @@ export default async function PublicListingsPage() {
                     <div className="absolute top-0 right-1/4 w-64 h-64 bg-appleBlue rounded-full blur-[100px] opacity-20 pointer-events-none" />
                     <h1 className="text-4xl md:text-5xl font-extrabold text-appleDark mb-4 tracking-tight">Onaylı Özel İlanlar</h1>
                     <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-                        &quot;Evinin Değeri&quot; tarafından sistem değeri hesaplanmış ve onaylanmış, yatırım fırsatı sunan güvenilir gayrimenkulleri keşfedin.
+                        &quot;Evin Değeri&quot; tarafından sistem değeri hesaplanmış ve onaylanmış, yatırım fırsatı sunan güvenilir gayrimenkulleri keşfedin.
                     </p>
                 </div>
 

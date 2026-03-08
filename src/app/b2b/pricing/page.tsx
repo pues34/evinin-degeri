@@ -289,7 +289,7 @@ export default function PricingPage() {
                                     </li>
                                     <li className="flex items-start gap-4 text-white font-medium">
                                         <div className="p-1 bg-amber-500/20 rounded-md shrink-0 mt-0.5"><FileText className="text-amber-400 w-5 h-5" /></div>
-                                        <span><strong className="text-amber-400">White-Label PDF:</strong> Tüm raporlara Emlak Ofisinizin logosunu (Markanızı) basın. &quot;Evinin Değeri&quot; ibareleri gizlensin.</span>
+                                        <span><strong className="text-amber-400">White-Label PDF:</strong> Tüm raporlara Emlak Ofisinizin logosunu (Markanızı) basın. &quot;Evin Değeri&quot; ibareleri gizlensin.</span>
                                     </li>
                                     <li className="flex items-start gap-4 text-white font-bold border-l-2 border-amber-500 pl-4 py-1">
                                         <div className="p-1 bg-amber-500 rounded-md shrink-0"><UserPlus className="text-[#111] w-5 h-5" /></div>

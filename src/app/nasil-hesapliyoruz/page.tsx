@@ -3,8 +3,8 @@ import Link from "next/link";
 import { Building2, BarChart2, Shield, MapPin, Zap, TrendingUp, Calculator, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Nasil Hesapliyoruz? | Evinin Değeri",
-    description: "Evinin Değeri yapay zeka destekli gayrimenkul degerleme algoritmasinin nasil calistigini ogrenin. Gercek piyasa verileri, bolgesel analiz ve 20+ veri noktasi.",
+    title: "Nasil Hesapliyoruz? | Evin Değeri",
+    description: "Evin Değeri yapay zeka destekli gayrimenkul degerleme algoritmasinin nasil calistigini ogrenin. Gercek piyasa verileri, bolgesel analiz ve 20+ veri noktasi.",
 };
 
 const steps = [

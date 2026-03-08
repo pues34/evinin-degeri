@@ -447,13 +447,13 @@ export async function POST(req: NextRequest) {
     if (resend && contactInfo.email) {
       try {
         await resend.emails.send({
-          from: "Evinin Değeri <bilgi@evindegeri.com>",
+          from: "Evin Değeri <bilgi@evindegeri.com>",
           to: contactInfo.email,
           subject: "Evinizin Değerleme Raporu Hazır!",
           html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
         <div style="text-align: center; padding: 20px 0;">
-          <h1 style="color: #2563eb; margin-bottom: 5px;"> Evinin Değeri </h1>
+          <h1 style="color: #2563eb; margin-bottom: 5px;"> Evin Değeri </h1>
             <p style="color: #64748b; font-size: 14px; margin-top: 0;"> Yapay Zeka Destekli Gayrimenkul Analizi </p>
         </div>
 
@@ -498,7 +498,7 @@ export async function POST(req: NextRequest) {
 
         // Send Notification to Admin
         await resend.emails.send({
-          from: "Evinin Değeri Sistem <bilgi@evindegeri.com>",
+          from: "Evin Değeri Sistem <bilgi@evindegeri.com>",
           to: "destek@evindegeri.com", // Admin email
           subject: "Yeni Değerleme Talebi!",
           html: `

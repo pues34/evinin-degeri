@@ -205,7 +205,7 @@ export default function KonutFiyatEndeksiClient() {
                     <div>
                         <h4 className="font-semibold text-gray-700 mb-1">Veri Metodolojisi</h4>
                         <p className="text-sm text-gray-500 leading-relaxed">
-                            Burada sunulan endeks, Evinin Değeri sisteminde yapılan binlerce tahmini değerleme ve piyasadaki onaylı satış verilerinin birleşiminden oluşan ağırlıklı bir ortalamadır. Ay sonlarında geçmişe dönük optimizasyonlar yapılarak veri eğrisi milimetrik olarak düzeltilebilir.
+                            Burada sunulan endeks, Evin Değeri sisteminde yapılan binlerce tahmini değerleme ve piyasadaki onaylı satış verilerinin birleşiminden oluşan ağırlıklı bir ortalamadır. Ay sonlarında geçmişe dönük optimizasyonlar yapılarak veri eğrisi milimetrik olarak düzeltilebilir.
                         </p>
                     </div>
                 </div>

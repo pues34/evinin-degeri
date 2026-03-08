@@ -11,7 +11,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: false, error: "Mesaj veya API anahtari eksik" }, { status: 400 });
         }
 
-        const systemPrompt = `Sen "Evinin Degeri" platformunun akilli asistanisin. Turkce konusuyorsun.
+        const systemPrompt = `Sen "evindegeri.com" platformunun akilli asistanisin. Turkce konusuyorsun.
 
 HAKKIMIZDA:
 - evindegeri.com Turkiye'nin yapay zeka destekli ucretsiz emlak degerleme platformu

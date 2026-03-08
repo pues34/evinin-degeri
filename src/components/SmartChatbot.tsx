@@ -39,7 +39,7 @@ export default function SmartChatbot() {
         if (messages.length === 0) {
             setMessages([{
                 id: 1,
-                text: "Merhaba! 👋 Ben Evinin Degeri yapay zeka asistaniyim. Evinizin degeri, B2B uyelik veya platformumuz hakkinda her seyi sorabilirsiniz!",
+                text: "Merhaba! 👋 Ben evindegeri.com yapay zeka asistaniyim. Evinizin degeri, B2B uyelik veya platformumuz hakkinda her seyi sorabilirsiniz!",
                 sender: "bot"
             }]);
         }
@@ -144,7 +144,7 @@ export default function SmartChatbot() {
                                     <Building2 size={16} />
                                 </div>
                                 <div>
-                                    <p className="font-semibold text-sm">Evinin Degeri AI</p>
+                                    <p className="font-semibold text-sm">evindegeri.com AI</p>
                                     <p className="text-xs text-blue-100">Yapay Zeka Asistani • Cevrimici</p>
                                 </div>
                             </div>

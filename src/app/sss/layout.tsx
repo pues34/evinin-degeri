@@ -6,10 +6,10 @@ export default function SSSLayout({ children }: { children: React.ReactNode }) {
         "mainEntity": [
             {
                 "@type": "Question",
-                "name": "Evinin Değeri nedir ve nasıl çalışır?",
+                "name": "Evin Değeri nedir ve nasıl çalışır?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Evinin Değeri, Türkiye'nin önde gelen yapay zeka destekli gayrimenkul değerleme platformudur. Akıllı algoritmalar ile piyasadaki ilanları tarar, bölgesel endekslerle karşılaştırır ve saniyeler içinde tahmini piyasa değerini sunar."
+                    "text": "Evin Değeri, Türkiye'nin önde gelen yapay zeka destekli gayrimenkul değerleme platformudur. Akıllı algoritmalar ile piyasadaki ilanları tarar, bölgesel endekslerle karşılaştırır ve saniyeler içinde tahmini piyasa değerini sunar."
                 }
             },
             {

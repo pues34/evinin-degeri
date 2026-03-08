@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import ProfileClient from "./ProfileClient";
 
 export const metadata: Metadata = {
-    title: "Profil Ayarları | Evinin Değeri",
+    title: "Profil Ayarları | Evin Değeri",
     description: "Kişisel bilgilerinizi ve hesap şifrenizi güncelleyin.",
 };
 

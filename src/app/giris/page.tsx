@@ -48,7 +48,7 @@ function LoginForm() {
                     <span className="p-2 bg-appleDark text-white rounded-xl group-hover:bg-appleBlue transition-colors">
                         <Hexagon size={28} className="fill-current" />
                     </span>
-                    <span className="font-bold text-2xl text-appleDark tracking-tight">Evinin Değeri</span>
+                    <span className="font-bold text-2xl text-appleDark tracking-tight">Evin Değeri</span>
                 </Link>
                 <h2 className="text-center text-3xl font-extrabold text-gray-900">
                     Yatırımcı Girişi

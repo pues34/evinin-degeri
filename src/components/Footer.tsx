@@ -21,7 +21,7 @@ export default async function Footer() {
                     <div className="col-span-2 md:col-span-1">
                         <Link href="/" className="inline-flex items-center gap-2 text-lg font-bold text-appleDark tracking-tight mb-4">
                             <span className="p-1.5 bg-appleDark text-white rounded-lg"><Hexagon size={16} className="fill-current" /></span>
-                            Evinin Değeri
+                            Evin Değeri
                         </Link>
                         <p className="text-gray-500 text-sm leading-relaxed mb-4">
                             Yapay zeka ile gayrimenkulünüzün gerçek değerini anında hesaplayın.
@@ -37,7 +37,7 @@ export default async function Footer() {
                             </div>
                             <div className="flex items-start gap-2">
                                 <MapPin size={12} className="text-appleBlue shrink-0 mt-0.5" />
-                                <span><strong className="text-appleDark block mb-1">Evinin Değeri Gayrimenkul Teknolojileri</strong>Muratpaşa Mah. Cemiyet Cad. No:28<br />Bayrampaşa / İstanbul<br /><div className="mt-3 bg-gray-50 p-2 rounded-lg border border-gray-100 text-[11px] text-gray-600 leading-relaxed font-medium"><strong>VD:</strong> Tuna Vergi Dairesi<br /><strong>VN:</strong> 1310852802</div></span>
+                                <span><strong className="text-appleDark block mb-1">Evin Değeri Gayrimenkul Teknolojileri</strong>Muratpaşa Mah. Cemiyet Cad. No:28<br />Bayrampaşa / İstanbul<br /><div className="mt-3 bg-gray-50 p-2 rounded-lg border border-gray-100 text-[11px] text-gray-600 leading-relaxed font-medium"><strong>VD:</strong> Tuna Vergi Dairesi<br /><strong>VN:</strong> 1310852802</div></span>
                             </div>
                         </div>
                     </div>
@@ -116,14 +116,14 @@ export default async function Footer() {
 
                 <div className="mt-12 pt-8 border-t border-gray-100">
                     <p className="text-[10.5px] text-gray-400 leading-relaxed mb-6 text-justify">
-                        <strong>Yasal Uyarı: </strong> Evinin Değeri tarafından sunulan fiyat raporları; güncel piyasa verileri, yapay zeka ve matematiksel modellemelere dayanarak hesaplanan &quot;tahmini&quot; gayrimenkul değerleridir.
+                        <strong>Yasal Uyarı: </strong> Evin Değeri tarafından sunulan fiyat raporları; güncel piyasa verileri, yapay zeka ve matematiksel modellemelere dayanarak hesaplanan &quot;tahmini&quot; gayrimenkul değerleridir.
                         Sunulan bu raporlar, Sermaye Piyasası Kurulu (SPK) mevzuatı uyarınca yetkilendirilmiş resmi değerleme kuruluşları tarafından hazırlanan raporların yerine geçmez.
                         SPK mevzuatınca değerleme gerektiren resmi işlemlerde lisanslı eksperlerden hizmet alınması zorunludur. Platformumuzda yer alan veriler tamamen bilgi amaçlı olup, bu raporlara dayanılarak
-                        alınan doğrudan veya dolaylı yatırım kararlarından Şirketimiz (Evinin Değeri Gayrimenkul Teknolojileri) hukuki ve cezai olarak sorumlu tutulamaz.
+                        alınan doğrudan veya dolaylı yatırım kararlarından Şirketimiz (Evin Değeri Gayrimenkul Teknolojileri) hukuki ve cezai olarak sorumlu tutulamaz.
                     </p>
                     <div className="flex flex-col md:flex-row items-center justify-between text-xs text-gray-400">
                         <div className="flex flex-col md:flex-row gap-4 items-center">
-                            <p>&copy; {new Date().getFullYear()} Evinin Değeri. Tüm hakları saklıdır.</p>
+                            <p>&copy; {new Date().getFullYear()} Evin Değeri. Tüm hakları saklıdır.</p>
                         </div>
                         <p className="mt-4 md:mt-0 text-center md:text-right">Yapay Zeka Destekli Gayrimenkul Değerleme Platformu</p>
                     </div>

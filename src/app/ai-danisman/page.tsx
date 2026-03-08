@@ -10,7 +10,7 @@ export default function AIAssistantPage() {
     const isPremium = session?.user?.isPremium || session?.user?.isPro;
 
     const [messages, setMessages] = useState([
-        { role: "assistant", content: "Merhaba! Ben Evinin Değeri Yapay Zeka Danışmanınız. İstanbul, Ankara veya İzmir'deki kira getirileri, amortisman süreleri veya yatırım fırsatları hakkında bana her şeyi sorabilirsiniz." }
+        { role: "assistant", content: "Merhaba! Ben Evin Değeri Yapay Zeka Danışmanınız. İstanbul, Ankara veya İzmir'deki kira getirileri, amortisman süreleri veya yatırım fırsatları hakkında bana her şeyi sorabilirsiniz." }
     ]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -111,7 +111,7 @@ export default function AIAssistantPage() {
                             <Bot size={24} className="text-white" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold flex items-center gap-2">Evinin Değeri AI <Sparkles size={16} className="text-yellow-400" /></h2>
+                            <h2 className="text-xl font-bold flex items-center gap-2">Evin Değeri AI <Sparkles size={16} className="text-yellow-400" /></h2>
                             <p className="text-white/70 text-sm">Emlak & Yatırım Danışmanı</p>
                         </div>
                     </div>

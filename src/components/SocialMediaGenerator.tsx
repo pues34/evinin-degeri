@@ -124,7 +124,7 @@ export default function SocialMediaGenerator({ valuationData, realtorLogo }: { v
                         {/* Bottom: Footer */}
                         <div className="relative z-10 flex justify-center">
                             <p className={`text-[10px] opacity-60 font-medium ${textColor}`}>
-                                Bu analiz Evinin Değeri algoritması ile hesaplanmıştır.
+                                Bu analiz Evin Değeri algoritması ile hesaplanmıştır.
                             </p>
                         </div>
                     </div>

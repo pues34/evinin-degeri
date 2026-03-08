@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "KVKK Aydınlatma Metni | Evinin Değeri",
+    title: "KVKK Aydınlatma Metni | Evin Değeri",
     description: "Kişisel verilerinizin işlenmesi ve korunması hakkında detaylı bilgilendirme sayfasına hoşgeldiniz.",
 };
 
@@ -24,7 +24,7 @@ export default function KVKKPage() {
 
                     <div className="prose prose-apple max-w-none text-gray-600 space-y-6">
                         <p>
-                            Evinin Değeri Gayrimenkul Teknolojileri (&quot;Şirket&quot;) olarak, kişisel verilerinizin güvenliğine
+                            Evin Değeri Gayrimenkul Teknolojileri (&quot;Şirket&quot;) olarak, kişisel verilerinizin güvenliğine
                             büyük önem veriyoruz. 6698 sayılı Kişisel Verilerin Korunması Kanunu (&quot;KVKK&quot;) uyarınca,
                             Veri Sorumlusu sıfatıyla kişisel verilerinizi hangi amaçlarla işlediğimizi, kimlere ve
                             hangi amaçlarla aktarabildiğimizi, toplanma yöntemlerini ve hukuki sebeplerini aşağıda açıklıyoruz.

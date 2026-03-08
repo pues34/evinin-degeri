@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Teslimat Şartları | Evinin Değeri",
+    title: "Teslimat Şartları | Evin Değeri",
     description: "Sitemizden satın alınan dijital raporların anında teslimat koşulları hakkında bilgilendirme.",
 };
 
@@ -24,7 +24,7 @@ export default function TeslimatSartlariPage() {
 
                     <div className="prose prose-apple max-w-none text-gray-600 space-y-6">
                         <p>
-                            Evinin Değeri Gayrimenkul Teknolojileri olarak, platformumuz üzerinden sunulan tüm hizmetler
+                            Evin Değeri Gayrimenkul Teknolojileri olarak, platformumuz üzerinden sunulan tüm hizmetler
                             <strong> dijital (gayrimaddi) ürünler</strong> kapsamındadır. Bu nedenle fiziki bir kargo
                             gönderimi söz konusu değildir. Satın almış olduğunuz Paketler ve Raporlama hizmetleri için
                             teslimat şartlarımız aşağıdaki gibidir:

@@ -176,7 +176,7 @@ export default async function Home() {
               <div className="space-y-4">
                 <details className="group bg-white border border-gray-100 rounded-2xl shadow-sm open:shadow-md transition-all cursor-pointer">
                   <summary className="flex justify-between items-center font-medium hover:text-appleBlue text-appleDark p-6">
-                    Evinin Değeri sistemi nasıl çalışır?
+                    Evin Değeri sistemi nasıl çalışır?
                     <span className="transition-transform duration-300 group-open:rotate-180 text-appleBlue">
                       <svg fill="none" height="24" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
                     </span>

@@ -25,7 +25,7 @@ export default function Header() {
                         </div>
                         <div className="flex flex-col">
                             <span className="font-extrabold text-[1.35rem] leading-none tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-appleDark to-indigo-800">
-                                Evinin Değeri
+                                Evin Değeri
                             </span>
                             <span className="text-[10px] uppercase font-bold text-gray-400 tracking-widest mt-0.5 ml-0.5">Yapay Zeka</span>
                         </div>

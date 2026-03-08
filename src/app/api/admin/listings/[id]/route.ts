@@ -21,13 +21,42 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
         const listing = await prisma.listing.update({
             where: { id: params.id },
-            data: { status }
+            data: { status },
+            include: {
+                user: { select: { email: true, name: true } },
+                realtor: { select: { email: true, companyName: true } }
+            }
         });
 
-        // Trigger notifications if approved (Mocking notification system)
+        // Send email notification when listing is approved
         if (status === "APPROVED") {
-            console.log(`[ACTION] Listing ${listing.id} is APPROVED. Triggering notification to Premium users.`);
-            // In a real scenario, we would trigger an email queue here for all User (isPremium=true) and Realtor (isPro=true)
+            const ownerEmail = listing.ownerType === "USER"
+                ? listing.user?.email
+                : listing.realtor?.email;
+
+            const ownerName = listing.ownerType === "USER"
+                ? listing.user?.name || "Kullanıcı"
+                : listing.realtor?.companyName || "Kurumsal";
+
+            if (ownerEmail) {
+                try {
+                    await fetch(`${process.env.NEXTAUTH_URL || 'https://evindegeri.com'}/api/send-listing-notification`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            email: ownerEmail,
+                            name: ownerName,
+                            listingTitle: listing.title,
+                            listingNumber: (listing as any).listingNumber || listing.id,
+                        })
+                    });
+                } catch (emailErr) {
+                    console.error("Email notification error:", emailErr);
+                    // Don't fail the approval if email fails
+                }
+            }
+
+            console.log(`[ACTION] Listing ${(listing as any).listingNumber || listing.id} APPROVED. Email sent to ${ownerEmail}.`);
         }
 
         return NextResponse.json({ success: true, listing });
