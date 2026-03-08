@@ -50,10 +50,10 @@ export default function IletisimPage() {
                             <Building2 size={24} className="text-emerald-500" />
                         </div>
                         <h3 className="font-semibold text-appleDark text-lg mb-2">Kurumsal İşbirliği</h3>
-                        <p className="text-gray-500 text-sm mb-3">B2B ve toplu değerleme</p>
-                        <Link href="/b2b" className="text-appleBlue font-medium text-sm hover:underline">
-                            B2B Sayfasını Ziyaret Edin
-                        </Link>
+                        <p className="text-gray-500 text-sm mb-3">Toplu değerleme ve işbirliği</p>
+                        <a href="mailto:destek@evindegeri.com" className="text-appleBlue font-medium text-sm hover:underline">
+                            destek@evindegeri.com
+                        </a>
                     </div>
 
                     <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
@@ -100,8 +100,8 @@ export default function IletisimPage() {
                     </div>
 
                     <p className="text-gray-400 text-sm max-w-lg mx-auto mt-6">
-                        Evin Değeri, tamamen dijital bir B2B SaaS platformu olarak hizmet vermektedir.
-                        Tüm abonelik ve destek işlemlerinizi online olarak gerçekleştirebilirsiniz.
+                        Evin Değeri, tamamen dijital bir gayrimenkul değerleme platformu olarak hizmet vermektedir.
+                        Tüm işlemlerinizi online olarak gerçekleştirebilirsiniz.
                     </p>
                 </div>
             </section>

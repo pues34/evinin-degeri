@@ -88,9 +88,6 @@ export default function AdminDashboard() {
         mSiteIci: "",
         mYenilenmis: "",
         mMasrafli: "",
-        b2bMonthlyPrice: "",
-        b2bDiscountPercentage: "",
-        b2bProPlusPrice: "",
         dailyRateLimit: "3",
         dailyBlogCount: "5",
         blogCategories: "",
@@ -1023,28 +1020,6 @@ export default function AdminDashboard() {
                                             <div className="col-span-2">
                                                 <label className="block text-sm text-gray-600 mb-1">Bina Yaşı Düşüşü (Yıl Başı)</label>
                                                 <input type="number" step="0.01" value={settings.buildingAgeDepreciation} onChange={e => setSettings({ ...settings, buildingAgeDepreciation: e.target.value })} className="w-full p-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-appleBlue outline-none bg-white text-sm" />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm text-gray-600 mb-1 flex justify-between">
-                                                    <span>B2B PRO Aylık Fiyatı (₺)</span>
-                                                    <span className="text-xs text-blue-500 font-medium bg-blue-50 px-2 py-0.5 rounded">Yeni</span>
-                                                </label>
-                                                <input type="number" value={settings.b2bMonthlyPrice || ""} onChange={e => setSettings({ ...settings, b2bMonthlyPrice: e.target.value })} className="w-full p-2 rounded-xl border border-blue-200 focus:ring-2 focus:ring-appleBlue outline-none bg-blue-50/30 text-sm font-medium" />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm text-gray-600 mb-1 flex justify-between">
-                                                    <span>B2B İndirim Oranı (%)</span>
-                                                    <span className="text-xs text-green-500 font-medium bg-green-50 px-2 py-0.5 rounded">Opsiyonel</span>
-                                                </label>
-                                                <input type="number" placeholder="Orn: 20 (Bos birakilirsa indirimsiz)" value={settings.b2bDiscountPercentage || ""} onChange={e => setSettings({ ...settings, b2bDiscountPercentage: e.target.value })} className="w-full p-2 rounded-xl border border-green-200 focus:ring-2 focus:ring-green-500 outline-none bg-green-50/30 text-sm font-medium" />
-                                            </div>
-                                            <div className="col-span-2">
-                                                <label className="block text-sm text-gray-600 mb-1 flex justify-between">
-                                                    <span>B2B PRO PLUS Aylik Fiyati (TL)</span>
-                                                    <span className="text-xs text-purple-500 font-medium bg-purple-50 px-2 py-0.5 rounded">Yeni</span>
-                                                </label>
-                                                <input type="number" value={settings.b2bProPlusPrice || ""} onChange={e => setSettings({ ...settings, b2bProPlusPrice: e.target.value })} className="w-full p-2 rounded-xl border border-purple-200 focus:ring-2 focus:ring-purple-500 outline-none bg-purple-50/30 text-sm font-medium" placeholder="750" />
-                                                <p className="text-xs text-gray-400 mt-1">PRO PLUS paketi icin aylik ucret. Bos birakilirsa 750 TL kullanilir.</p>
                                             </div>
                                             <div className="col-span-2 border-t border-gray-100 pt-4 mt-2">
                                                 <h5 className="text-xs font-semibold text-gray-500 uppercase mb-3">AI & Veri Entegrasyonlari (V3)</h5>
