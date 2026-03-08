@@ -19,10 +19,9 @@ export async function GET(req: Request) {
                 email: true,
                 phone: true,
                 isPremium: true,
+                premiumEnd: true,
+                accountType: true,
                 createdAt: true,
-                _count: {
-                    select: { portfolio: true, savedListings: true }
-                }
             }
         });
 

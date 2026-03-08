@@ -2,7 +2,7 @@
 
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { User, Mail, Phone, Building2, Crown, Calendar, LogOut, Plus, Eye, Clock, CheckCircle, XCircle, AlertCircle, Home, TrendingUp, Wallet } from "lucide-react";
+import { User, Mail, Phone, Building2, Crown, Calendar, LogOut, Plus, Eye, Clock, CheckCircle, XCircle, AlertCircle, Home, TrendingUp, Wallet, FileText } from "lucide-react";
 
 interface ProfileUser {
     id: string;
@@ -170,8 +170,8 @@ export default function ProfileClient({ user, listings, portfolio }: { user: Pro
                     ) : (
                         <div className="space-y-3">
                             {portfolio.map((prop) => (
-                                <Link key={prop.id} href={`/result/${prop.id}`} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group">
-                                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                                <div key={prop.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group">
+                                    <Link href={`/result/${prop.id}`} className="flex items-start gap-3 flex-1 min-w-0">
                                         <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-appleBlue shrink-0">
                                             <Home size={18} />
                                         </div>
@@ -179,14 +179,19 @@ export default function ProfileClient({ user, listings, portfolio }: { user: Pro
                                             <h3 className="text-sm font-bold text-appleDark truncate">{prop.district}, {prop.neighborhood}</h3>
                                             <p className="text-xs text-gray-400 mt-0.5">{prop.rooms} • {prop.grossSqm} m² • {prop.buildingAge}</p>
                                         </div>
+                                    </Link>
+                                    <div className="flex items-center gap-3 shrink-0 ml-4">
+                                        <div className="text-right">
+                                            <p className="text-sm font-extrabold text-appleDark">
+                                                {new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(prop.estimatedValue)}
+                                            </p>
+                                            <p className="text-[10px] text-gray-400">{new Date(prop.createdAt).toLocaleDateString('tr-TR')}</p>
+                                        </div>
+                                        <Link href={`/result/${prop.id}`} className="flex items-center gap-1 px-2.5 py-1.5 bg-appleBlue/10 text-appleBlue rounded-lg text-xs font-medium hover:bg-appleBlue hover:text-white transition-colors">
+                                            <FileText size={12} /> Rapor
+                                        </Link>
                                     </div>
-                                    <div className="text-right shrink-0 ml-4">
-                                        <p className="text-sm font-extrabold text-appleDark">
-                                            {new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY", maximumFractionDigits: 0 }).format(prop.estimatedValue)}
-                                        </p>
-                                        <p className="text-[10px] text-gray-400">{new Date(prop.createdAt).toLocaleDateString('tr-TR')}</p>
-                                    </div>
-                                </Link>
+                                </div>
                             ))}
                         </div>
                     )}

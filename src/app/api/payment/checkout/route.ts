@@ -12,25 +12,74 @@ export async function POST(req: Request) {
         }
 
         const body = await req.json();
-        const { planId } = body;
+        const { planId, promoCode } = body;
 
-        // In a real application, you would initialize an Iyzico or Stripe checkout session here
-        // and return the payment URL. Since this is an MVP without active credentials:
+        // Base price (Lansman fiyatı veya normal fiyat)
+        const settings = await prisma.systemSettings.findFirst();
+        let basePrice = 499; // Lansman fiyatı
 
-        // MOCK PAYMENT SUCCESS: We just upgrade the user directly.
+        // Lansman tarihi kontrolü — 09/03/2026'dan 1 ay sonra normal fiyat
+        const launchDate = new Date("2026-03-09");
+        const launchEnd = new Date(launchDate);
+        launchEnd.setMonth(launchEnd.getMonth() + 1);
+        if (new Date() > launchEnd) {
+            basePrice = 999; // Normal fiyat
+        }
+
+        let discountAmount = 0;
+        let appliedPromo = null;
+
+        // Promo kodu doğrulama ve indirim hesaplama
+        if (promoCode) {
+            const promo = await prisma.promoCode.findUnique({
+                where: { code: promoCode.toUpperCase() },
+            });
+
+            if (promo && promo.isActive && new Date(promo.expiresAt) > new Date() && promo.currentUses < promo.maxUses) {
+                if (promo.discountType === "PERCENTAGE") {
+                    discountAmount = Math.round((basePrice * promo.discountValue) / 100);
+                } else {
+                    // FIXED amount
+                    discountAmount = promo.discountValue;
+                }
+
+                // İndirim fiyattan fazla olamaz
+                discountAmount = Math.min(discountAmount, basePrice);
+                appliedPromo = promo;
+
+                // Promo kodu kullanımını artır
+                await prisma.promoCode.update({
+                    where: { id: promo.id },
+                    data: { currentUses: { increment: 1 } },
+                });
+            }
+        }
+
+        const finalPrice = basePrice - discountAmount;
+
+        // MVP: Mock payment — direkt upgrade
+        // Gerçek ödeme entegrasyonu yapılacaksa burada Iyzico/PayTR URL döndürülür
+        const premiumEnd = new Date();
+        premiumEnd.setDate(premiumEnd.getDate() + 30);
+
         await prisma.user.update({
             where: { id: session.user.id },
-            data: { isPremium: true }
+            data: {
+                isPremium: true,
+                premiumEnd,
+            },
         });
-
-        // Normally, you return { checkoutUrl: "https://iyzico.com/pay/..." }
-        // For our MVP, we simulate a successful internal upgrade and redirect.
 
         return NextResponse.json({
             success: true,
             message: "Ödeme başarılı! Premium özelliklere artık erişebilirsiniz.",
-            // This redirect happens on the client side
-            redirectUrl: "/portfoy?upgrade=success"
+            redirectUrl: "/profil?upgrade=success",
+            payment: {
+                basePrice,
+                discountAmount,
+                finalPrice,
+                promoApplied: appliedPromo ? appliedPromo.code : null,
+            }
         });
 
     } catch (error: any) {
