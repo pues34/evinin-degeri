@@ -17,6 +17,7 @@
     "@react-email/render": "^2.0.4",
     "@react-pdf/renderer": "^4.3.2",
     "@sentry/nextjs": "^10.42.0",
+    "@supabase/supabase-js": "^2.98.0",
     "@tailwindcss/typography": "^0.5.19",
     "@types/leaflet.heat": "^0.2.5",
     "@upstash/ratelimit": "^2.0.8",

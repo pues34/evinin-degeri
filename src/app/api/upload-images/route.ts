@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import sharp from "sharp";
-import path from "path";
-import fs from "fs/promises";
 import crypto from "crypto";
+import { getSupabaseAdmin } from "@/lib/supabase";
+
+const BUCKET_NAME = "listing-images";
 
 export async function POST(req: NextRequest) {
     try {
@@ -24,17 +25,16 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Maksimum 10 fotoğraf yükleyebilirsiniz." }, { status: 400 });
         }
 
+        // Ensure bucket exists (idempotent)
+        await getSupabaseAdmin().storage.createBucket(BUCKET_NAME, {
+            public: true,
+            fileSizeLimit: 5 * 1024 * 1024, // 5MB
+            allowedMimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
+        }).catch(() => { /* bucket already exists */ });
+
         const uploadedUrls: string[] = [];
-        const uploadDir = path.join(process.cwd(), "public", "uploads", "listings");
 
-        // Ensure directory exists
-        try {
-            await fs.access(uploadDir);
-        } catch {
-            await fs.mkdir(uploadDir, { recursive: true });
-        }
-
-        // SVG Watermark definition
+        // SVG Watermark
         const watermarkSvg = `
             <svg width="600" height="200" xmlns="http://www.w3.org/2000/svg">
                 <style>
@@ -51,33 +51,48 @@ export async function POST(req: NextRequest) {
             try {
                 const buffer = Buffer.from(await file.arrayBuffer());
                 const uniqueFilename = `${crypto.randomUUID()}-${Date.now()}.jpg`;
-                const filePath = path.join(uploadDir, uniqueFilename);
+                const filePath = `listings/${uniqueFilename}`;
 
                 // Process image: resize, add watermark, convert to JPG
-                const image = sharp(buffer)
-                    .resize(1200, 800, { fit: "inside", withoutEnlargement: true })
-                    .jpeg({ quality: 85 });
-
-                // Try composite with watermark, fall back to no watermark if it fails
+                let processedBuffer: Buffer;
                 try {
-                    await image
+                    processedBuffer = await sharp(buffer)
+                        .resize(1200, 800, { fit: "inside", withoutEnlargement: true })
+                        .jpeg({ quality: 85 })
                         .composite([{
                             input: watermarkBuffer,
                             gravity: 'center',
                         }])
-                        .toFile(filePath);
+                        .toBuffer();
                 } catch {
-                    // If composite fails (e.g. on some serverless runtimes), save without watermark
-                    await sharp(buffer)
+                    // If composite fails, save without watermark
+                    processedBuffer = await sharp(buffer)
                         .resize(1200, 800, { fit: "inside", withoutEnlargement: true })
                         .jpeg({ quality: 85 })
-                        .toFile(filePath);
+                        .toBuffer();
                 }
 
-                uploadedUrls.push(`/uploads/listings/${uniqueFilename}`);
+                // Upload to Supabase Storage
+                const { data, error } = await getSupabaseAdmin().storage
+                    .from(BUCKET_NAME)
+                    .upload(filePath, processedBuffer, {
+                        contentType: 'image/jpeg',
+                        upsert: false,
+                    });
+
+                if (error) {
+                    console.error("Supabase upload error:", error);
+                    continue;
+                }
+
+                // Get public URL
+                const { data: urlData } = getSupabaseAdmin().storage
+                    .from(BUCKET_NAME)
+                    .getPublicUrl(filePath);
+
+                uploadedUrls.push(urlData.publicUrl);
             } catch (imgErr) {
                 console.error("Single image processing error:", imgErr);
-                // Skip this image but continue with others
             }
         }
 
