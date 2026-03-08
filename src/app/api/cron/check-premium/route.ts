@@ -26,19 +26,10 @@ export async function GET(req: Request) {
         if (expiredUsers.length > 0) {
             const expiredUserIds = expiredUsers.map(u => u.id);
 
-            // Premium'u kapat
+            // Premium'u kapat (ilanlar etkilenmez, sadece üyelik düşer)
             await prisma.user.updateMany({
                 where: { id: { in: expiredUserIds } },
                 data: { isPremium: false },
-            });
-
-            // Bu kullanıcıların aktif ilanlarını pasife çek
-            await prisma.listing.updateMany({
-                where: {
-                    userId: { in: expiredUserIds },
-                    status: "APPROVED",
-                },
-                data: { status: "PENDING" },
             });
         }
 
